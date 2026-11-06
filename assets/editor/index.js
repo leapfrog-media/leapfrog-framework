@@ -1,0 +1,97 @@
+/**
+ * Leapfrog Framework editor (milestone 1: shell + Bricks data).
+ */
+import { createRoot, useEffect, useState } from '@wordpress/element';
+import apiFetch from '@wordpress/api-fetch';
+import { __ } from '@wordpress/i18n';
+import { Button, Notice, Spinner } from '@wordpress/components';
+
+import BricksData from './screens/BricksData';
+import Placeholder from './screens/Placeholder';
+import './editor.css';
+
+const config = window.leapfrogFramework || {};
+
+// Screens from the spec, in order. `milestone` = when the screen is built.
+const SCREENS = [
+	{ id: 'starter', label: __( 'Brand starter', 'leapfrog-framework' ), milestone: 6 },
+	{ id: 'colours', label: __( 'Colours', 'leapfrog-framework' ), milestone: 2 },
+	{ id: 'typography', label: __( 'Typography', 'leapfrog-framework' ), milestone: 3 },
+	{ id: 'spacing', label: __( 'Spacing', 'leapfrog-framework' ), milestone: 3 },
+	{ id: 'shape', label: __( 'Layout and shape', 'leapfrog-framework' ), milestone: 3 },
+	{ id: 'roles', label: __( 'Roles and themes', 'leapfrog-framework' ), milestone: 4 },
+	{ id: 'components', label: __( 'Components', 'leapfrog-framework' ), milestone: 4 },
+	{ id: 'review', label: __( 'Review and save', 'leapfrog-framework' ), milestone: 6 },
+	{ id: 'export', label: __( 'Export and presets', 'leapfrog-framework' ), milestone: 6 },
+	{ id: 'settings', label: __( 'Settings', 'leapfrog-framework' ), milestone: 3 },
+	{ id: 'bricks', label: __( 'Bricks data', 'leapfrog-framework' ), milestone: 1 },
+];
+
+function App() {
+	const [ screen, setScreen ] = useState( 'bricks' );
+	const [ status, setStatus ] = useState( null );
+	const [ error, setError ] = useState( '' );
+
+	useEffect( () => {
+		apiFetch( { path: `${ config.restPath }/status` } )
+			.then( setStatus )
+			.catch( ( e ) => setError( e.message || String( e ) ) );
+	}, [] );
+
+	const current = SCREENS.find( ( s ) => s.id === screen );
+
+	return (
+		<div className="lf-app">
+			<header className="lf-header">
+				<div className="lf-header__brand">
+					<span className="lf-header__logo" aria-hidden="true">LF</span>
+					<span className="lf-header__title">{ __( 'Leapfrog Framework', 'leapfrog-framework' ) }</span>
+					<span className="lf-header__version">v{ config.version }</span>
+				</div>
+				<div className="lf-header__site">{ config.siteName }</div>
+				<Button variant="tertiary" href={ config.dashboardUrl }>
+					{ __( 'Back to WordPress', 'leapfrog-framework' ) }
+				</Button>
+			</header>
+
+			<div className="lf-body">
+				<nav className="lf-nav" aria-label={ __( 'Framework screens', 'leapfrog-framework' ) }>
+					<ul>
+						{ SCREENS.map( ( s ) => (
+							<li key={ s.id }>
+								<button
+									type="button"
+									className={ 'lf-nav__item' + ( s.id === screen ? ' is-active' : '' ) + ( s.milestone > 1 ? ' is-later' : '' ) }
+									aria-current={ s.id === screen ? 'page' : undefined }
+									onClick={ () => setScreen( s.id ) }
+								>
+									{ s.label }
+								</button>
+							</li>
+						) ) }
+					</ul>
+				</nav>
+
+				<main className="lf-main">
+					{ error && <Notice status="error" isDismissible={ false }>{ error }</Notice> }
+					{ ! status && ! error && <Spinner /> }
+					{ status && ! status.ready && (
+						<Notice status="warning" isDismissible={ false }>
+							{ status.problems.join( ' ' ) }
+						</Notice>
+					) }
+					{ status && status.ready && (
+						screen === 'bricks'
+							? <BricksData status={ status } restPath={ config.restPath } />
+							: <Placeholder screen={ current } />
+					) }
+				</main>
+			</div>
+		</div>
+	);
+}
+
+const root = document.getElementById( 'leapfrog-framework-app' );
+if ( root ) {
+	createRoot( root ).render( <App /> );
+}
