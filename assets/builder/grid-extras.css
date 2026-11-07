@@ -1,0 +1,58 @@
+/* Leapfrog Framework: a row in Bricks' Visual grid builder, styled to match it. */
+.lf-grid-extras {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 10px;
+	padding: 10px 24px;
+	border-top: 1px solid rgb(52 61 70);
+	background: rgb(35 41 47);
+	color: rgb(226 230 233);
+	font-size: 13px;
+}
+
+.lf-grid-extras__title {
+	color: #c58fc5;
+	font-weight: 600;
+	letter-spacing: 0.02em;
+}
+
+.lf-grid-extras__select,
+.lf-grid-extras__button {
+	height: 32px;
+	padding: 0 10px;
+	border: 1px solid rgb(52 61 70);
+	border-radius: 4px;
+	background: rgb(22 26 29);
+	color: rgb(226 230 233);
+	font: inherit;
+	cursor: pointer;
+}
+
+.lf-grid-extras__select {
+	max-width: 230px;
+}
+
+.lf-grid-extras__select:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+.lf-grid-extras__button:hover,
+.lf-grid-extras__select:hover:not(:disabled) {
+	border-color: rgb(138 153 168);
+}
+
+.lf-grid-extras__where {
+	margin-left: auto;
+	color: rgb(138 153 168);
+}
+
+.lf-grid-extras__note {
+	flex-basis: 100%;
+	color: #8fd19e;
+}
+
+.lf-grid-extras__note:empty {
+	display: none;
+}

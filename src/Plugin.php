@@ -6,6 +6,7 @@ namespace Leapfrog\Framework;
 
 use Leapfrog\Framework\Admin\FrameworkPage;
 use Leapfrog\Framework\Bricks\Buttons;
+use Leapfrog\Framework\Bricks\GridExtras;
 use Leapfrog\Framework\Bricks\LogicalSizing;
 use Leapfrog\Framework\Bricks\ThemeControl;
 use Leapfrog\Framework\Bricks\VariablePicker;
@@ -26,6 +27,7 @@ final class Plugin {
 		( new LogicalSizing() )->register();
 		( new Buttons() )->register();
 		( new VariablePicker() )->register();
+		( new GridExtras() )->register();
 
 		add_action( 'admin_notices', array( $this, 'requirements_notice' ) );
 	}

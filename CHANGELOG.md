@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.1.0-alpha.3 — 2026-11-07
+
+Milestone 1.1b: grid extras. Bricks 2.4 has its own Visual grid builder (the button beside Display on a grid), which already covers tracks, placing elements, breakpoints, classes and query loops, so Leapfrog adds a row to it instead of a second builder.
+
+- Layout: Leapfrog grid layouts (equal columns, uneven splits, auto-fit and auto-fill card grids) set the grid's columns as `var(--grid-…)`.
+- Gap: Leapfrog gap values (`--gap`, stack, cluster and inline gaps, space scale steps).
+- Bento: 3, 4, 5 or 6 tile layouts, placing the children. Layout children (container, block, div) get Bricks' Grid column and Grid row settings; other elements, and any grid with a class selected, get Bricks' own grid builder custom CSS, in the same marked section and format, so Bricks can keep editing them.
+- Stack on mobile: one column at the smallest breakpoint, every child back in normal order (settings and grid builder CSS alike).
+- Everything is written through Bricks' own setting function on the breakpoint shown in the grid builder ("Applies to" shows which), lands in Bricks' undo history, and works on the selected class when one is active.
+
 ## 1.1.0-alpha.1 — 2026-11-07
 
 Milestone 1.1a: values. 145 new Bricks variables and colour roles (229 variables and 35 roles in all), the design values CoreBridge had that 1.0 left out.
