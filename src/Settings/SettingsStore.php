@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Leapfrog\Framework\Settings;
 
 use Leapfrog\Framework\Color\Palette;
+use Leapfrog\Framework\Scale\Scales;
 use RuntimeException;
 
 /**
@@ -27,11 +28,6 @@ final class SettingsStore {
 			'revision'      => 0,
 			'updated'       => 0,
 			'brand'         => array(
-				'fonts'  => array(
-					'body'    => '',
-					'heading' => '',
-					'mono'    => '',
-				),
 				'corners' => 'soft',
 			),
 			'colors'        => array(
@@ -39,25 +35,23 @@ final class SettingsStore {
 				'shadeSteps' => array( 10, 20, 30, 40, 50, 60, 70, 80, 90 ),
 				'alphaSteps' => array( 10, 20, 30, 40, 50, 60, 70, 80, 90 ),
 			),
-			'typography'    => array(
-				'prefix'   => 'text-',
-				'steps'    => array( '2xs', 'xs', 's', 'm', 'l', 'xl', '2xl', '3xl', '4xl' ),
-				'baseline' => 'm',
-				'minSize'  => 16.0,
-				'maxSize'  => 18.0,
-				'minRatio' => 1.2,
-				'maxRatio' => 1.25,
-			),
-			'spacing'       => array(
-				'prefix'   => 'space-',
-				'steps'    => array( '3xs', '2xs', 'xs', 's', 'm', 'l', 'xl', '2xl', '3xl' ),
-				'baseline' => 'm',
-				'minSize'  => 16.0,
-				'maxSize'  => 24.0,
-				'minRatio' => 1.5,
-				'maxRatio' => 1.5,
-			),
+			'typography'    => Scales::default_typography(),
+			'spacing'       => Scales::default_spacing(),
 		);
+	}
+
+	/**
+	 * Shape cleaning plus the rules that need more than types.
+	 *
+	 * @param mixed $value Incoming settings.
+	 * @return array<string, mixed>
+	 */
+	private static function normalise( $value ): array {
+		$out               = self::clean( $value, self::defaults() );
+		$out['typography'] = Scales::clean_scale( $out['typography'], Scales::default_typography() );
+		$out['spacing']    = Scales::clean_scale( $out['spacing'], Scales::default_spacing() );
+
+		return $out;
 	}
 
 	/**
@@ -71,7 +65,7 @@ final class SettingsStore {
 			$stored = array();
 		}
 
-		return self::clean( $stored, self::defaults() );
+		return self::normalise( $stored );
 	}
 
 	/**
@@ -86,7 +80,7 @@ final class SettingsStore {
 			throw new RuntimeException( __( 'The framework settings were changed somewhere else. Reload to see the latest version.', 'leapfrog-framework' ) );
 		}
 
-		$next             = self::clean( $incoming, self::defaults() );
+		$next             = self::normalise( $incoming );
 		$next['revision'] = $expected_revision + 1;
 		$next['updated']  = time();
 		$next['schemaVersion'] = self::SCHEMA;

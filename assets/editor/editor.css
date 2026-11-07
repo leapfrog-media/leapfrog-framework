@@ -442,6 +442,99 @@ body.lf-fullscreen #wpcontent {
 	border-top: 1px solid var(--lf-line);
 }
 
+/* WordPress labels are uppercase by default; variable names are case-sensitive, so keep them as typed. */
+.lf-app .components-base-control__label,
+.lf-app .components-input-control__label,
+.lf-app .components-input-control__label * {
+	text-transform: none !important;
+	font-size: 12px !important;
+	font-weight: 600;
+}
+
+/* Typography, Spacing and Settings */
+
+.lf-screen--scales {
+	padding-bottom: 80px;
+}
+
+.lf-panel {
+	margin-top: 24px;
+	padding: 20px;
+	background: var(--lf-panel);
+	border: 1px solid var(--lf-line);
+	border-radius: 8px;
+}
+
+.lf-panel__title {
+	margin: 0 0 12px;
+	font-size: 15px;
+	font-weight: 600;
+}
+
+.lf-scale-editor,
+.lf-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+	gap: 16px 24px;
+	margin-bottom: 20px;
+}
+
+.lf-grid--wide {
+	grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+}
+
+.lf-ratio {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.lf-table tr.is-base td {
+	background: var(--lf-accent-soft);
+}
+
+.lf-nowrap {
+	white-space: nowrap;
+}
+
+.lf-flag {
+	margin-left: 8px;
+	padding: 1px 6px;
+	border-radius: 999px;
+	background: #fdf3e2;
+	color: #7a4a00;
+	font-size: 11px;
+}
+
+.lf-specimens td {
+	vertical-align: middle;
+}
+
+.lf-specimen {
+	display: block;
+	max-width: 320px;
+	overflow: hidden;
+	line-height: 1.15;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.lf-bar-cell {
+	width: 55%;
+}
+
+.lf-bar {
+	display: block;
+	height: 10px;
+	border-radius: 3px;
+	background: var(--lf-accent);
+}
+
+.lf-bar.is-min {
+	margin-bottom: 4px;
+	opacity: 0.45;
+}
+
 .lf-savebar__message {
 	margin-right: auto;
 }

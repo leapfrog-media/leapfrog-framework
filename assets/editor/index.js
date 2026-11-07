@@ -1,5 +1,5 @@
 /**
- * Leapfrog Framework editor (milestone 1: shell + Bricks data).
+ * Leapfrog Framework editor.
  */
 import { createRoot, useEffect, useState } from '@wordpress/element';
 import apiFetch from '@wordpress/api-fetch';
@@ -9,6 +9,9 @@ import { Button, Notice, Spinner } from '@wordpress/components';
 import BricksData from './screens/BricksData';
 import Colours from './screens/Colours';
 import Placeholder from './screens/Placeholder';
+import Settings from './screens/Settings';
+import Spacing from './screens/Spacing';
+import Typography from './screens/Typography';
 import './editor.css';
 
 const config = window.leapfrogFramework || {};
@@ -19,7 +22,7 @@ const SCREENS = [
 	{ id: 'colours', label: __( 'Colours', 'leapfrog-framework' ), milestone: 2 },
 	{ id: 'typography', label: __( 'Typography', 'leapfrog-framework' ), milestone: 3 },
 	{ id: 'spacing', label: __( 'Spacing', 'leapfrog-framework' ), milestone: 3 },
-	{ id: 'shape', label: __( 'Layout and shape', 'leapfrog-framework' ), milestone: 3 },
+	{ id: 'shape', label: __( 'Layout and shape', 'leapfrog-framework' ), milestone: 4 },
 	{ id: 'roles', label: __( 'Roles and themes', 'leapfrog-framework' ), milestone: 4 },
 	{ id: 'components', label: __( 'Components', 'leapfrog-framework' ), milestone: 4 },
 	{ id: 'review', label: __( 'Review and save', 'leapfrog-framework' ), milestone: 6 },
@@ -29,7 +32,8 @@ const SCREENS = [
 ];
 
 // Screens that exist so far; the rest show a placeholder.
-const BUILT = [ 'colours', 'bricks' ];
+const SCREEN_COMPONENTS = { colours: Colours, typography: Typography, spacing: Spacing, settings: Settings };
+const BUILT = [ ...Object.keys( SCREEN_COMPONENTS ), 'bricks' ];
 
 function App() {
 	const [ screen, setScreen ] = useState( 'colours' );
@@ -98,7 +102,12 @@ function App() {
 						</Notice>
 					) }
 					{ status && status.ready && screen === 'bricks' && <BricksData status={ status } restPath={ config.restPath } /> }
-					{ status && status.ready && screen === 'colours' && <Colours restPath={ config.restPath } onDirtyChange={ setDirty } /> }
+					{ status && status.ready && SCREEN_COMPONENTS[ screen ] && (
+						( () => {
+							const Screen = SCREEN_COMPONENTS[ screen ];
+							return <Screen key={ screen } restPath={ config.restPath } onDirtyChange={ setDirty } />;
+						} )()
+					) }
 					{ status && status.ready && ! BUILT.includes( screen ) && <Placeholder screen={ current } /> }
 				</main>
 			</div>

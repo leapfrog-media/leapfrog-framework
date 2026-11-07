@@ -6,7 +6,9 @@ namespace Leapfrog\Framework\Rest;
 
 use Leapfrog\Framework\Bricks\BricksGateway;
 use Leapfrog\Framework\Bricks\PaletteSync;
+use Leapfrog\Framework\Bricks\ScaleSync;
 use Leapfrog\Framework\Color\Palette;
+use Leapfrog\Framework\Scale\Scales;
 use Leapfrog\Framework\Requirements;
 use Leapfrog\Framework\Settings\SettingsStore;
 use Throwable;
@@ -74,6 +76,49 @@ final class RestController {
 					'items'    => array( 'type' => 'array', 'required' => true ),
 					'revision' => array( 'type' => 'integer', 'required' => true ),
 				),
+			)
+		);
+
+		register_rest_route(
+			self::NAMESPACE,
+			'/scales',
+			array(
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => array( $this, 'get_scales' ),
+				'permission_callback' => $admin,
+			)
+		);
+
+		register_rest_route(
+			self::NAMESPACE,
+			'/scales/preview',
+			array(
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => array( $this, 'preview_scales' ),
+				'permission_callback' => $admin,
+			)
+		);
+
+		register_rest_route(
+			self::NAMESPACE,
+			'/scales/save',
+			array(
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => array( $this, 'save_scales' ),
+				'permission_callback' => $admin,
+				'args'                => array(
+					'revision' => array( 'type' => 'integer', 'required' => true ),
+				),
+			)
+		);
+
+		register_rest_route(
+			self::NAMESPACE,
+			'/style-manager/save',
+			array(
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => array( $this, 'save_style_manager' ),
+				'permission_callback' => $admin,
 			)
 		);
 
@@ -212,6 +257,220 @@ final class RestController {
 				'generated' => $generated,
 				'summary'   => $summary,
 			)
+		);
+	}
+
+	/**
+	 * Scale settings (Bricks wins when the scale was edited there), Style Manager basis and previews.
+	 *
+	 * @return WP_REST_Response|WP_Error
+	 */
+	public function get_scales() {
+		if ( ! Requirements::ready() ) {
+			return new WP_Error( 'leapfrog_not_ready', implode( ' ', Requirements::problems() ), array( 'status' => 409 ) );
+		}
+
+		try {
+			$settings = SettingsStore::get();
+			$sync     = new ScaleSync();
+			$bricks   = $sync->read();
+			$out      = array(
+				'revision'   => $settings['revision'],
+				'inBricks'   => array( 'typography' => null !== $bricks['typography'], 'spacing' => null !== $bricks['spacing'] ),
+				'manual'     => array( 'typography' => ! empty( $bricks['typography']['manual'] ), 'spacing' => ! empty( $bricks['spacing']['manual'] ) ),
+				'typography' => $this->with_bricks_scale( $settings['typography'], $bricks['typography'], Scales::default_typography() ),
+				'spacing'    => $this->with_bricks_scale( $settings['spacing'], $bricks['spacing'], Scales::default_spacing() ),
+				'steps'      => Scales::STEPS,
+				'ratios'     => Scales::RATIOS,
+			);
+			$out += $this->scale_previews( $out['typography'], $out['spacing'] );
+			$out['styleManager'] = $this->style_manager_summary( $out['basis'] );
+		} catch ( Throwable $error ) {
+			return new WP_Error( 'leapfrog_bricks_error', $error->getMessage(), array( 'status' => 500 ) );
+		}
+
+		return new WP_REST_Response( $out );
+	}
+
+	/**
+	 * @return WP_REST_Response|WP_Error
+	 */
+	public function preview_scales( WP_REST_Request $request ) {
+		try {
+			$typography = Scales::clean_scale( array_merge( Scales::default_typography(), (array) $request->get_param( 'typography' ) ), Scales::default_typography() );
+			$spacing    = Scales::clean_scale( array_merge( Scales::default_spacing(), (array) $request->get_param( 'spacing' ) ), Scales::default_spacing() );
+
+			return new WP_REST_Response( array( 'typography' => $typography, 'spacing' => $spacing ) + $this->scale_previews( $typography, $spacing ) );
+		} catch ( Throwable $error ) {
+			return new WP_Error( 'leapfrog_bricks_error', $error->getMessage(), array( 'status' => 500 ) );
+		}
+	}
+
+	/**
+	 * Saves typography and spacing, then writes the scales and roles to Bricks.
+	 *
+	 * @return WP_REST_Response|WP_Error
+	 */
+	public function save_scales( WP_REST_Request $request ) {
+		if ( ! Requirements::ready() ) {
+			return new WP_Error( 'leapfrog_not_ready', implode( ' ', Requirements::problems() ), array( 'status' => 409 ) );
+		}
+
+		$settings = SettingsStore::get();
+		foreach ( array( 'typography', 'spacing' ) as $key ) {
+			if ( is_array( $request->get_param( $key ) ) ) {
+				$settings[ $key ] = array_replace_recursive( $settings[ $key ], $request->get_param( $key ) );
+				// Lists are replaced, not merged.
+				if ( isset( $request->get_param( $key )['steps'] ) ) {
+					$settings[ $key ]['steps'] = array_values( (array) $request->get_param( $key )['steps'] );
+				}
+			}
+		}
+
+		try {
+			$saved = SettingsStore::save( $settings, (int) $request->get_param( 'revision' ) );
+		} catch ( Throwable $error ) {
+			return new WP_Error( 'leapfrog_conflict', $error->getMessage(), array( 'status' => 409 ) );
+		}
+
+		try {
+			$summary = ( new ScaleSync() )->sync( $saved['typography'], $saved['spacing'] );
+		} catch ( Throwable $error ) {
+			return new WP_Error(
+				'leapfrog_bricks_sync',
+				sprintf( /* translators: %s: error from Bricks */ __( 'Your scales were saved, but Bricks could not be fully updated: %s Save again to retry.', 'leapfrog-framework' ), $error->getMessage() ),
+				array( 'status' => 500, 'revision' => $saved['revision'] )
+			);
+		}
+
+		$response = $this->get_scales();
+		if ( $response instanceof WP_REST_Response ) {
+			$data            = $response->get_data();
+			$data['summary'] = $summary;
+			$response->set_data( $data );
+		}
+
+		return $response;
+	}
+
+	/**
+	 * Saves screen widths and default mode to Bricks' Style Manager, then regenerates the scales.
+	 *
+	 * @return WP_REST_Response|WP_Error
+	 */
+	public function save_style_manager( WP_REST_Request $request ) {
+		if ( ! Requirements::ready() ) {
+			return new WP_Error( 'leapfrog_not_ready', implode( ' ', Requirements::problems() ), array( 'status' => 409 ) );
+		}
+
+		$min  = (int) $request->get_param( 'minScreenWidth' );
+		$max  = (int) $request->get_param( 'maxScreenWidth' );
+		$mode = (string) $request->get_param( 'defaultMode' );
+		if ( $min < 240 || $max > 3840 || $min >= $max - 100 ) {
+			return new WP_Error( 'leapfrog_invalid', __( 'The smallest screen must be at least 240px and at least 100px narrower than the largest (up to 3840px).', 'leapfrog-framework' ), array( 'status' => 400 ) );
+		}
+		if ( ! in_array( $mode, array( 'light', 'dark', 'auto' ), true ) ) {
+			$mode = 'light';
+		}
+
+		try {
+			$gateway = new BricksGateway();
+			$current = (array) ( $gateway->execute( 'bricks/get-style-manager' )['styleManager'] ?? array() );
+			$gateway->execute(
+				'bricks/set-style-manager',
+				array( 'styleManager' => array_merge( $current, array( 'minScreenWidth' => (string) $min, 'maxScreenWidth' => (string) $max, 'defaultMode' => $mode ) ) )
+			);
+
+			// The scales depend on the screen widths, so regenerate them if Leapfrog has created them.
+			$sync    = new ScaleSync( $gateway );
+			$bricks  = $sync->read();
+			$summary = null;
+			if ( null !== $bricks['typography'] || null !== $bricks['spacing'] ) {
+				$settings = SettingsStore::get();
+				$summary  = $sync->sync(
+					$this->with_bricks_scale( $settings['typography'], $bricks['typography'], Scales::default_typography() ),
+					$this->with_bricks_scale( $settings['spacing'], $bricks['spacing'], Scales::default_spacing() )
+				);
+			}
+		} catch ( Throwable $error ) {
+			return new WP_Error( 'leapfrog_bricks_error', $error->getMessage(), array( 'status' => 500 ) );
+		}
+
+		$response = $this->get_scales();
+		if ( $response instanceof WP_REST_Response ) {
+			$data            = $response->get_data();
+			$data['summary'] = $summary;
+			$response->set_data( $data );
+		}
+
+		return $response;
+	}
+
+	/**
+	 * Leapfrog's scale settings with the scale numbers Bricks holds (Bricks wins: it may have been edited there).
+	 *
+	 * @param array<string, mixed>      $settings
+	 * @param array<string, mixed>|null $bricks
+	 * @param array<string, mixed>      $defaults
+	 * @return array<string, mixed>
+	 */
+	private function with_bricks_scale( array $settings, ?array $bricks, array $defaults ): array {
+		if ( $bricks ) {
+			unset( $bricks['manual'] );
+			$settings = array_merge( $settings, $bricks );
+		}
+
+		return Scales::clean_scale( $settings, $defaults );
+	}
+
+	/**
+	 * Bricks-generated previews, with px sizes at the smallest and largest screens.
+	 *
+	 * @param array<string, mixed> $typography
+	 * @param array<string, mixed> $spacing
+	 * @return array{preview:array<string,list<array<string,mixed>>>,basis:array<string,mixed>}
+	 */
+	private function scale_previews( array $typography, array $spacing ): array {
+		$sync    = new ScaleSync();
+		$type    = $sync->preview( $typography, Scales::TYPE_CATEGORY );
+		$space   = $sync->preview( $spacing, Scales::SPACE_CATEGORY );
+		$html_px = (float) ( $type['basis']['htmlFontSizePx'] ?? 16 );
+
+		$rows = static function ( array $variables ) use ( $html_px ): array {
+			return array_map(
+				static function ( array $v ) use ( $html_px ): array {
+					$px = Scales::clamp_px( (string) $v['value'], $html_px );
+					return array(
+						'name'     => (string) $v['name'],
+						'step'     => (string) ( $v['scale']['scaleName'] ?? '' ),
+						'value'    => (string) $v['value'],
+						'minPx'    => $px['min'] ?? null,
+						'maxPx'    => $px['max'] ?? null,
+						'reversed' => $px && $px['min'] > $px['max'],
+					);
+				},
+				$variables
+			);
+		};
+
+		return array(
+			'preview' => array( 'typography' => $rows( $type['variables'] ), 'spacing' => $rows( $space['variables'] ) ),
+			'basis'   => $type['basis'],
+		);
+	}
+
+	/**
+	 * @param array<string, mixed> $basis
+	 * @return array<string, mixed>
+	 */
+	private function style_manager_summary( array $basis ): array {
+		$current = (array) ( ( new BricksGateway() )->execute( 'bricks/get-style-manager' )['styleManager'] ?? array() );
+
+		return array(
+			'htmlFontSizePx' => (float) ( $basis['htmlFontSizePx'] ?? 10 ),
+			'minScreenWidth' => (int) ( $basis['minScreenWidth'] ?? 360 ),
+			'maxScreenWidth' => (int) ( $basis['maxScreenWidth'] ?? 1440 ),
+			'defaultMode'    => (string) ( $current['defaultMode'] ?? 'light' ),
 		);
 	}
 

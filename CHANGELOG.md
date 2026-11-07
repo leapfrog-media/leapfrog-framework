@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.3.0 — 2026-11-07
+
+Milestone 3: typography, spacing and settings.
+
+- Type scale (`--text-2xs` … `--text-4xl`) and space scale (`--space-3xs` … `--space-3xl`) saved as Bricks scale categories ("Type scale", "Space scale"). Bricks generates every clamp() value, so editing in Leapfrog or in Bricks' Style Manager gives the same result; edits made in Bricks are read back.
+- Scale settings changes run in four guarded steps (park variables, save categories, generate, write back with the same IDs), because Bricks refuses scale changes on categories that variables belong to.
+- Role variables: `--h1`…`--h6`, `--body-size`, `--lead-size`, `--small-size`, `--font-body/heading/mono`, `--line-height-body/heading` (category "Typography"); `--gutter`, `--gap`, `--flow`, `--section-space(-compact/-spacious)` (category "Spacing").
+- Typography screen with specimens at both screen widths; Spacing screen with bars; Settings screen for Bricks' Style Manager screen widths and default colour mode (changing widths regenerates the scales).
+- Bricks' CSS files are rebuilt after saves when CSS loading is "External files".
+- Editor labels keep their case (variable names are case-sensitive).
+
 ## 0.2.0 — 2026-11-07
 
 Milestone 2: colours.

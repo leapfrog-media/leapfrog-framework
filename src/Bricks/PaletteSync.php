@@ -40,10 +40,7 @@ final class PaletteSync {
 			$this->reconcile( $rows );
 		}
 
-		// Bricks' write methods don't rebuild style-manager.min.css; do it so file-based CSS loading is current.
-		if ( is_callable( array( '\Bricks\Ajax', 'generate_style_manager_css_file' ) ) ) {
-			\Bricks\Ajax::generate_style_manager_css_file();
-		}
+		CssFiles::rebuild();
 
 		$final = $this->read();
 

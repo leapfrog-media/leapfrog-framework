@@ -23,6 +23,9 @@ Bricks' AI / Abilities API switch does not need to be on. When it is, Leapfrog u
 | `src/Color/Color.php` | OKLCH colour maths, gamut mapping, WCAG contrast |
 | `src/Color/Palette.php` | Colour settings, shade/transparency/dark generation, rows for Bricks |
 | `src/Bricks/PaletteSync.php` | Keeps the Bricks palette "Leapfrog" equal to the generated rows |
+| `src/Scale/Scales.php` | Type and space scale settings, Bricks scale categories, role variables |
+| `src/Bricks/ScaleSync.php` | Writes the scales (Bricks generates the values) and role variables |
+| `src/Bricks/CssFiles.php` | Rebuilds Bricks' CSS files after a save |
 | `src/Rest/RestController.php` | REST routes under `leapfrog/v1` (admins only) |
 | `src/Admin/FrameworkPage.php` | Leapfrog > Framework admin page |
 | `assets/editor/` | Editor app source (React, WordPress components) |
@@ -45,3 +48,7 @@ npm run build
 - `POST /wp-json/leapfrog/v1/settings` with `{ settings, revision }`
 - `POST /wp-json/leapfrog/v1/colours/preview` with `{ items }` (saves nothing)
 - `POST /wp-json/leapfrog/v1/colours/save` with `{ items, revision }` (saves settings, then syncs the Bricks palette)
+- `GET /wp-json/leapfrog/v1/scales` (scale settings, Bricks wins if edited there; previews; Style Manager basics)
+- `POST /wp-json/leapfrog/v1/scales/preview` with `{ typography, spacing }` (Bricks generates, nothing saved)
+- `POST /wp-json/leapfrog/v1/scales/save` with `{ typography, spacing, revision }`
+- `POST /wp-json/leapfrog/v1/style-manager/save` with `{ minScreenWidth, maxScreenWidth, defaultMode }`
