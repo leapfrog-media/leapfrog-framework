@@ -9,8 +9,9 @@ use const Leapfrog\Framework\VERSION;
 
 /**
  * Builder helpers that Bricks doesn't have: grid guides on the canvas (toolbar
- * button, Ctrl+Shift+G) and a BEM class generator (right-click an element >
- * "Add BEM classes…"). Bricks already suggests variables as you type var(--,
+ * button, Ctrl+Shift+G), a BEM class generator (right-click an element >
+ * "Add BEM classes…") and an elements panel toolbar (1–4 columns, open or close
+ * all categories). Bricks already suggests variables as you type var(--,
  * so Leapfrog adds no autocomplete of its own.
  */
 final class BuilderHelpers {
@@ -26,6 +27,7 @@ final class BuilderHelpers {
 		wp_enqueue_style( 'leapfrog-builder-helpers', $url . 'builder-helpers.css', array(), VERSION );
 		wp_enqueue_script( 'leapfrog-grid-guides', $url . 'grid-guides.js', array(), VERSION, true );
 		wp_enqueue_script( 'leapfrog-bem', $url . 'bem.js', array(), VERSION, true );
+		wp_enqueue_script( 'leapfrog-elements-panel', $url . 'elements-panel.js', array( 'leapfrog-grid-guides' ), VERSION, true );
 		wp_add_inline_script( 'leapfrog-grid-guides', 'window.leapfrogBuilderHelpers = ' . wp_json_encode( self::data() ) . ';', 'before' );
 	}
 
@@ -37,6 +39,12 @@ final class BuilderHelpers {
 			'guideColumns' => 12,
 			'i18n'         => array(
 				'guides'              => __( 'Grid guides (Ctrl+Shift+G)', 'leapfrog-framework' ),
+				'elementsToolbar'     => __( 'Elements panel layout', 'leapfrog-framework' ),
+				'oneColumn'           => __( '1 column', 'leapfrog-framework' ),
+				/* translators: %d number of columns */
+				'columns'             => __( '%d columns', 'leapfrog-framework' ),
+				'expandAll'           => __( 'Open all categories', 'leapfrog-framework' ),
+				'collapseAll'         => __( 'Close all categories', 'leapfrog-framework' ),
 				'menu'                => __( 'Add BEM classes…', 'leapfrog-framework' ),
 				'title'               => __( 'Add BEM classes', 'leapfrog-framework' ),
 				'block'               => __( 'Block name', 'leapfrog-framework' ),

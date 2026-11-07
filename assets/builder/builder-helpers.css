@@ -1,6 +1,131 @@
-/* Leapfrog Framework: grid guides button and the BEM class pop-up, styled like the Bricks builder. */
+/* Leapfrog Framework: grid guides button, elements panel toolbar and the BEM class pop-up, styled like the Bricks builder. */
 #lf-grid-guides-toggle.active {
 	color: #c58fc5;
+}
+
+/* Elements panel toolbar: 1–4 columns and open/close all categories. */
+.lf-elements-toolbar {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	gap: 4px;
+	padding: 8px 16px 0;
+}
+
+.lf-elements-toolbar button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	inline-size: 26px;
+	block-size: 26px;
+	padding: 3px;
+	border: 0;
+	border-radius: 4px;
+	background: none;
+	color: rgb(138 153 168);
+	cursor: pointer;
+}
+
+.lf-elements-toolbar button:hover {
+	color: rgb(226 230 233);
+	background: rgb(255 255 255 / 0.06);
+}
+
+.lf-elements-toolbar button.active {
+	color: #ffd64f;
+	background: rgb(255 214 79 / 0.12);
+}
+
+.lf-elements-toolbar button:focus-visible {
+	outline: 2px solid #ffd64f;
+	outline-offset: 1px;
+}
+
+.lf-elements-toolbar svg {
+	inline-size: 100%;
+	block-size: 100%;
+}
+
+.lf-elements-toolbar .lf-elements-toggle {
+	margin-inline-start: 6px;
+}
+
+/* One column: a compact list, icon beside the name. */
+body.lf-elements-cols-1 #bricks-panel-elements-categories ul.sortable-wrapper {
+	grid-template-columns: minmax(0, 1fr);
+	gap: 4px;
+}
+
+body.lf-elements-cols-1 #bricks-panel-elements-categories li.bricks-add-element {
+	block-size: auto;
+}
+
+body.lf-elements-cols-1 #bricks-panel-elements-categories li.bricks-add-element .element-data {
+	display: flex;
+	align-items: center;
+	block-size: 36px;
+	padding-inline: 4px 10px;
+}
+
+body.lf-elements-cols-1 #bricks-panel-elements-categories li.bricks-add-element .element-icon {
+	flex: 0 0 36px;
+	inline-size: 36px;
+	block-size: 36px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 16px;
+}
+
+body.lf-elements-cols-1 #bricks-panel-elements-categories li.bricks-add-element .element-label {
+	flex: 1;
+	text-align: start;
+	line-height: 36px;
+}
+
+/* Three and four columns: smaller tiles. */
+body.lf-elements-cols-3 #bricks-panel-elements-categories ul.sortable-wrapper {
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 6px;
+}
+
+body.lf-elements-cols-4 #bricks-panel-elements-categories ul.sortable-wrapper {
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	gap: 4px;
+}
+
+body:is(.lf-elements-cols-3, .lf-elements-cols-4) #bricks-panel-elements-categories li.bricks-add-element {
+	block-size: auto;
+}
+
+body:is(.lf-elements-cols-3, .lf-elements-cols-4) #bricks-panel-elements-categories li.bricks-add-element .element-data {
+	block-size: auto;
+	padding-block: 8px 4px;
+}
+
+body:is(.lf-elements-cols-3, .lf-elements-cols-4) #bricks-panel-elements-categories li.bricks-add-element .element-icon {
+	inline-size: auto;
+	block-size: 26px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 18px;
+}
+
+body:is(.lf-elements-cols-3, .lf-elements-cols-4) #bricks-panel-elements-categories li.bricks-add-element .element-label {
+	overflow: hidden;
+	padding-inline: 3px;
+	font-size: 11px;
+	line-height: 1.3;
+	min-block-size: 2.6em;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	overflow-wrap: anywhere;
+}
+
+body.lf-elements-cols-4 #bricks-panel-elements-categories li.bricks-add-element .element-label {
+	font-size: 10px;
 }
 
 .lf-bem {

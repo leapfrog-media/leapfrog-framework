@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.1 — 2026-11-07
+
+- Elements panel toolbar (above Bricks' element categories): show the elements in 1, 2, 3 or 4 columns (remembered in this browser), and open or close every category with one button. One column is a compact list with the icon beside the name. Bricks' own category titles are clicked to open and close, so nothing else changes.
+
 ## 1.2.0 — 2026-11-07
 
 Element settings, chosen from Advanced Themer's list. Each group can be switched off under Settings > Element settings (all on by default).
