@@ -1,7 +1,7 @@
 /**
  * Leapfrog Framework: Theme control in the Bricks builder.
  *
- * Mirrors each Section/Container/Block "Theme" setting onto the canvas as
+ * Mirrors each Section/Container/Block/Div "Theme" setting onto the canvas as
  * data-lf-theme (so Leapfrog's theme CSS previews it live) and shows a badge in
  * the Structure panel. Ported from CoreBridge's bricks-theme-mode.js.
  */
@@ -10,7 +10,7 @@
 
 	const settingKey = 'lfTheme';
 	const legacyKeys = [ 'corebridgeThemeMode', 'plinthColourMode' ];
-	const targets = new Set( [ 'section', 'container', 'block' ] );
+	const targets = new Set( [ 'section', 'container', 'block', 'div' ] );
 	const modes = new Set( [ 'light', 'dark', 'inverted' ] );
 	const icons = {
 		light: '<svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><circle cx="8" cy="8" r="3.25" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.4 1.4M11.55 11.55l1.4 1.4M12.95 3.05l-1.4 1.4M4.45 11.55l-1.4 1.4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>',

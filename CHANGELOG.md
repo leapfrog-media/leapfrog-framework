@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.1 — 2026-11-07
+
+- The Theme control (Inherit, Light, Dark, Inverted) is now on Div as well as Section, Container and Block.
+
 ## 0.5.0 — 2026-11-07
 
 Milestone 5: builder tools (taken over from CoreBridge) and components.

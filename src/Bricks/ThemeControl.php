@@ -8,7 +8,7 @@ use const Leapfrog\Framework\FILE;
 use const Leapfrog\Framework\VERSION;
 
 /**
- * A Theme control on Bricks Section, Container and Block: Inherit, Light, Dark, Inverted.
+ * A Theme control on Bricks Section, Container, Block and Div: Inherit, Light, Dark, Inverted.
  *
  * Renders data-lf-theme on the element; Leapfrog's theme CSS does the rest.
  * In the builder a small script mirrors the setting onto the canvas and shows a
@@ -20,7 +20,7 @@ final class ThemeControl {
 
 	private const LEGACY_KEYS = array( 'corebridgeThemeMode', 'plinthColourMode' );
 
-	private const TARGETS = array( 'section', 'container', 'block' );
+	private const TARGETS = array( 'section', 'container', 'block', 'div' );
 
 	private const MODES = array( 'light', 'dark', 'inverted' );
 
