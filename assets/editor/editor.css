@@ -58,12 +58,17 @@ body.lf-fullscreen #wpcontent {
 	place-items: center;
 	width: 32px;
 	height: 32px;
-	border-radius: 8px;
-	background: var(--lf-accent);
-	color: #fff;
+	color: var(--lf-accent);
 	font-weight: 700;
 	font-size: 12px;
 	letter-spacing: 0.5px;
+}
+
+/* The Leapfrog Media mark (tall arch) in its brand colour. */
+.lf-header__logo img {
+	display: block;
+	width: auto;
+	height: 28px;
 }
 
 .lf-header__title {

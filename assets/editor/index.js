@@ -82,7 +82,9 @@ function App() {
 		<div className="lf-app">
 			<header className="lf-header">
 				<div className="lf-header__brand">
-					<span className="lf-header__logo" aria-hidden="true">LF</span>
+					<span className="lf-header__logo" aria-hidden="true">
+						{ config.logoUrl ? <img src={ config.logoUrl } alt="" /> : 'LF' }
+					</span>
 					<span className="lf-header__title">{ __( 'Leapfrog Framework', 'leapfrog-framework' ) }</span>
 					<span className="lf-header__version">v{ config.version }</span>
 				</div>

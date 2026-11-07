@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.2 — 2026-11-07
+
+- The Leapfrog Media mark (`assets/brand/leapfrog-mark.svg`) is now the admin menu icon, as a solid arch that WordPress recolours to match the admin menu, and appears in brand purple in the Framework editor header in place of "LF".
+
 ## 1.0.1 — 2026-11-07
 
 - Fix: Bricks' Style Manager showed type sizes shifted by one step after a step was removed and added back. Bricks works out each step's size from its position in the variable list, and added the step at the end. Leapfrog now keeps every scale's variables in step order (smallest first), reordering them through Bricks' safe methods when needed; values and IDs are unchanged.
