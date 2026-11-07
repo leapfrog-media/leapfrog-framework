@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.1.0-alpha.7 — 2026-11-07
+
+Milestone 1.1c: builder helpers.
+
+- Grid guides: a toolbar button beside Undo, or Ctrl+Shift+G, shows 12 column guides on the builder canvas, inside `--width-content` with `--gutter` at the edges and `--gap` between columns. When the selected element is a grid, its own tracks are outlined. Builder only; the choice is remembered.
+- BEM class generator: right-click an element that has children (in the Structure panel or on the canvas) and choose "Add BEM classes…". The block name comes from the element's label, and each element inside gets `block__part` (title, text, image, button… for elements that still have their default name). Names can be edited, elements left out, and a modifier added. Leapfrog creates the global classes (reusing any with the same name) and adds them; optionally it renames the elements to match and moves styles set on them onto the new classes (new classes only). Elements that already have classes, and component instances, start unticked.
+- Variable autocomplete is not added: Bricks 2.4 already opens its variable list, filtered, when you type `var(--` in a field.
+
 ## 1.1.0-alpha.3 — 2026-11-07
 
 Milestone 1.1b: grid extras. Bricks 2.4 has its own Visual grid builder (the button beside Display on a grid), which already covers tracks, placing elements, breakpoints, classes and query loops, so Leapfrog adds a row to it instead of a second builder.

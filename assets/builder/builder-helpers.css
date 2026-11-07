@@ -1,0 +1,171 @@
+/* Leapfrog Framework: grid guides button and the BEM class pop-up, styled like the Bricks builder. */
+#lf-grid-guides-toggle.active {
+	color: #c58fc5;
+}
+
+.lf-bem {
+	position: fixed;
+	inset: 0;
+	z-index: 100000;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 24px;
+	background: rgb(0 0 0 / 0.55);
+	color: rgb(226 230 233);
+	font: 13px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.lf-bem__dialog {
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+	inline-size: min(820px, 100%);
+	max-block-size: 100%;
+	padding: 20px 24px;
+	border: 1px solid rgb(52 61 70);
+	border-radius: 8px;
+	background: rgb(35 41 47);
+	box-shadow: 0 20px 60px rgb(0 0 0 / 0.5);
+}
+
+.lf-bem__header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.lf-bem__header h2 {
+	margin: 0;
+	color: rgb(226 230 233);
+	font-size: 15px;
+	font-weight: 700;
+	letter-spacing: 0.02em;
+	text-transform: uppercase;
+}
+
+.lf-bem__close {
+	border: 0;
+	background: none;
+	color: inherit;
+	font-size: 22px;
+	cursor: pointer;
+}
+
+.lf-bem__fields {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 12px;
+}
+
+.lf-bem label {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	color: rgb(138 153 168);
+}
+
+.lf-bem input[type="text"] {
+	block-size: 32px;
+	padding: 0 8px;
+	border: 1px solid rgb(52 61 70);
+	border-radius: 4px;
+	background: rgb(22 26 29);
+	color: rgb(226 230 233);
+	font: inherit;
+}
+
+.lf-bem input[type="text"]:focus {
+	border-color: #c58fc5;
+	outline: none;
+}
+
+.lf-bem__list {
+	overflow: auto;
+	max-block-size: 50vh;
+	border: 1px solid rgb(52 61 70);
+	border-radius: 4px;
+}
+
+.lf-bem__row {
+	display: grid;
+	grid-template-columns: 20px minmax(120px, 1fr) minmax(110px, 0.8fr) minmax(150px, 1.2fr) minmax(0, 0.8fr);
+	align-items: center;
+	gap: 10px;
+	padding: 6px 10px;
+	padding-inline-start: calc(10px + var(--depth, 0) * 14px);
+	border-block-end: 1px solid rgb(45 52 59);
+}
+
+.lf-bem__row.is-off .lf-bem__name,
+.lf-bem__row.is-off .lf-bem__part {
+	opacity: 0.4;
+}
+
+.lf-bem__label {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.lf-bem__name {
+	overflow: hidden;
+	color: #8fd19e;
+	font-size: 12px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.lf-bem__existing {
+	overflow: hidden;
+	color: rgb(138 153 168);
+	font-size: 12px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.lf-bem__options {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 18px;
+}
+
+.lf-bem__options label {
+	flex-direction: row;
+	align-items: center;
+	gap: 6px;
+	color: rgb(226 230 233);
+}
+
+.lf-bem__error {
+	margin: 0;
+	color: #f19ca0;
+}
+
+.lf-bem__error:empty {
+	display: none;
+}
+
+.lf-bem__footer {
+	display: flex;
+	justify-content: flex-end;
+	gap: 10px;
+}
+
+.lf-bem__footer button {
+	block-size: 34px;
+	padding: 0 16px;
+	border: 1px solid rgb(52 61 70);
+	border-radius: 4px;
+	background: rgb(22 26 29);
+	color: rgb(226 230 233);
+	font: inherit;
+	font-weight: 600;
+	cursor: pointer;
+}
+
+.lf-bem__footer .lf-bem__apply {
+	border-color: #ffd64f;
+	background: #ffd64f;
+	color: #000;
+}
