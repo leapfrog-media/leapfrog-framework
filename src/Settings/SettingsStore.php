@@ -91,7 +91,7 @@ final class SettingsStore {
 	 * @param array<string, mixed> $incoming Settings from the editor.
 	 * @return array<string, mixed> The saved settings.
 	 */
-	public static function save( array $incoming, int $expected_revision ): array {
+	public static function save( array $incoming, int $expected_revision, string $label = '' ): array {
 		$current = self::get();
 		if ( (int) $current['revision'] !== $expected_revision ) {
 			throw new RuntimeException( __( 'The framework settings were changed somewhere else. Reload to see the latest version.', 'leapfrog-framework' ) );
@@ -102,9 +102,36 @@ final class SettingsStore {
 		$next['updated']  = time();
 		$next['schemaVersion'] = self::SCHEMA;
 
+		// Keep the version being replaced, so it can be restored (only when something actually changed).
+		if ( self::content( $current ) !== self::content( $next ) && false !== get_option( self::OPTION, false ) ) {
+			History::push( $current, $label );
+		}
+
 		update_option( self::OPTION, $next, false );
 
 		return $next;
+	}
+
+	/**
+	 * Settings without the bookkeeping fields, for comparing and exporting.
+	 *
+	 * @param array<string, mixed> $settings
+	 * @return array<string, mixed>
+	 */
+	public static function content( array $settings ): array {
+		unset( $settings['revision'], $settings['updated'] );
+
+		return $settings;
+	}
+
+	/**
+	 * Cleans settings from outside (an import, a preset, a backup) to the current shape.
+	 *
+	 * @param mixed $value
+	 * @return array<string, mixed>
+	 */
+	public static function from_outside( $value ): array {
+		return self::content( self::normalise( is_array( $value ) ? $value : array() ) );
 	}
 
 	/**

@@ -33,6 +33,10 @@ Bricks' AI / Abilities API switch does not need to be on. When it is, Leapfrog u
 | `src/Bricks/VariableSet.php` | Keeps one Bricks variable category equal to a list of variables |
 | `src/Build.php` | Rebuilds palette, roles palette and theme CSS together |
 | `src/Scale/Components.php` | Component tokens (buttons, fields, cards, header) |
+| `src/Settings/Starter.php` | Brand starter: brand choices → full settings |
+| `src/Settings/History.php` | Last 20 versions of the settings |
+| `src/Settings/Transfer.php` | Framework files (export/import) and presets |
+| `src/Rest/SiteController.php` | Starter, history, rebuild, export/import and preset routes |
 | `src/Bricks/Buttons.php` | Bricks Button controls → `lf-btn` classes (+ `assets/frontend/buttons.css`, `assets/builder/buttons.js`) |
 | `src/Bricks/LogicalSizing.php` | Inline/Block size controls (+ `assets/builder/logical-sizing.*`) |
 | `src/Bricks/VariablePicker.php` | Contextual variable picker data (+ `assets/builder/variable-rules.js`, `variable-picker.*`) |
@@ -65,3 +69,11 @@ npm run build
 - `GET /wp-json/leapfrog/v1/roles`, `POST …/roles/preview` with `{ map }`, `POST …/roles/save` with `{ map, pageStyles, revision }`
 - `GET /wp-json/leapfrog/v1/shape`, `POST …/shape/save` with `{ corners, values, revision }`
 - `GET /wp-json/leapfrog/v1/components`, `POST …/components/save` with `{ values, revision }`
+- `GET /wp-json/leapfrog/v1/starter`, `POST …/starter/preview` with `{ inputs }`, `POST …/starter/apply` with `{ inputs, revision }`
+- `GET /wp-json/leapfrog/v1/history`, `POST …/history/restore` with `{ id, revision }`, `POST …/rebuild`
+- `GET /wp-json/leapfrog/v1/export`, `POST …/import/preview` with `{ file }`, `POST …/import` with `{ file, revision }`
+- `GET /wp-json/leapfrog/v1/presets`, `POST …/presets/save` with `{ name }`, `POST …/presets/apply` with `{ id, revision }`, `POST …/presets/delete` with `{ id }`
+
+## Fonts
+
+Leapfrog sets the font variables (`--font-heading`, `--font-body`); the font files themselves are added in Bricks > Custom Fonts (v1 does not download Google Fonts).

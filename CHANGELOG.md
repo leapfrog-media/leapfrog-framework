@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.0.0 — 2026-11-07
+
+Milestone 6: brand starter and saving. First complete version.
+
+- Brand starter: primary, secondary, accent and neutral colours, heading and body fonts, body text size, heading contrast (calm, balanced, bold), spacing (compact, comfortable, spacious), corners, pill or rounded buttons, and neutral or brand-coloured dark backgrounds generate the whole design system and write it to Bricks (about a second). Live light and dark preview; Google Fonts load in the preview only.
+- History: every save keeps the version it replaces (last 20, with a note and who saved it); any version can be restored.
+- Rebuild everything: writes all colours, roles, scales, layout and component variables to Bricks again (only differences are written).
+- Export a framework file (.json) and import it on another site, with a preview first.
+- Presets: save the current design system under a name, apply it later; "Leapfrog defaults" is built in.
+- Kinetic Money's brand (from kineticmoney.co.uk) set up on kineticmoney.test with the starter in under 5 minutes.
+
 ## 0.5.1 — 2026-11-07
 
 - The Theme control (Inherit, Light, Dark, Inverted) is now on Div as well as Section, Container and Block.

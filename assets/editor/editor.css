@@ -653,6 +653,128 @@ body.lf-fullscreen #wpcontent {
 	border-radius: 4px;
 }
 
+/* Brand starter */
+
+.lf-starter {
+	display: grid;
+	grid-template-columns: minmax(0, 1.25fr) minmax(320px, 1fr);
+	gap: 24px;
+	align-items: start;
+}
+
+@media (max-width: 1100px) {
+	.lf-starter {
+		grid-template-columns: 1fr;
+	}
+}
+
+.lf-starter__preview {
+	position: sticky;
+	top: 24px;
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	margin-top: 24px;
+}
+
+.lf-starter-colour {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.lf-starter-sample {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	padding: 24px;
+	border-radius: 10px;
+	box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.08);
+	font-size: 16px;
+	overflow: hidden;
+}
+
+.lf-starter-sample h2 {
+	margin: 0;
+	line-height: 1.1;
+	overflow-wrap: anywhere;
+}
+
+.lf-starter-sample p {
+	margin: 0;
+	line-height: 1.6;
+}
+
+.lf-starter-sample__mode {
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+}
+
+.lf-starter-sample__buttons {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+}
+
+.lf-starter-sample__buttons span {
+	padding: 8px 18px;
+	font-weight: 600;
+	font-size: 14px;
+}
+
+.lf-starter-sample__card {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	padding: 16px;
+	border: 1px solid;
+}
+
+.lf-starter-sample__card strong {
+	line-height: 1.15;
+}
+
+/* Export and presets */
+
+.lf-contents {
+	display: inline-flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 6px;
+	margin-top: 4px;
+}
+
+.lf-contents__chip {
+	width: 16px;
+	height: 16px;
+	border-radius: 4px;
+	box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.15);
+}
+
+.lf-import-preview {
+	margin-top: 16px;
+	padding: 16px;
+	background: var(--lf-canvas);
+	border-radius: 8px;
+}
+
+.lf-align-right {
+	text-align: right;
+}
+
+.lf-preset-save {
+	display: flex;
+	align-items: flex-end;
+	gap: 12px;
+	margin-top: 16px;
+}
+
+.lf-preset-save .components-base-control {
+	flex: 0 1 360px;
+}
+
 .lf-savebar__message {
 	margin-right: auto;
 }

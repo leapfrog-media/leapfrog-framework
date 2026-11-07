@@ -11,6 +11,7 @@ use Leapfrog\Framework\Bricks\ThemeControl;
 use Leapfrog\Framework\Bricks\VariablePicker;
 use Leapfrog\Framework\Color\ThemeCss;
 use Leapfrog\Framework\Rest\RestController;
+use Leapfrog\Framework\Rest\SiteController;
 
 /**
  * Wires the plugin's parts into WordPress.
@@ -19,6 +20,7 @@ final class Plugin {
 	public function register(): void {
 		( new FrameworkPage() )->register();
 		( new RestController() )->register();
+		( new SiteController() )->register();
 		( new ThemeControl() )->register();
 		ThemeCss::register();
 		( new LogicalSizing() )->register();

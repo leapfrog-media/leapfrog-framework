@@ -6,7 +6,10 @@ import apiFetch from '@wordpress/api-fetch';
 import { __ } from '@wordpress/i18n';
 import { Button, Notice, Spinner } from '@wordpress/components';
 
+import BrandStarter from './screens/BrandStarter';
 import BricksData from './screens/BricksData';
+import ExportPresets from './screens/ExportPresets';
+import Review from './screens/Review';
 import Colours from './screens/Colours';
 import Components from './screens/Components';
 import Placeholder from './screens/Placeholder';
@@ -35,11 +38,22 @@ const SCREENS = [
 ];
 
 // Screens that exist so far; the rest show a placeholder.
-const SCREEN_COMPONENTS = { colours: Colours, typography: Typography, spacing: Spacing, shape: Shape, roles: Roles, components: Components, settings: Settings };
+const SCREEN_COMPONENTS = {
+	starter: BrandStarter,
+	colours: Colours,
+	typography: Typography,
+	spacing: Spacing,
+	shape: Shape,
+	roles: Roles,
+	components: Components,
+	review: Review,
+	export: ExportPresets,
+	settings: Settings,
+};
 const BUILT = [ ...Object.keys( SCREEN_COMPONENTS ), 'bricks' ];
 
 function App() {
-	const [ screen, setScreen ] = useState( 'colours' );
+	const [ screen, setScreen ] = useState( 'starter' );
 	const [ status, setStatus ] = useState( null );
 	const [ error, setError ] = useState( '' );
 	const [ dirty, setDirty ] = useState( false );

@@ -316,7 +316,7 @@ final class RestController {
 		$settings['colors']['items'] = $request->get_param( 'items' );
 
 		try {
-			$saved = SettingsStore::save( $settings, (int) $request->get_param( 'revision' ) );
+			$saved = SettingsStore::save( $settings, (int) $request->get_param( 'revision' ), __( 'Colours', 'leapfrog-framework' ) );
 		} catch ( Throwable $error ) {
 			return new WP_Error( 'leapfrog_conflict', $error->getMessage(), array( 'status' => 409 ) );
 		}
@@ -375,7 +375,7 @@ final class RestController {
 		$settings['roles']['pageStyles'] = (bool) $request->get_param( 'pageStyles' );
 
 		try {
-			$saved = SettingsStore::save( $settings, (int) $request->get_param( 'revision' ) );
+			$saved = SettingsStore::save( $settings, (int) $request->get_param( 'revision' ), __( 'Roles and themes', 'leapfrog-framework' ) );
 		} catch ( Throwable $error ) {
 			return new WP_Error( 'leapfrog_conflict', $error->getMessage(), array( 'status' => 409 ) );
 		}
@@ -412,7 +412,7 @@ final class RestController {
 		$settings['shape']['values']  = Shape::sanitize( $request->get_param( 'values' ) );
 
 		try {
-			$saved = SettingsStore::save( $settings, (int) $request->get_param( 'revision' ) );
+			$saved = SettingsStore::save( $settings, (int) $request->get_param( 'revision' ), __( 'Layout and shape', 'leapfrog-framework' ) );
 		} catch ( Throwable $error ) {
 			return new WP_Error( 'leapfrog_conflict', $error->getMessage(), array( 'status' => 409 ) );
 		}
@@ -448,7 +448,7 @@ final class RestController {
 		$settings['components']['values'] = Components::sanitize( $request->get_param( 'values' ) );
 
 		try {
-			$saved = SettingsStore::save( $settings, (int) $request->get_param( 'revision' ) );
+			$saved = SettingsStore::save( $settings, (int) $request->get_param( 'revision' ), __( 'Components', 'leapfrog-framework' ) );
 		} catch ( Throwable $error ) {
 			return new WP_Error( 'leapfrog_conflict', $error->getMessage(), array( 'status' => 409 ) );
 		}
@@ -601,7 +601,7 @@ final class RestController {
 		}
 
 		try {
-			$saved = SettingsStore::save( $settings, (int) $request->get_param( 'revision' ) );
+			$saved = SettingsStore::save( $settings, (int) $request->get_param( 'revision' ), __( 'Typography and spacing', 'leapfrog-framework' ) );
 		} catch ( Throwable $error ) {
 			return new WP_Error( 'leapfrog_conflict', $error->getMessage(), array( 'status' => 409 ) );
 		}
