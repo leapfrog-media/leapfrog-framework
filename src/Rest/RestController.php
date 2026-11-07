@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace Leapfrog\Framework\Rest;
 
 use Leapfrog\Framework\Bricks\BricksGateway;
-use Leapfrog\Framework\Bricks\PaletteSync;
 use Leapfrog\Framework\Bricks\ScaleSync;
+use Leapfrog\Framework\Bricks\VariableSet;
+use Leapfrog\Framework\Build;
 use Leapfrog\Framework\Color\Palette;
+use Leapfrog\Framework\Color\Roles;
 use Leapfrog\Framework\Scale\Scales;
+use Leapfrog\Framework\Scale\Shape;
 use Leapfrog\Framework\Requirements;
 use Leapfrog\Framework\Settings\SettingsStore;
 use Throwable;
@@ -74,6 +77,62 @@ final class RestController {
 				'permission_callback' => $admin,
 				'args'                => array(
 					'items'    => array( 'type' => 'array', 'required' => true ),
+					'revision' => array( 'type' => 'integer', 'required' => true ),
+				),
+			)
+		);
+
+		register_rest_route(
+			self::NAMESPACE,
+			'/roles',
+			array(
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => array( $this, 'get_roles' ),
+				'permission_callback' => $admin,
+			)
+		);
+
+		register_rest_route(
+			self::NAMESPACE,
+			'/roles/preview',
+			array(
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => array( $this, 'preview_roles' ),
+				'permission_callback' => $admin,
+			)
+		);
+
+		register_rest_route(
+			self::NAMESPACE,
+			'/roles/save',
+			array(
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => array( $this, 'save_roles' ),
+				'permission_callback' => $admin,
+				'args'                => array(
+					'revision' => array( 'type' => 'integer', 'required' => true ),
+				),
+			)
+		);
+
+		register_rest_route(
+			self::NAMESPACE,
+			'/shape',
+			array(
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => array( $this, 'get_shape' ),
+				'permission_callback' => $admin,
+			)
+		);
+
+		register_rest_route(
+			self::NAMESPACE,
+			'/shape/save',
+			array(
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => array( $this, 'save_shape' ),
+				'permission_callback' => $admin,
+				'args'                => array(
 					'revision' => array( 'type' => 'integer', 'required' => true ),
 				),
 			)
@@ -241,7 +300,9 @@ final class RestController {
 		$generated = Palette::generate( $saved['colors']['items'], $saved['colors']['shadeSteps'], $saved['colors']['alphaSteps'] );
 
 		try {
-			$summary = ( new PaletteSync() )->sync( Palette::bricks_rows( $generated ) );
+			// Roles and section themes depend on the colours, so they are rebuilt too.
+			$synced  = Build::sync_colours( $saved );
+			$summary = $synced['palette'];
 		} catch ( Throwable $error ) {
 			// Settings are saved; Bricks can be brought up to date by saving again.
 			return new WP_Error(
@@ -257,6 +318,140 @@ final class RestController {
 				'generated' => $generated,
 				'summary'   => $summary,
 			)
+		);
+	}
+
+	public function get_roles(): WP_REST_Response {
+		$settings = SettingsStore::get();
+
+		return new WP_REST_Response( $this->roles_payload( $settings, $settings['roles']['map'] ) );
+	}
+
+	/**
+	 * Resolved roles and contrast for unsaved choices.
+	 */
+	public function preview_roles( WP_REST_Request $request ): WP_REST_Response {
+		$settings = SettingsStore::get();
+
+		return new WP_REST_Response( $this->roles_payload( $settings, Roles::sanitize_map( $request->get_param( 'map' ) ) ) );
+	}
+
+	/**
+	 * Saves the role choices, then rebuilds both palettes and the theme CSS.
+	 *
+	 * @return WP_REST_Response|WP_Error
+	 */
+	public function save_roles( WP_REST_Request $request ) {
+		if ( ! Requirements::ready() ) {
+			return new WP_Error( 'leapfrog_not_ready', implode( ' ', Requirements::problems() ), array( 'status' => 409 ) );
+		}
+
+		$settings                        = SettingsStore::get();
+		$settings['roles']['map']        = Roles::sanitize_map( $request->get_param( 'map' ) );
+		$settings['roles']['pageStyles'] = (bool) $request->get_param( 'pageStyles' );
+
+		try {
+			$saved = SettingsStore::save( $settings, (int) $request->get_param( 'revision' ) );
+		} catch ( Throwable $error ) {
+			return new WP_Error( 'leapfrog_conflict', $error->getMessage(), array( 'status' => 409 ) );
+		}
+
+		try {
+			$synced = Build::sync_colours( $saved );
+		} catch ( Throwable $error ) {
+			return new WP_Error(
+				'leapfrog_bricks_sync',
+				sprintf( /* translators: %s: error from Bricks */ __( 'Your roles were saved, but Bricks could not be fully updated: %s Save again to retry.', 'leapfrog-framework' ), $error->getMessage() ),
+				array( 'status' => 500, 'revision' => $saved['revision'] )
+			);
+		}
+
+		return new WP_REST_Response( $this->roles_payload( $saved, $saved['roles']['map'] ) + array( 'summary' => $synced['roles'] ) );
+	}
+
+	public function get_shape(): WP_REST_Response {
+		return new WP_REST_Response( $this->shape_payload( SettingsStore::get() ) );
+	}
+
+	/**
+	 * Saves layout and shape values and writes them to Bricks.
+	 *
+	 * @return WP_REST_Response|WP_Error
+	 */
+	public function save_shape( WP_REST_Request $request ) {
+		if ( ! Requirements::ready() ) {
+			return new WP_Error( 'leapfrog_not_ready', implode( ' ', Requirements::problems() ), array( 'status' => 409 ) );
+		}
+
+		$settings                     = SettingsStore::get();
+		$settings['shape']['corners'] = (string) $request->get_param( 'corners' );
+		$settings['shape']['values']  = Shape::sanitize( $request->get_param( 'values' ) );
+
+		try {
+			$saved = SettingsStore::save( $settings, (int) $request->get_param( 'revision' ) );
+		} catch ( Throwable $error ) {
+			return new WP_Error( 'leapfrog_conflict', $error->getMessage(), array( 'status' => 409 ) );
+		}
+
+		try {
+			$summary = ( new VariableSet() )->sync( Shape::CATEGORY, Shape::variables( $saved['shape']['values'] ) );
+		} catch ( Throwable $error ) {
+			return new WP_Error(
+				'leapfrog_bricks_sync',
+				sprintf( /* translators: %s: error from Bricks */ __( 'Your values were saved, but Bricks could not be fully updated: %s Save again to retry.', 'leapfrog-framework' ), $error->getMessage() ),
+				array( 'status' => 500, 'revision' => $saved['revision'] )
+			);
+		}
+
+		return new WP_REST_Response( $this->shape_payload( $saved ) + array( 'summary' => $summary ) );
+	}
+
+	/**
+	 * @param array<string, mixed> $settings
+	 * @param array<string, mixed> $map
+	 * @return array<string, mixed>
+	 */
+	private function roles_payload( array $settings, array $map ): array {
+		$generated = Palette::generate( $settings['colors']['items'], $settings['colors']['shadeSteps'], $settings['colors']['alphaSteps'] );
+		$tokens    = Roles::tokens( $generated );
+		$resolved  = Roles::resolve( $map, $tokens );
+
+		$options = array();
+		foreach ( $tokens as $name => $token ) {
+			$options[] = array( 'name' => $name, 'light' => $token['light'], 'dark' => $token['dark'] );
+		}
+		$transparent = array();
+		foreach ( Roles::TRANSPARENT as $key => $def ) {
+			$transparent[] = array( 'key' => $key, 'label' => $def[0], 'variable' => '--color-' . $key, 'value' => $def[1] );
+		}
+
+		return array(
+			'revision'    => $settings['revision'],
+			'pageStyles'  => (bool) $settings['roles']['pageStyles'],
+			'roles'       => $resolved,
+			'tokens'      => $options,
+			'transparent' => $transparent,
+			'contrast'    => Roles::contrast( $resolved ),
+		);
+	}
+
+	/**
+	 * @param array<string, mixed> $settings
+	 * @return array<string, mixed>
+	 */
+	private function shape_payload( array $settings ): array {
+		$groups = array();
+		foreach ( Shape::groups() as $id => $group ) {
+			$groups[] = array( 'id' => $id, 'label' => $group['label'], 'names' => array_keys( $group['values'] ) );
+		}
+
+		return array(
+			'revision' => $settings['revision'],
+			'corners'  => $settings['shape']['corners'],
+			'values'   => $settings['shape']['values'],
+			'defaults' => Shape::defaults(),
+			'presets'  => Shape::CORNERS,
+			'groups'   => $groups,
 		);
 	}
 

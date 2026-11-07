@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Leapfrog\Framework;
 
 use Leapfrog\Framework\Admin\FrameworkPage;
+use Leapfrog\Framework\Bricks\ThemeControl;
+use Leapfrog\Framework\Color\ThemeCss;
 use Leapfrog\Framework\Rest\RestController;
 
 /**
@@ -14,6 +16,8 @@ final class Plugin {
 	public function register(): void {
 		( new FrameworkPage() )->register();
 		( new RestController() )->register();
+		( new ThemeControl() )->register();
+		ThemeCss::register();
 
 		add_action( 'admin_notices', array( $this, 'requirements_notice' ) );
 	}

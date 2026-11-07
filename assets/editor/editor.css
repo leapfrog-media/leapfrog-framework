@@ -535,6 +535,124 @@ body.lf-fullscreen #wpcontent {
 	opacity: 0.45;
 }
 
+/* Roles and themes */
+
+.lf-previews {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+	gap: 16px;
+}
+
+.lf-role-preview {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	padding: 20px;
+	border: 1px solid;
+	border-radius: 8px;
+	font-size: 14px;
+}
+
+.lf-role-preview h3 {
+	margin: 0;
+	font-size: 20px;
+}
+
+.lf-role-preview p {
+	margin: 0;
+}
+
+.lf-role-preview__badge {
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: 0.05em;
+	text-transform: uppercase;
+}
+
+.lf-role-preview__card {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	padding: 12px;
+	border: 1px solid;
+	border-radius: 6px;
+}
+
+.lf-role-preview__muted,
+.lf-role-preview__status {
+	padding: 8px 12px;
+	border-radius: 6px;
+}
+
+.lf-roles td {
+	vertical-align: middle;
+}
+
+.lf-roles td:first-child {
+	width: 38%;
+}
+
+.lf-choice {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.lf-choice__chip {
+	flex: 0 0 28px;
+	width: 28px;
+	height: 28px;
+	border-radius: 6px;
+	box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.15);
+}
+
+.lf-choice .components-base-control {
+	flex: 1;
+}
+
+.lf-plain-list {
+	margin: 0;
+	padding-left: 18px;
+}
+
+/* Layout and shape */
+
+.lf-corner-style {
+	max-width: 260px;
+	margin-bottom: 16px;
+}
+
+.lf-shape-field {
+	display: flex;
+	align-items: flex-end;
+	gap: 12px;
+}
+
+.lf-shape-field .components-base-control {
+	flex: 1;
+}
+
+.lf-shape-sample {
+	flex: 0 0 40px;
+	width: 40px;
+	height: 40px;
+	background: var(--lf-accent-soft);
+	border: 1px solid var(--lf-accent);
+}
+
+.lf-shape-sample.is-shadow {
+	background: #fff;
+	border-color: transparent;
+	border-radius: 6px;
+}
+
+.lf-shape-sample.is-border {
+	background: transparent;
+	border-style: solid;
+	border-color: var(--lf-ink);
+	border-radius: 4px;
+}
+
 .lf-savebar__message {
 	margin-right: auto;
 }

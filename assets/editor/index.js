@@ -9,7 +9,9 @@ import { Button, Notice, Spinner } from '@wordpress/components';
 import BricksData from './screens/BricksData';
 import Colours from './screens/Colours';
 import Placeholder from './screens/Placeholder';
+import Roles from './screens/Roles';
 import Settings from './screens/Settings';
+import Shape from './screens/Shape';
 import Spacing from './screens/Spacing';
 import Typography from './screens/Typography';
 import './editor.css';
@@ -24,7 +26,7 @@ const SCREENS = [
 	{ id: 'spacing', label: __( 'Spacing', 'leapfrog-framework' ), milestone: 3 },
 	{ id: 'shape', label: __( 'Layout and shape', 'leapfrog-framework' ), milestone: 4 },
 	{ id: 'roles', label: __( 'Roles and themes', 'leapfrog-framework' ), milestone: 4 },
-	{ id: 'components', label: __( 'Components', 'leapfrog-framework' ), milestone: 4 },
+	{ id: 'components', label: __( 'Components', 'leapfrog-framework' ), milestone: 5 },
 	{ id: 'review', label: __( 'Review and save', 'leapfrog-framework' ), milestone: 6 },
 	{ id: 'export', label: __( 'Export and presets', 'leapfrog-framework' ), milestone: 6 },
 	{ id: 'settings', label: __( 'Settings', 'leapfrog-framework' ), milestone: 3 },
@@ -32,7 +34,7 @@ const SCREENS = [
 ];
 
 // Screens that exist so far; the rest show a placeholder.
-const SCREEN_COMPONENTS = { colours: Colours, typography: Typography, spacing: Spacing, settings: Settings };
+const SCREEN_COMPONENTS = { colours: Colours, typography: Typography, spacing: Spacing, shape: Shape, roles: Roles, settings: Settings };
 const BUILT = [ ...Object.keys( SCREEN_COMPONENTS ), 'bricks' ];
 
 function App() {

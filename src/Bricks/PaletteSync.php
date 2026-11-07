@@ -7,7 +7,8 @@ namespace Leapfrog\Framework\Bricks;
 use RuntimeException;
 
 /**
- * Keeps the Bricks colour palette "Leapfrog" equal to the generated rows.
+ * Keeps one Bricks colour palette equal to the generated rows: "Leapfrog"
+ * (brand colours) by default, or "Leapfrog roles" (colour roles) via roles().
  *
  * Rows are matched by CSS variable name, which never changes (Bricks gives new
  * colours random IDs). The first save creates the whole palette in one write;
@@ -16,15 +17,26 @@ use RuntimeException;
  */
 final class PaletteSync {
 	public const PALETTE_NAME = 'Leapfrog';
-	private const ID_OPTION   = 'lf_bricks_palette_id';
+	public const ROLES_NAME   = 'Leapfrog roles';
 
 	private BricksGateway $gateway;
+	private string $name;
+	private string $id_option;
 
 	/** @var array{created:int,updated:int,deleted:int,unchanged:int} */
 	private array $summary = array( 'created' => 0, 'updated' => 0, 'deleted' => 0, 'unchanged' => 0 );
 
-	public function __construct( ?BricksGateway $gateway = null ) {
-		$this->gateway = $gateway ?? new BricksGateway();
+	public function __construct( ?BricksGateway $gateway = null, string $name = self::PALETTE_NAME, string $id_option = 'lf_bricks_palette_id' ) {
+		$this->gateway   = $gateway ?? new BricksGateway();
+		$this->name      = $name;
+		$this->id_option = $id_option;
+	}
+
+	/**
+	 * The palette for colour roles.
+	 */
+	public static function roles( ?BricksGateway $gateway = null ): self {
+		return new self( $gateway, self::ROLES_NAME, 'lf_bricks_roles_palette_id' );
 	}
 
 	/**
@@ -55,7 +67,7 @@ final class PaletteSync {
 	public function read(): array {
 		$result    = $this->gateway->execute( 'bricks/list-color-palettes', array( 'perPage' => 100 ) );
 		$palettes  = is_array( $result['items'] ?? null ) ? $result['items'] : array();
-		$stored_id = (string) get_option( self::ID_OPTION, '' );
+		$stored_id = (string) get_option( $this->id_option, '' );
 		$found     = null;
 
 		foreach ( $palettes as $palette ) {
@@ -66,14 +78,14 @@ final class PaletteSync {
 		}
 		if ( null === $found ) {
 			foreach ( $palettes as $palette ) {
-				if ( ( $palette['name'] ?? '' ) === self::PALETTE_NAME ) {
+				if ( ( $palette['name'] ?? '' ) === $this->name ) {
 					$found = $palette;
 					break;
 				}
 			}
 		}
 		if ( $found && ( $found['id'] ?? '' ) !== $stored_id ) {
-			update_option( self::ID_OPTION, (string) $found['id'], false );
+			update_option( $this->id_option, (string) $found['id'], false );
 		}
 
 		if ( ! is_array( $result['ownership'] ?? null ) ) {
@@ -98,13 +110,13 @@ final class PaletteSync {
 		$result = $this->gateway->execute(
 			'bricks/create-color-palette',
 			array(
-				'name'              => self::PALETTE_NAME,
+				'name'              => $this->name,
 				'colors'            => $colors,
 				'expectedOwnership' => $ownership,
 			)
 		);
 
-		update_option( self::ID_OPTION, (string) ( $result['palette']['id'] ?? '' ), false );
+		update_option( $this->id_option, (string) ( $result['palette']['id'] ?? '' ), false );
 		$this->summary['created'] = count( $colors );
 	}
 

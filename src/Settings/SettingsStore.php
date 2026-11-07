@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Leapfrog\Framework\Settings;
 
 use Leapfrog\Framework\Color\Palette;
+use Leapfrog\Framework\Color\Roles;
 use Leapfrog\Framework\Scale\Scales;
+use Leapfrog\Framework\Scale\Shape;
 use RuntimeException;
 
 /**
@@ -27,9 +29,6 @@ final class SettingsStore {
 			'schemaVersion' => self::SCHEMA,
 			'revision'      => 0,
 			'updated'       => 0,
-			'brand'         => array(
-				'corners' => 'soft',
-			),
 			'colors'        => array(
 				'items'      => Palette::default_items(),
 				'shadeSteps' => array( 10, 20, 30, 40, 50, 60, 70, 80, 90 ),
@@ -37,6 +36,14 @@ final class SettingsStore {
 			),
 			'typography'    => Scales::default_typography(),
 			'spacing'       => Scales::default_spacing(),
+			'roles'         => array(
+				'map'        => Roles::default_map(),
+				'pageStyles' => true,
+			),
+			'shape'         => array(
+				'corners' => 'soft',
+				'values'  => Shape::defaults(),
+			),
 		);
 	}
 
@@ -50,6 +57,11 @@ final class SettingsStore {
 		$out               = self::clean( $value, self::defaults() );
 		$out['typography'] = Scales::clean_scale( $out['typography'], Scales::default_typography() );
 		$out['spacing']    = Scales::clean_scale( $out['spacing'], Scales::default_spacing() );
+		$out['roles']['map'] = Roles::sanitize_map( $value['roles']['map'] ?? array() );
+		$out['shape']['values'] = Shape::sanitize( $value['shape']['values'] ?? array() );
+		if ( ! isset( Shape::CORNERS[ $out['shape']['corners'] ] ) ) {
+			$out['shape']['corners'] = 'custom';
+		}
 
 		return $out;
 	}

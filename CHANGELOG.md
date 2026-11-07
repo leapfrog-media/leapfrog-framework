@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.4.0 — 2026-11-07
+
+Milestone 4: roles, themes, layout and shape.
+
+- 19 colour roles (`--color-text`, `--color-surface`, `--color-border`, `--color-on-primary`…) plus 3 live transparent roles, saved as the Bricks palette "Leapfrog roles": each holds `var(--palette-colour)` for light and for dark, so page dark mode switches them natively. "Automatic" text-on-colour picks white or black by contrast.
+- Section themes: a Theme control (Inherit, Light, Dark, Inverted) on Section, Container and Block renders `data-lf-theme`; generated CSS (about 10KB, printed in the head) re-points brand, role and transparency values inside themed sections. Inverted flips the page, or the light/dark section around it. Ported from CoreBridge, which no longer needs to be installed; its old setting is still read.
+- Optional page colouring: body text and background, headings, links and focus rings use the roles (styles set in Bricks win).
+- Layout and shape variables (category "Layout and shape"): content widths, corners with Sharp/Soft/Round presets, borders, shadows, motion and layers.
+- Roles and themes screen (light/dark previews, per-role choices, contrast table) and Layout and shape screen.
+- Saving colours now also rebuilds the roles palette and the theme CSS.
+
 ## 0.3.0 — 2026-11-07
 
 Milestone 3: typography, spacing and settings.
