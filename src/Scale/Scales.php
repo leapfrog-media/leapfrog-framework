@@ -44,14 +44,32 @@ final class Scales {
 			'minRatio'    => 1.2,
 			'maxRatio'    => 1.25,
 			'headings'    => array( 'h1' => '4xl', 'h2' => '3xl', 'h3' => '2xl', 'h4' => 'xl', 'h5' => 'l', 'h6' => 'm' ),
-			'sizes'       => array( 'body' => 'm', 'small' => 's', 'lead' => 'l' ),
+			'sizes'       => array( 'body' => 'm', 'small' => 's', 'lead' => 'l', 'caption' => 'xs', 'label' => 's', 'quote' => 'l' ),
 			'fonts'       => array(
 				'body'    => 'system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
 				'heading' => 'system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+				'display' => 'var(--font-heading)',
 				'mono'    => 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace',
 			),
-			'lineHeights' => array( 'body' => 1.6, 'heading' => 1.15 ),
+			'lineHeights' => array( 'body' => 1.6, 'heading' => 1.15, 'display' => 1.05 ),
+			// Font weights by name, then which weight headings and labels use.
+			'weights'     => array( 'regular' => 400, 'medium' => 500, 'semibold' => 600, 'bold' => 700 ),
+			'roleWeights' => array( 'heading' => 'bold', 'label' => 'medium' ),
+			'letterSpacing' => array( 'body' => '0em', 'heading' => '-0.01em' ),
+			'codeSize'    => '0.9em',
 		);
+	}
+
+	/** Weight names offered for headings and labels. */
+	public const WEIGHTS = array( 'regular', 'medium', 'semibold', 'bold' );
+
+	/**
+	 * A length for letter spacing or code size: a number with em, rem or px, or 0 / normal.
+	 */
+	private static function length( string $value, string $fallback ): string {
+		$value = strtolower( trim( $value ) );
+
+		return 1 === preg_match( '/^(?:-?\d*\.?\d+(?:em|rem|px|%)|0|normal)$/', $value ) ? $value : $fallback;
 	}
 
 	/**
@@ -71,6 +89,11 @@ final class Scales {
 				'section'         => '2xl',
 				'sectionCompact'  => 'xl',
 				'sectionSpacious' => '3xl',
+				'stackGap'        => 's',
+				'clusterGap'      => 'xs',
+				'listGap'         => '2xs',
+				'inlineGap'       => '2xs',
+				'panelPadding'    => 'l',
 			),
 		);
 	}
@@ -212,6 +235,20 @@ final class Scales {
 			$rows[] = array( 'name' => "line-height-$role", 'value' => (string) (float) $value, 'category' => $type );
 		}
 
+		$defaults = self::default_typography();
+		foreach ( $defaults['weights'] as $name => $default ) {
+			$weight = (int) ( $typography['weights'][ $name ] ?? $default );
+			$rows[] = array( 'name' => "font-weight-$name", 'value' => (string) ( $weight >= 1 && $weight <= 1000 ? $weight : $default ), 'category' => $type );
+		}
+		foreach ( $defaults['roleWeights'] as $role => $default ) {
+			$choice = (string) ( $typography['roleWeights'][ $role ] ?? $default );
+			$rows[] = array( 'name' => "$role-weight", 'value' => 'var(--font-weight-' . ( in_array( $choice, self::WEIGHTS, true ) ? $choice : $default ) . ')', 'category' => $type );
+		}
+		foreach ( $defaults['letterSpacing'] as $role => $default ) {
+			$rows[] = array( 'name' => "$role-letter-spacing", 'value' => self::length( (string) ( $typography['letterSpacing'][ $role ] ?? $default ), $default ), 'category' => $type );
+		}
+		$rows[] = array( 'name' => 'code-size', 'value' => self::length( (string) ( $typography['codeSize'] ?? '' ), $defaults['codeSize'] ), 'category' => $type );
+
 		$names = array(
 			'gutter'          => 'gutter',
 			'gap'             => 'gap',
@@ -219,6 +256,11 @@ final class Scales {
 			'section'         => 'section-space',
 			'sectionCompact'  => 'section-space-compact',
 			'sectionSpacious' => 'section-space-spacious',
+			'stackGap'        => 'stack-gap',
+			'clusterGap'      => 'cluster-gap',
+			'listGap'         => 'list-gap',
+			'inlineGap'       => 'inline-gap',
+			'panelPadding'    => 'panel-padding',
 		);
 		foreach ( $spacing['roles'] as $role => $step ) {
 			if ( isset( $names[ $role ] ) ) {

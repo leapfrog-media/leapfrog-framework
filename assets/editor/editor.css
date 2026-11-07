@@ -658,6 +658,26 @@ body.lf-fullscreen #wpcontent {
 	border-radius: 4px;
 }
 
+/* Grid variables: a tiny preview of the columns. */
+.lf-shape-sample.is-grid {
+	flex: 0 0 72px;
+	width: 72px;
+	display: grid;
+	gap: 2px;
+	padding: 3px;
+	overflow: hidden;
+	background: transparent;
+	border-color: var(--lf-line);
+	border-radius: 4px;
+}
+
+.lf-shape-sample.is-grid > span {
+	min-width: 0;
+	background: var(--lf-accent-soft);
+	border: 1px solid var(--lf-accent);
+	border-radius: 2px;
+}
+
 /* Brand starter */
 
 .lf-starter {

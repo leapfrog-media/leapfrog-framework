@@ -1,5 +1,5 @@
 import { __, sprintf } from '@wordpress/i18n';
-import { Spinner, Notice, TextControl } from '@wordpress/components';
+import { Spinner, Notice, TextControl, SelectControl } from '@wordpress/components';
 
 import useScales from './useScales';
 import { ScaleEditor, ScaleNotices, SaveBar, StepSelect, px } from './ScaleParts';
@@ -9,11 +9,34 @@ const SIZES = [
 	{ key: 'body', label: __( 'Body text', 'leapfrog-framework' ), variable: '--body-size' },
 	{ key: 'lead', label: __( 'Lead / intro text', 'leapfrog-framework' ), variable: '--lead-size' },
 	{ key: 'small', label: __( 'Small text', 'leapfrog-framework' ), variable: '--small-size' },
+	{ key: 'caption', label: __( 'Captions', 'leapfrog-framework' ), variable: '--caption-size' },
+	{ key: 'label', label: __( 'Labels', 'leapfrog-framework' ), variable: '--label-size' },
+	{ key: 'quote', label: __( 'Quotes', 'leapfrog-framework' ), variable: '--quote-size' },
 ];
 const FONTS = [
 	{ key: 'body', label: __( 'Body font', 'leapfrog-framework' ) },
 	{ key: 'heading', label: __( 'Heading font', 'leapfrog-framework' ) },
+	{ key: 'display', label: __( 'Display font (hero titles)', 'leapfrog-framework' ) },
 	{ key: 'mono', label: __( 'Code font', 'leapfrog-framework' ) },
+];
+const LINE_HEIGHTS = [
+	{ key: 'body', label: __( 'Body line height', 'leapfrog-framework' ) },
+	{ key: 'heading', label: __( 'Heading line height', 'leapfrog-framework' ) },
+	{ key: 'display', label: __( 'Display line height', 'leapfrog-framework' ) },
+];
+const WEIGHTS = [
+	{ key: 'regular', label: __( 'Regular', 'leapfrog-framework' ) },
+	{ key: 'medium', label: __( 'Medium', 'leapfrog-framework' ) },
+	{ key: 'semibold', label: __( 'Semibold', 'leapfrog-framework' ) },
+	{ key: 'bold', label: __( 'Bold', 'leapfrog-framework' ) },
+];
+const ROLE_WEIGHTS = [
+	{ key: 'heading', label: __( 'Heading weight', 'leapfrog-framework' ) },
+	{ key: 'label', label: __( 'Label weight', 'leapfrog-framework' ) },
+];
+const LETTER_SPACING = [
+	{ key: 'body', label: __( 'Body letter spacing', 'leapfrog-framework' ) },
+	{ key: 'heading', label: __( 'Heading letter spacing', 'leapfrog-framework' ) },
 ];
 
 export default function Typography( { restPath, onDirtyChange } ) {
@@ -99,27 +122,70 @@ export default function Typography( { restPath, onDirtyChange } ) {
 							onChange={ ( v ) => setMap( 'fonts', f.key, v ) }
 						/>
 					) ) }
+					{ LINE_HEIGHTS.map( ( l ) => (
+						<TextControl
+							key={ l.key }
+							__nextHasNoMarginBottom
+							__next40pxDefaultSize
+							type="number"
+							step="0.05"
+							min="0.8"
+							max="2.5"
+							label={ `${ l.label } · --line-height-${ l.key }` }
+							value={ t.lineHeights[ l.key ] }
+							onChange={ ( v ) => setMap( 'lineHeights', l.key, Number( v ) ) }
+						/>
+					) ) }
+				</div>
+			</div>
+
+			<div className="lf-panel">
+				<h2 className="lf-panel__title">{ __( 'Weights and letter spacing', 'leapfrog-framework' ) }</h2>
+				<p className="lf-muted">{ __( 'Named weights (100 to 900) for use anywhere, and which of them headings and labels use. Variable fonts accept any number in between.', 'leapfrog-framework' ) }</p>
+				<div className="lf-grid">
+					{ WEIGHTS.map( ( w ) => (
+						<TextControl
+							key={ w.key }
+							__nextHasNoMarginBottom
+							__next40pxDefaultSize
+							type="number"
+							step="50"
+							min="100"
+							max="900"
+							label={ `${ w.label } · --font-weight-${ w.key }` }
+							value={ t.weights[ w.key ] }
+							onChange={ ( v ) => setMap( 'weights', w.key, Number( v ) ) }
+						/>
+					) ) }
+					{ ROLE_WEIGHTS.map( ( r ) => (
+						<SelectControl
+							key={ r.key }
+							__nextHasNoMarginBottom
+							__next40pxDefaultSize
+							label={ `${ r.label } · --${ r.key }-weight` }
+							value={ t.roleWeights[ r.key ] }
+							options={ WEIGHTS.map( ( w ) => ( { value: w.key, label: `${ w.label } (${ t.weights[ w.key ] })` } ) ) }
+							onChange={ ( v ) => setMap( 'roleWeights', r.key, v ) }
+						/>
+					) ) }
+					{ LETTER_SPACING.map( ( l ) => (
+						<TextControl
+							key={ l.key }
+							__nextHasNoMarginBottom
+							__next40pxDefaultSize
+							label={ `${ l.label } · --${ l.key }-letter-spacing` }
+							help={ __( 'For example 0em, -0.01em or 0.02em.', 'leapfrog-framework' ) }
+							value={ t.letterSpacing[ l.key ] }
+							onChange={ ( v ) => setMap( 'letterSpacing', l.key, v ) }
+						/>
+					) ) }
 					<TextControl
 						__nextHasNoMarginBottom
 						__next40pxDefaultSize
-						type="number"
-						step="0.05"
-						min="0.8"
-						max="2.5"
-						label={ __( 'Body line height · --line-height-body', 'leapfrog-framework' ) }
-						value={ t.lineHeights.body }
-						onChange={ ( v ) => setMap( 'lineHeights', 'body', Number( v ) ) }
-					/>
-					<TextControl
-						__nextHasNoMarginBottom
-						__next40pxDefaultSize
-						type="number"
-						step="0.05"
-						min="0.8"
-						max="2.5"
-						label={ __( 'Heading line height · --line-height-heading', 'leapfrog-framework' ) }
-						value={ t.lineHeights.heading }
-						onChange={ ( v ) => setMap( 'lineHeights', 'heading', Number( v ) ) }
+						label={ __( 'Code size · --code-size', 'leapfrog-framework' ) }
+						help={ __( 'Relative to the surrounding text, for example 0.9em.', 'leapfrog-framework' ) }
+						value={ t.codeSize }
+						onChange={ ( v ) => set( { codeSize: v } ) }
 					/>
 				</div>
 			</div>

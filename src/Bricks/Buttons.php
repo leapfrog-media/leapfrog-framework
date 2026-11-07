@@ -14,10 +14,10 @@ use const Leapfrog\Framework\VERSION;
  * Ported from CoreBridge, without Core Framework.
  */
 final class Buttons {
-	private const STYLES = array( 'primary', 'secondary', 'accent', 'neutral' );
+	private const STYLES = array( 'primary', 'secondary', 'accent', 'neutral', 'contrast', 'ghost' );
 
 	/** Classes Leapfrog manages on a button; anything else (your own classes) is kept. */
-	private const MANAGED = array( 'lf-btn', 'lf-btn--secondary', 'lf-btn--accent', 'lf-btn--neutral', 'lf-btn--outline', 'lf-btn--circle', 'lf-btn--sm', 'lf-btn--lg', 'sm', 'md', 'lg', 'xl' );
+	private const MANAGED = array( 'lf-btn', 'lf-btn--secondary', 'lf-btn--accent', 'lf-btn--neutral', 'lf-btn--contrast', 'lf-btn--ghost', 'lf-btn--outline', 'lf-btn--circle', 'lf-btn--sm', 'lf-btn--lg', 'sm', 'md', 'lg', 'xl' );
 
 	public function register(): void {
 		add_filter( 'bricks/elements/button/controls', array( $this, 'controls' ), 20 );
@@ -37,7 +37,9 @@ final class Buttons {
 				'primary'   => __( 'Primary', 'leapfrog-framework' ),
 				'secondary' => __( 'Secondary', 'leapfrog-framework' ),
 				'accent'    => __( 'Accent', 'leapfrog-framework' ),
-				'neutral'   => __( 'Neutral', 'leapfrog-framework' ),
+				'neutral'   => __( 'Neutral (soft grey)', 'leapfrog-framework' ),
+				'contrast'  => __( 'Contrast (text colour)', 'leapfrog-framework' ),
+				'ghost'     => __( 'Ghost (no fill)', 'leapfrog-framework' ),
 			);
 			$controls['style']['default']     = 'primary';
 			$controls['style']['placeholder'] = __( 'Primary', 'leapfrog-framework' );

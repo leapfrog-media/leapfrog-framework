@@ -11,6 +11,11 @@ const ROLES = [
 	{ key: 'section', label: __( 'Section space', 'leapfrog-framework' ), variable: '--section-space', help: __( 'Top and bottom padding of a section.', 'leapfrog-framework' ) },
 	{ key: 'sectionCompact', label: __( 'Section space, compact', 'leapfrog-framework' ), variable: '--section-space-compact' },
 	{ key: 'sectionSpacious', label: __( 'Section space, spacious', 'leapfrog-framework' ), variable: '--section-space-spacious' },
+	{ key: 'stackGap', label: __( 'Stack gap', 'leapfrog-framework' ), variable: '--stack-gap', help: __( 'Gap between items stacked in a column.', 'leapfrog-framework' ) },
+	{ key: 'clusterGap', label: __( 'Cluster gap', 'leapfrog-framework' ), variable: '--cluster-gap', help: __( 'Gap between items in a wrapping row, like tags or buttons.', 'leapfrog-framework' ) },
+	{ key: 'listGap', label: __( 'List gap', 'leapfrog-framework' ), variable: '--list-gap', help: __( 'Space between list items.', 'leapfrog-framework' ) },
+	{ key: 'inlineGap', label: __( 'Inline gap', 'leapfrog-framework' ), variable: '--inline-gap', help: __( 'Gap between an icon and its text.', 'leapfrog-framework' ) },
+	{ key: 'panelPadding', label: __( 'Panel padding', 'leapfrog-framework' ), variable: '--panel-padding', help: __( 'Padding inside panels, sidebars and boxed areas.', 'leapfrog-framework' ) },
 ];
 
 export default function Spacing( { restPath, onDirtyChange } ) {

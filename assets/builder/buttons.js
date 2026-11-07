@@ -6,8 +6,8 @@
 ( () => {
 	'use strict';
 
-	const styles = new Set( [ 'secondary', 'accent', 'neutral' ] );
-	const managed = new Set( [ 'lf-btn', 'lf-btn--secondary', 'lf-btn--accent', 'lf-btn--neutral', 'lf-btn--outline', 'lf-btn--circle', 'lf-btn--sm', 'lf-btn--lg', 'sm', 'md', 'lg', 'xl' ] );
+	const styles = new Set( [ 'secondary', 'accent', 'neutral', 'contrast', 'ghost' ] );
+	const managed = new Set( [ 'lf-btn', 'lf-btn--secondary', 'lf-btn--accent', 'lf-btn--neutral', 'lf-btn--contrast', 'lf-btn--ghost', 'lf-btn--outline', 'lf-btn--circle', 'lf-btn--sm', 'lf-btn--lg', 'sm', 'md', 'lg', 'xl' ] );
 	let scheduled = false;
 
 	const state = () => document.querySelector( '.brx-body' )?.__vue_app__?.config?.globalProperties?.$_state;

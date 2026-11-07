@@ -24,13 +24,22 @@
 	font-size: var(--btn-font-size, inherit);
 	font-weight: var(--btn-font-weight, 600);
 	line-height: var(--btn-line-height, 1.2);
+	letter-spacing: var(--btn-letter-spacing, normal);
 	text-decoration: none;
 	cursor: pointer;
 	transition:
-		background-color var(--duration-fast, 120ms) var(--ease-out, ease-out),
-		border-color var(--duration-fast, 120ms) var(--ease-out, ease-out),
-		color var(--duration-fast, 120ms) var(--ease-out, ease-out),
-		transform var(--duration-fast, 120ms) var(--ease-out, ease-out);
+		background-color var(--btn-transition, 120ms ease-out),
+		border-color var(--btn-transition, 120ms ease-out),
+		color var(--btn-transition, 120ms ease-out),
+		transform var(--btn-transition, 120ms ease-out);
+}
+
+/* Icons inside a button; an icon size set on the element in Bricks still wins. */
+.bricks-button.lf-btn > :is(svg, i) {
+	flex: none;
+	inline-size: var(--btn-icon-size, 1.25em);
+	block-size: var(--btn-icon-size, 1.25em);
+	font-size: var(--btn-icon-size, 1.25em);
 }
 
 .bricks-button.lf-btn:hover {
@@ -46,8 +55,8 @@
 }
 
 .bricks-button.lf-btn:focus-visible {
-	outline: 2px solid var(--color-focus, currentColor);
-	outline-offset: 2px;
+	outline: var(--btn-focus-ring, 2px solid var(--color-focus, currentColor));
+	outline-offset: var(--focus-ring-offset, 2px);
 }
 
 .bricks-button.lf-btn--secondary {
@@ -60,9 +69,37 @@
 	--_fg: var(--color-on-accent, #000);
 }
 
+/* Neutral: a soft grey button with a border, for low-emphasis actions. */
 .bricks-button.lf-btn--neutral {
+	--_bg: var(--color-surface-muted, #f2f2f2);
+	--_fg: var(--color-text, #111);
+	border-color: var(--color-border, #ddd);
+}
+
+.bricks-button.lf-btn--neutral:hover {
+	border-color: var(--color-border-strong, #bbb);
+}
+
+/* Contrast: filled with the text colour, so dark on light pages and light on dark ones. */
+.bricks-button.lf-btn--contrast {
 	--_bg: var(--color-text, #111);
 	--_fg: var(--color-canvas, #fff);
+	--_hover: color-mix(in oklch, var(--_bg) 82%, var(--color-canvas, #fff));
+	--_active: color-mix(in oklch, var(--_bg) 70%, var(--color-canvas, #fff));
+}
+
+/* Ghost: text only until hovered, then a light tint. */
+.bricks-button.lf-btn--ghost {
+	--_bg: transparent;
+	--_fg: var(--color-text, #111);
+	--_hover: var(--color-surface-hover, rgba(0, 0, 0, 0.06));
+	--_active: color-mix(in oklch, var(--color-text, #000) 12%, transparent);
+	border-color: transparent;
+}
+
+.bricks-button.lf-btn--ghost:hover,
+.bricks-button.lf-btn--ghost:active {
+	border-color: transparent;
 }
 
 .bricks-button.lf-btn--outline {
@@ -74,6 +111,20 @@
 	background-color: var(--_bg);
 	border-color: var(--_bg);
 	color: var(--_fg);
+}
+
+/* Outline versions of the neutral and ghost styles keep readable text. */
+.bricks-button.lf-btn--neutral.lf-btn--outline,
+.bricks-button.lf-btn--ghost.lf-btn--outline {
+	color: var(--color-text, #111);
+	border-color: var(--color-border-strong, #bbb);
+}
+
+.bricks-button.lf-btn--neutral.lf-btn--outline:hover,
+.bricks-button.lf-btn--ghost.lf-btn--outline:hover {
+	background-color: var(--color-surface-hover, rgba(0, 0, 0, 0.06));
+	border-color: var(--color-border-strong, #bbb);
+	color: var(--color-text, #111);
 }
 
 .bricks-button.lf-btn--sm {
@@ -95,7 +146,7 @@
 
 .bricks-button.lf-btn[disabled],
 .bricks-button.lf-btn[aria-disabled="true"] {
-	opacity: 0.5;
+	opacity: var(--btn-disabled-opacity, 0.5);
 	pointer-events: none;
 }
 

@@ -29,10 +29,10 @@ Bricks' AI / Abilities API switch does not need to be on. When it is, Leapfrog u
 | `src/Color/Roles.php` | Colour roles: definitions, light/dark choices, contrast, rows for the "Leapfrog roles" palette |
 | `src/Color/ThemeCss.php` | Section theme CSS (`data-lf-theme`), stored on save and printed in the head |
 | `src/Bricks/ThemeControl.php` | Theme control on Section/Container/Block (+ `assets/builder/theme-control.js` for the builder) |
-| `src/Scale/Shape.php` | Layout and shape variables |
+| `src/Scale/Shape.php` | Layout and shape variables: widths, sizes, grids, corners, borders, focus, shadows, motion, layers |
 | `src/Bricks/VariableSet.php` | Keeps one Bricks variable category equal to a list of variables |
 | `src/Build.php` | Rebuilds palette, roles palette and theme CSS together |
-| `src/Scale/Components.php` | Component tokens (buttons, fields, cards, header) |
+| `src/Scale/Components.php` | Component tokens (buttons, fields, cards and media, header, navigation and footer, tabs/modals/tooltips/alerts, tables and lists) |
 | `src/Settings/Starter.php` | Brand starter: brand choices → full settings |
 | `src/Settings/History.php` | Last 20 versions of the settings |
 | `src/Settings/Transfer.php` | Framework files (export/import) and presets |

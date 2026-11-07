@@ -16,6 +16,16 @@ function Sample( { name, value } ) {
 	if ( name.startsWith( 'border-' ) ) {
 		return <span className="lf-shape-sample is-border" style={ { borderWidth: value } } aria-hidden="true" />;
 	}
+	if ( /^grid-(\d|auto)/.test( name ) ) {
+		// Show the columns in a 72px box; auto grids use a 20px minimum so a few columns appear.
+		const columns = value.replace( /var\(--grid-min\)/g, '20px' );
+		const count = Math.min( 12, Number( ( name.match( /^grid-(\d+)$/ ) || [] )[ 1 ] ) || 3 );
+		return (
+			<span className="lf-shape-sample is-grid" style={ { gridTemplateColumns: columns } } aria-hidden="true">
+				{ Array.from( { length: /^grid-\d+-\d+$/.test( name ) ? 2 : count }, ( _, i ) => <span key={ i } /> ) }
+			</span>
+		);
+	}
 	return null;
 }
 
@@ -27,7 +37,7 @@ export default function Shape( {
 	onDirtyChange,
 	endpoint = 'shape',
 	title = __( 'Layout and shape', 'leapfrog-framework' ),
-	intro = __( 'Content widths, corners, borders, shadows, motion and layers. Each is a Bricks variable in the category "Layout and shape".', 'leapfrog-framework' ),
+	intro = __( 'Content widths, sizes, grids, corners, borders, focus, shadows, motion and layers. Each is a Bricks variable in the category "Layout and shape".', 'leapfrog-framework' ),
 } ) {
 	const [ data, setData ] = useState( null );
 	const [ values, setValues ] = useState( null );

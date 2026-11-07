@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.1.0-alpha.1 — 2026-11-07
+
+Milestone 1.1a: values. 145 new Bricks variables and colour roles (229 variables and 35 roles in all), the design values CoreBridge had that 1.0 left out.
+
+- Grid layouts (Layout and shape > Grids): `--grid-1` … `--grid-12`, `--grid-1-2`, `--grid-2-1`, `--grid-1-3`, `--grid-3-1`, and wrapping card grids `--grid-auto-fit` / `--grid-auto-fill` sized by `--grid-min` (300px), which never overflow a phone. Offered by the variable picker in Bricks' Grid template columns field; the editor shows a small preview of each.
+- 13 colour roles: subtle and disabled text, icons, raised and selected surfaces, text selection, dividers, and text on success, warning, error and info. Page styles now colour text selection.
+- Typography: display font and line height, named font weights (regular, medium, semibold, bold), heading and label weights, body and heading letter spacing, caption, label, quote and code sizes.
+- Spacing: stack, cluster, list and inline gaps, panel padding.
+- Layout and shape: sidebar and form widths, scroll offset, icon, avatar and control sizes, focus ring, minimum tap target (44px), disabled and placeholder opacity, divider width, skip-link offset, reduced-motion duration, an instant duration, and backdrop, drawer and tooltip layers.
+- Components: more button, form field, card and media tokens, plus new groups for navigation and footer, tabs/accordions/modals/tooltips/alerts, and tables and lists. Most point at existing values, so the brand starter still sets everything.
+- Buttons: new Contrast (filled with the text colour) and Ghost (no fill until hover) styles. Neutral is now a soft grey button; its old look (text-colour fill) is Contrast. Buttons use the new icon size, letter spacing, focus ring, transition and disabled opacity tokens.
+- Variable picker rules for every new value, including new element types (footer, tabs, accordion, offcanvas, alert, image, icon, list, pagination).
+
 ## 1.0.2 — 2026-11-07
 
 - The Leapfrog Media mark (`assets/brand/leapfrog-mark.svg`) is now the admin menu icon, as a solid arch that WordPress recolours to match the admin menu, and appears in brand purple in the Framework editor header in place of "LF".

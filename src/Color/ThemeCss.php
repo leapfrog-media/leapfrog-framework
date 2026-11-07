@@ -44,6 +44,7 @@ final class ThemeCss {
 			$css .= ":where(h1,h2,h3,h4,h5,h6){color:var(--color-heading)}\n";
 			$css .= ":where(a){color:var(--color-link)}:where(a:hover){color:var(--color-link-hover)}\n";
 			$css .= ":where(:focus-visible){outline-color:var(--color-focus)}\n";
+			$css .= "::selection{background-color:var(--color-selection-bg);color:var(--color-selection-text)}\n";
 		}
 
 		return $css;

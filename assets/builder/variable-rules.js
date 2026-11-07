@@ -32,6 +32,16 @@
 		container: [ 'container' ],
 		content: [ 'content', 'prose' ],
 		prose: [ 'prose', 'content' ],
+		footer: [ 'footer' ],
+		tabs: [ 'tabs' ],
+		accordion: [ 'accordion' ],
+		modal: [ 'modal' ],
+		tooltip: [ 'tooltip' ],
+		alert: [ 'alert' ],
+		table: [ 'table' ],
+		media: [ 'media' ],
+		icon: [ 'icon' ],
+		list: [ 'list' ],
 	};
 
 	function normalise( value ) {
@@ -57,8 +67,32 @@
 		[ /^flow$/, { tier: 'semantic', purposes: [ 'gap', 'margin' ], axes: [ 'block' ], components: [ 'prose', 'content' ] } ],
 		[ /^width-(content|wide|narrow)$/, { tier: 'semantic', purposes: [ 'width' ], components: [ 'container', 'section' ] } ],
 		[ /^width-text$/, { tier: 'semantic', purposes: [ 'width' ], components: [ 'prose', 'content' ] } ],
+		[ /^(stack|cluster|inline)-gap$/, { tier: 'semantic', purposes: [ 'gap' ] } ],
+		[ /^list-gap$/, { tier: 'semantic', purposes: [ 'gap', 'margin' ], components: [ 'list' ] } ],
+		[ /^panel-padding$/, { tier: 'semantic', purposes: [ 'padding' ] } ],
+		[ /^sidebar-width$/, { tier: 'semantic', purposes: [ 'width' ] } ],
+		[ /^form-width$/, { tier: 'semantic', purposes: [ 'width' ], components: [ 'form' ] } ],
+		[ /^grid-(\d+|\d+-\d+|auto-fit|auto-fill)$/, { tier: 'semantic', purposes: [ 'grid-columns' ] } ],
+		[ /^icon-(s|m|l)$/, { tier: 'semantic', purposes: [ 'font-size', 'width', 'height' ], components: [ 'icon', 'button', 'list' ] } ],
+		[ /^avatar-(s|m|l)$/, { tier: 'semantic', purposes: [ 'width', 'height' ], components: [ 'media' ] } ],
+		[ /^control-height(-s|-l)?$/, { tier: 'semantic', purposes: [ 'height' ], components: [ 'button', 'field', 'form' ] } ],
+		[ /^target-size-min$/, { tier: 'semantic', purposes: [ 'width', 'height' ], components: [ 'button', 'field', 'icon', 'navigation' ] } ],
+
+		// Focus and accessibility.
+		[ /^focus-ring$/, { tier: 'semantic', purposes: [ 'outline' ] } ],
+		[ /^focus-ring-width$/, { tier: 'semantic', purposes: [ 'outline-width', 'border-width' ] } ],
+		[ /^focus-ring-offset$/, { tier: 'semantic', purposes: [ 'outline-offset' ] } ],
+		[ /^divider-width$/, { tier: 'semantic', purposes: [ 'border-width' ] } ],
+		[ /^skip-link-offset$/, { tier: 'semantic', purposes: [ 'inset' ] } ],
+		[ /^(disabled|placeholder)-opacity$/, { tier: 'primitive', purposes: [ 'opacity' ] } ],
+		[ /^reduced-motion-duration$/, { tier: 'primitive', purposes: [ 'duration' ] } ],
 
 		// Component tokens.
+		[ /^btn-icon-size$/, { tier: 'semantic', purposes: [ 'font-size', 'width', 'height' ], components: [ 'button' ] } ],
+		[ /^btn-letter-spacing$/, { tier: 'semantic', purposes: [ 'letter-spacing' ], components: [ 'button' ] } ],
+		[ /^btn-disabled-opacity$/, { tier: 'semantic', purposes: [ 'opacity' ], components: [ 'button' ] } ],
+		[ /^btn-focus-ring$/, { tier: 'semantic', purposes: [ 'outline' ], components: [ 'button' ] } ],
+		[ /^btn-transition$/, { tier: 'semantic', purposes: [ 'transition' ], components: [ 'button' ] } ],
 		[ /^btn-padding-block$/, { tier: 'semantic', purposes: [ 'padding' ], axes: [ 'block' ], components: [ 'button' ] } ],
 		[ /^btn-padding-inline$/, { tier: 'semantic', purposes: [ 'padding' ], axes: [ 'inline' ], components: [ 'button' ] } ],
 		[ /^btn-gap$/, { tier: 'semantic', purposes: [ 'gap' ], components: [ 'button' ] } ],
@@ -77,27 +111,82 @@
 		[ /^field-bg$/, { tier: 'semantic', purposes: [ 'background-color' ], components: [ 'field' ] } ],
 		[ /^field-color$/, { tier: 'semantic', purposes: [ 'color' ], components: [ 'field' ] } ],
 		[ /^field-(border|focus)-color$/, { tier: 'semantic', purposes: [ 'border-color' ], components: [ 'field' ] } ],
+		[ /^field-height$/, { tier: 'semantic', purposes: [ 'height' ], components: [ 'field' ] } ],
+		[ /^field-font-size$/, { tier: 'semantic', purposes: [ 'font-size' ], components: [ 'field' ] } ],
+		[ /^field-(placeholder|disabled)-color$/, { tier: 'semantic', purposes: [ 'color' ], components: [ 'field' ] } ],
+		[ /^field-border-(hover|error)$/, { tier: 'semantic', purposes: [ 'border-color' ], components: [ 'field' ] } ],
+		[ /^field-disabled-bg$/, { tier: 'semantic', purposes: [ 'background-color' ], components: [ 'field' ] } ],
+		[ /^field-focus-ring$/, { tier: 'semantic', purposes: [ 'outline' ], components: [ 'field' ] } ],
+		[ /^textarea-min-height$/, { tier: 'semantic', purposes: [ 'height' ], components: [ 'field' ] } ],
+		[ /^choice-size$/, { tier: 'semantic', purposes: [ 'width', 'height' ], components: [ 'field', 'form' ] } ],
+		[ /^(choice|form)-gap$/, { tier: 'semantic', purposes: [ 'gap' ], components: [ 'field', 'form' ] } ],
+		[ /^form-help-size$/, { tier: 'semantic', purposes: [ 'font-size' ], components: [ 'form', 'field' ] } ],
+		[ /^form-(help|error)-color$/, { tier: 'semantic', purposes: [ 'color' ], components: [ 'form', 'field' ] } ],
 		[ /^card-padding$/, { tier: 'semantic', purposes: [ 'padding' ], components: [ 'card' ] } ],
 		[ /^card-gap$/, { tier: 'semantic', purposes: [ 'gap' ], components: [ 'card' ] } ],
 		[ /^card-radius$/, { tier: 'semantic', purposes: [ 'radius' ], components: [ 'card' ] } ],
 		[ /^card-bg$/, { tier: 'semantic', purposes: [ 'background-color' ], components: [ 'card' ] } ],
+		[ /^card-color$/, { tier: 'semantic', purposes: [ 'color' ], components: [ 'card' ] } ],
 		[ /^card-border-color$/, { tier: 'semantic', purposes: [ 'border-color' ], components: [ 'card' ] } ],
-		[ /^card-shadow$/, { tier: 'semantic', purposes: [ 'shadow' ], components: [ 'card' ] } ],
+		[ /^card-(hover-)?shadow$/, { tier: 'semantic', purposes: [ 'shadow' ], components: [ 'card' ] } ],
+		[ /^media-radius$/, { tier: 'semantic', purposes: [ 'radius' ], components: [ 'media', 'card' ] } ],
+		[ /^media-bg$/, { tier: 'semantic', purposes: [ 'background-color' ], components: [ 'media' ] } ],
+		[ /^figure-gap$/, { tier: 'semantic', purposes: [ 'gap', 'margin' ], components: [ 'media' ] } ],
 		[ /^header-height$/, { tier: 'semantic', purposes: [ 'height' ], components: [ 'header' ] } ],
 		[ /^header-padding-block$/, { tier: 'semantic', purposes: [ 'padding' ], axes: [ 'block' ], components: [ 'header' ] } ],
 		[ /^header-bg$/, { tier: 'semantic', purposes: [ 'background-color' ], components: [ 'header' ] } ],
 		[ /^header-color$/, { tier: 'semantic', purposes: [ 'color' ], components: [ 'header' ] } ],
 		[ /^header-border-color$/, { tier: 'semantic', purposes: [ 'border-color' ], components: [ 'header' ] } ],
+		[ /^nav-gap$/, { tier: 'semantic', purposes: [ 'gap' ], components: [ 'navigation', 'header' ] } ],
+		[ /^nav-link-size$/, { tier: 'semantic', purposes: [ 'font-size' ], components: [ 'navigation' ] } ],
+		[ /^nav-link-weight$/, { tier: 'semantic', purposes: [ 'font-weight' ], components: [ 'navigation' ] } ],
+		[ /^nav-link-(color|hover|active)$/, { tier: 'semantic', purposes: [ 'color' ], components: [ 'navigation' ] } ],
+		[ /^nav-link-padding-block$/, { tier: 'semantic', purposes: [ 'padding' ], axes: [ 'block' ], components: [ 'navigation' ] } ],
+		[ /^nav-link-padding-inline$/, { tier: 'semantic', purposes: [ 'padding' ], axes: [ 'inline' ], components: [ 'navigation' ] } ],
+		[ /^submenu-bg$/, { tier: 'semantic', purposes: [ 'background-color' ], components: [ 'navigation' ] } ],
+		[ /^submenu-padding$/, { tier: 'semantic', purposes: [ 'padding' ], components: [ 'navigation' ] } ],
+		[ /^submenu-radius$/, { tier: 'semantic', purposes: [ 'radius' ], components: [ 'navigation' ] } ],
+		[ /^submenu-shadow$/, { tier: 'semantic', purposes: [ 'shadow' ], components: [ 'navigation' ] } ],
+		[ /^footer-bg$/, { tier: 'semantic', purposes: [ 'background-color' ], components: [ 'footer' ] } ],
+		[ /^footer-color$/, { tier: 'semantic', purposes: [ 'color' ], components: [ 'footer' ] } ],
+		[ /^footer-gap$/, { tier: 'semantic', purposes: [ 'gap' ], components: [ 'footer' ] } ],
+		[ /^footer-space$/, { tier: 'semantic', purposes: [ 'padding' ], axes: [ 'block' ], components: [ 'footer' ] } ],
+		[ /^tab-padding-block$/, { tier: 'semantic', purposes: [ 'padding' ], axes: [ 'block' ], components: [ 'tabs' ] } ],
+		[ /^tab-padding-inline$/, { tier: 'semantic', purposes: [ 'padding' ], axes: [ 'inline' ], components: [ 'tabs' ] } ],
+		[ /^tab-indicator-color$/, { tier: 'semantic', purposes: [ 'border-color', 'background-color' ], components: [ 'tabs' ] } ],
+		[ /^tab-indicator-width$/, { tier: 'semantic', purposes: [ 'border-width' ], components: [ 'tabs' ] } ],
+		[ /^disclosure-gap$/, { tier: 'semantic', purposes: [ 'gap' ], components: [ 'accordion' ] } ],
+		[ /^disclosure-padding$/, { tier: 'semantic', purposes: [ 'padding' ], components: [ 'accordion' ] } ],
+		[ /^(modal|drawer)-width$/, { tier: 'semantic', purposes: [ 'width' ], components: [ 'modal' ] } ],
+		[ /^modal-padding$/, { tier: 'semantic', purposes: [ 'padding' ], components: [ 'modal' ] } ],
+		[ /^modal-radius$/, { tier: 'semantic', purposes: [ 'radius' ], components: [ 'modal' ] } ],
+		[ /^modal-bg$/, { tier: 'semantic', purposes: [ 'background-color' ], components: [ 'modal' ] } ],
+		[ /^modal-shadow$/, { tier: 'semantic', purposes: [ 'shadow' ], components: [ 'modal' ] } ],
+		[ /^popover-width$/, { tier: 'semantic', purposes: [ 'width' ], components: [ 'tooltip', 'navigation' ] } ],
+		[ /^(popover|tooltip)-padding$/, { tier: 'semantic', purposes: [ 'padding' ], components: [ 'tooltip' ] } ],
+		[ /^tooltip-bg$/, { tier: 'semantic', purposes: [ 'background-color' ], components: [ 'tooltip' ] } ],
+		[ /^tooltip-color$/, { tier: 'semantic', purposes: [ 'color' ], components: [ 'tooltip' ] } ],
+		[ /^alert-padding$/, { tier: 'semantic', purposes: [ 'padding' ], components: [ 'alert' ] } ],
+		[ /^alert-radius$/, { tier: 'semantic', purposes: [ 'radius' ], components: [ 'alert' ] } ],
+		[ /^table-cell-padding-block$/, { tier: 'semantic', purposes: [ 'padding' ], axes: [ 'block' ], components: [ 'table' ] } ],
+		[ /^table-cell-padding-inline$/, { tier: 'semantic', purposes: [ 'padding' ], axes: [ 'inline' ], components: [ 'table' ] } ],
+		[ /^table-border-color$/, { tier: 'semantic', purposes: [ 'border-color' ], components: [ 'table' ] } ],
+		[ /^table-(header|stripe|row-hover)-bg$/, { tier: 'semantic', purposes: [ 'background-color' ], components: [ 'table' ] } ],
+		[ /^marker-color$/, { tier: 'semantic', purposes: [ 'color' ], components: [ 'list' ] } ],
+		[ /^(breadcrumb|pagination)-gap$/, { tier: 'semantic', purposes: [ 'gap' ], components: [ 'navigation', 'list' ] } ],
 
 		// Typography roles.
-		[ /^font-(body|heading|mono)$/, { tier: 'semantic', purposes: [ 'font-family' ] } ],
-		[ /^(h[1-6]|body-size|lead-size|small-size)$/, { tier: 'semantic', purposes: [ 'font-size' ] } ],
-		[ /^line-height-(body|heading)$/, { tier: 'semantic', purposes: [ 'line-height' ] } ],
+		[ /^font-(body|heading|display|mono)$/, { tier: 'semantic', purposes: [ 'font-family' ] } ],
+		[ /^(h[1-6]|body-size|lead-size|small-size|caption-size|label-size|quote-size|code-size)$/, { tier: 'semantic', purposes: [ 'font-size' ] } ],
+		[ /^line-height-(body|heading|display)$/, { tier: 'semantic', purposes: [ 'line-height' ] } ],
+		[ /^(heading|label)-weight$/, { tier: 'semantic', purposes: [ 'font-weight' ] } ],
+		[ /^font-weight-(regular|medium|semibold|bold)$/, { tier: 'primitive', purposes: [ 'font-weight' ] } ],
+		[ /^(body|heading)-letter-spacing$/, { tier: 'semantic', purposes: [ 'letter-spacing' ] } ],
 
 		// Colour roles (palette "Leapfrog roles").
-		[ /^color-(text|text-muted|heading|link|link-hover|on-[a-z]+)$/, { tier: 'semantic', purposes: [ 'color' ] } ],
-		[ /^color-(canvas|surface|surface-muted|surface-inverse|surface-hover|overlay|[a-z]+-surface)$/, { tier: 'semantic', purposes: [ 'background-color' ] } ],
-		[ /^color-(border|border-strong|border-subtle|focus)$/, { tier: 'semantic', purposes: [ 'border-color' ] } ],
+		[ /^color-(text|text-muted|text-subtle|text-disabled|heading|link|link-hover|icon|icon-muted|selection-text|on-[a-z]+)$/, { tier: 'semantic', purposes: [ 'color' ] } ],
+		[ /^color-(canvas|surface|surface-muted|surface-raised|surface-selected|surface-inverse|surface-hover|selection-bg|overlay|[a-z]+-surface)$/, { tier: 'semantic', purposes: [ 'background-color' ] } ],
+		[ /^color-(border|border-strong|border-subtle|divider|focus)$/, { tier: 'semantic', purposes: [ 'border-color' ] } ],
 
 		// Shape, motion and layers.
 		[ /^radius-(s|m|l|full)$/, { tier: 'primitive', purposes: [ 'radius' ] } ],
@@ -131,7 +220,7 @@
 		_width: 'width', _widthMin: 'min-width', _widthMax: 'max-width', _height: 'height', _heightMin: 'min-height', _heightMax: 'max-height',
 		_inlineSize: 'width', _inlineSizeMin: 'min-width', _inlineSizeMax: 'max-width', _blockSize: 'height', _blockSizeMin: 'min-height', _blockSizeMax: 'max-height',
 		_aspectRatio: 'aspect-ratio', _top: 'top', _right: 'right', _bottom: 'bottom', _left: 'left', _zIndex: 'z-index',
-		_flexBasis: 'width', _cssTransition: 'transition',
+		_flexBasis: 'width', _cssTransition: 'transition', _gridTemplateColumns: 'grid-template-columns', _opacity: 'opacity',
 	};
 
 	function componentHint( value ) {
@@ -161,11 +250,41 @@
 		if ( tag === 'header' || classes.has( 'header' ) ) {
 			return 'header';
 		}
-		if ( /^(nav-|nav$|dropdown)/.test( type ) || tag === 'nav' ) {
+		if ( tag === 'footer' || classes.has( 'footer' ) ) {
+			return 'footer';
+		}
+		if ( /^(nav-|nav$|dropdown|pagination|breadcrumbs)/.test( type ) || tag === 'nav' ) {
 			return 'navigation';
 		}
 		if ( type === 'form' || classes.has( 'form' ) ) {
 			return 'form';
+		}
+		if ( /^tabs/.test( type ) ) {
+			return 'tabs';
+		}
+		if ( /^accordion/.test( type ) || tag === 'details' ) {
+			return 'accordion';
+		}
+		if ( /^(offcanvas|popup)/.test( type ) || tag === 'dialog' || [ ...classes ].some( ( c ) => /(^|-)(modal|drawer|popup)(-|$|__)/.test( c ) ) ) {
+			return 'modal';
+		}
+		if ( [ ...classes ].some( ( c ) => /(^|-)(tooltip|popover)(-|$|__)/.test( c ) ) ) {
+			return 'tooltip';
+		}
+		if ( type === 'alert' || [ ...classes ].some( ( c ) => /(^|-)alert(-|$|__)/.test( c ) ) ) {
+			return 'alert';
+		}
+		if ( tag === 'table' || [ ...classes ].some( ( c ) => /(^|-)table(-|$|__)/.test( c ) ) ) {
+			return 'table';
+		}
+		if ( /^(image|video|image-gallery|carousel)$/.test( type ) || tag === 'figure' ) {
+			return 'media';
+		}
+		if ( type === 'icon' ) {
+			return 'icon';
+		}
+		if ( type === 'list' || tag === 'ul' || tag === 'ol' ) {
+			return 'list';
 		}
 		if ( type === 'section' ) {
 			return 'section';
@@ -185,6 +304,7 @@
 	function propertyFromText( value ) {
 		const text = normalise( value );
 		const direct = [
+			[ 'grid-template-columns', /grid template columns/ ], [ 'outline-offset', /outline offset/ ], [ 'outline-width', /outline width/ ],
 			[ 'padding', /padding/ ], [ 'margin', /margin/ ], [ 'gap', /(^| )(gap|gutter|spacing)( |$)/ ],
 			[ 'min-width', /(^| )min(?:imum)?\.? (width|inline size)( |$)/ ], [ 'max-width', /(^| )max(?:imum)?\.? (width|inline size)( |$)/ ], [ 'width', /(^| )(width|inline size)( |$)/ ],
 			[ 'min-height', /(^| )min(?:imum)?\.? (height|block size)( |$)/ ], [ 'max-height', /(^| )max(?:imum)?\.? (height|block size)( |$)/ ], [ 'height', /(^| )(height|block size)( |$)/ ],
@@ -218,7 +338,7 @@
 		if ( explicit === 'background' ) {
 			return 'background-color';
 		}
-		if ( /^(top|right|bottom|left|gap|column-gap|row-gap|width|min-width|max-width|height|min-height|max-height|inline-size|block-size|aspect-ratio|z-index|font-family|font-size|font-weight|line-height|letter-spacing|color|background-color|border-color|border-width|border-radius|box-shadow|text-shadow|transition|transition-duration|animation-duration|transition-timing-function|opacity)$/.test( explicit ) ) {
+		if ( /^(top|right|bottom|left|gap|column-gap|row-gap|width|min-width|max-width|height|min-height|max-height|inline-size|block-size|aspect-ratio|z-index|font-family|font-size|font-weight|line-height|letter-spacing|color|background-color|border-color|border-width|border-radius|box-shadow|text-shadow|transition|transition-duration|animation-duration|transition-timing-function|opacity|grid-template-columns|outline|outline-width|outline-offset)$/.test( explicit ) ) {
 			return explicit.replace( /^inline-size$/, 'width' ).replace( /^block-size$/, 'height' );
 		}
 		if ( controlIdMap[ d.controlId ] ) {
@@ -267,6 +387,12 @@
 		}
 		if ( property === 'transition-timing-function' ) {
 			return 'easing';
+		}
+		if ( property === 'grid-template-columns' ) {
+			return 'grid-columns';
+		}
+		if ( /^(outline|outline-width|outline-offset|transition)$/.test( property ) ) {
+			return property;
 		}
 		if ( /^(font-family|font-size|font-weight|line-height|letter-spacing|color|background-color|border-color|border-width|z-index|opacity|aspect-ratio)$/.test( property ) ) {
 			return property;
