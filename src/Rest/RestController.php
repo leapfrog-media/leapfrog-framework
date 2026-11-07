@@ -10,6 +10,7 @@ use Leapfrog\Framework\Bricks\VariableSet;
 use Leapfrog\Framework\Build;
 use Leapfrog\Framework\Color\Palette;
 use Leapfrog\Framework\Color\Roles;
+use Leapfrog\Framework\Scale\Components;
 use Leapfrog\Framework\Scale\Scales;
 use Leapfrog\Framework\Scale\Shape;
 use Leapfrog\Framework\Requirements;
@@ -131,6 +132,29 @@ final class RestController {
 			array(
 				'methods'             => WP_REST_Server::CREATABLE,
 				'callback'            => array( $this, 'save_shape' ),
+				'permission_callback' => $admin,
+				'args'                => array(
+					'revision' => array( 'type' => 'integer', 'required' => true ),
+				),
+			)
+		);
+
+		register_rest_route(
+			self::NAMESPACE,
+			'/components',
+			array(
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => array( $this, 'get_components' ),
+				'permission_callback' => $admin,
+			)
+		);
+
+		register_rest_route(
+			self::NAMESPACE,
+			'/components/save',
+			array(
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => array( $this, 'save_components' ),
 				'permission_callback' => $admin,
 				'args'                => array(
 					'revision' => array( 'type' => 'integer', 'required' => true ),
@@ -404,6 +428,60 @@ final class RestController {
 		}
 
 		return new WP_REST_Response( $this->shape_payload( $saved ) + array( 'summary' => $summary ) );
+	}
+
+	public function get_components(): WP_REST_Response {
+		return new WP_REST_Response( $this->components_payload( SettingsStore::get() ) );
+	}
+
+	/**
+	 * Saves component tokens and writes them to Bricks.
+	 *
+	 * @return WP_REST_Response|WP_Error
+	 */
+	public function save_components( WP_REST_Request $request ) {
+		if ( ! Requirements::ready() ) {
+			return new WP_Error( 'leapfrog_not_ready', implode( ' ', Requirements::problems() ), array( 'status' => 409 ) );
+		}
+
+		$settings                         = SettingsStore::get();
+		$settings['components']['values'] = Components::sanitize( $request->get_param( 'values' ) );
+
+		try {
+			$saved = SettingsStore::save( $settings, (int) $request->get_param( 'revision' ) );
+		} catch ( Throwable $error ) {
+			return new WP_Error( 'leapfrog_conflict', $error->getMessage(), array( 'status' => 409 ) );
+		}
+
+		try {
+			$summary = ( new VariableSet() )->sync( Components::CATEGORY, Components::variables( $saved['components']['values'] ) );
+		} catch ( Throwable $error ) {
+			return new WP_Error(
+				'leapfrog_bricks_sync',
+				sprintf( /* translators: %s: error from Bricks */ __( 'Your values were saved, but Bricks could not be fully updated: %s Save again to retry.', 'leapfrog-framework' ), $error->getMessage() ),
+				array( 'status' => 500, 'revision' => $saved['revision'] )
+			);
+		}
+
+		return new WP_REST_Response( $this->components_payload( $saved ) + array( 'summary' => $summary ) );
+	}
+
+	/**
+	 * @param array<string, mixed> $settings
+	 * @return array<string, mixed>
+	 */
+	private function components_payload( array $settings ): array {
+		$groups = array();
+		foreach ( Components::groups() as $id => $group ) {
+			$groups[] = array( 'id' => $id, 'label' => $group['label'], 'names' => array_keys( $group['values'] ) );
+		}
+
+		return array(
+			'revision' => $settings['revision'],
+			'values'   => $settings['components']['values'],
+			'defaults' => Components::defaults(),
+			'groups'   => $groups,
+		);
 	}
 
 	/**

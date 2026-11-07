@@ -1,0 +1,76 @@
+/* Leapfrog Framework: logical sizing switch in the Bricks builder. */
+html.lf-logical-sizing-only :is(
+	[data-controlKey="_width"],
+	[data-controlKey="_widthMin"],
+	[data-controlKey="_widthMax"],
+	[data-controlKey="_height"],
+	[data-controlKey="_heightMin"],
+	[data-controlKey="_heightMax"]
+) {
+	display: none !important;
+}
+
+.lf-logical-toggle {
+	padding-block: 12px;
+	border-block-end: 1px solid var(--builder-border-color, rgb(255 255 255 / 0.12));
+}
+
+.control-group.is-searching > .lf-logical-toggle {
+	display: none !important;
+}
+
+.lf-logical-toggle.is-saving {
+	opacity: 0.55;
+}
+
+.lf-logical-choice {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+}
+
+/* Sized to match Bricks' compact native toggles; !important beats Bricks' global button styles. */
+.lf-logical-switch {
+	position: relative;
+	display: inline-flex !important;
+	flex: 0 0 18px;
+	align-items: center !important;
+	inline-size: 18px !important;
+	block-size: 11px !important;
+	min-inline-size: 18px !important;
+	min-block-size: 11px !important;
+	padding: 1px !important;
+	border: 1px solid var(--builder-color-description, #74777a) !important;
+	border-radius: 999px !important;
+	background: transparent !important;
+	font-size: 0 !important;
+	line-height: 0 !important;
+	appearance: none;
+	cursor: pointer;
+	transition: background-color 140ms ease, border-color 140ms ease;
+}
+
+.lf-logical-switch:focus-visible {
+	outline: 2px solid var(--builder-color-accent, #ffd64f);
+	outline-offset: 2px;
+}
+
+.lf-logical-switch[aria-checked="true"] {
+	border-color: var(--builder-color-accent, #ffd64f) !important;
+	background: var(--builder-color-accent, #ffd64f) !important;
+}
+
+.lf-logical-switch__thumb {
+	display: block;
+	inline-size: 7px;
+	block-size: 7px;
+	border-radius: 50%;
+	background: var(--builder-color-description, #74777a);
+	transform: translateX(0);
+	transition: transform 140ms ease, background-color 140ms ease;
+}
+
+.lf-logical-switch[aria-checked="true"] .lf-logical-switch__thumb {
+	background: var(--builder-bg, #181d21);
+	transform: translateX(7px);
+}

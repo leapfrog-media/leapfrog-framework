@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.5.0 — 2026-11-07
+
+Milestone 5: builder tools (taken over from CoreBridge) and components.
+
+- Contextual variable picker: right-click a Bricks style field (or click Bricks' variable button) for the variables that fit it, with tokens made for the selected element first, then roles, then scales and palette colours. Hover previews; Enter or click applies; colour fields get an opacity slider that writes a live `color-mix()`. Rules rewritten for Leapfrog names; palette colours and roles included with swatches. Scale steps sort by size.
+- Button controls: Bricks Button Style (Primary, Secondary, Accent, Neutral), Size, Outline and Circle map to `lf-btn` classes, styled by `assets/frontend/buttons.css` from the `--btn-*` tokens and colour roles; works in every theme; live on the builder canvas.
+- Logical sizing: Inline size and Block size (with min/max) beside Width and Height on every element, plus a "Logical sizing only" switch. Same setting keys as CoreBridge, so existing values carry over.
+- Component tokens (category "Components"): buttons, form fields, cards, header; Components screen.
+- CoreBridge's Icon List element is not carried over.
+
 ## 0.4.0 — 2026-11-07
 
 Milestone 4: roles, themes, layout and shape.

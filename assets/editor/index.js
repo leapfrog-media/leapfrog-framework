@@ -8,6 +8,7 @@ import { Button, Notice, Spinner } from '@wordpress/components';
 
 import BricksData from './screens/BricksData';
 import Colours from './screens/Colours';
+import Components from './screens/Components';
 import Placeholder from './screens/Placeholder';
 import Roles from './screens/Roles';
 import Settings from './screens/Settings';
@@ -34,7 +35,7 @@ const SCREENS = [
 ];
 
 // Screens that exist so far; the rest show a placeholder.
-const SCREEN_COMPONENTS = { colours: Colours, typography: Typography, spacing: Spacing, shape: Shape, roles: Roles, settings: Settings };
+const SCREEN_COMPONENTS = { colours: Colours, typography: Typography, spacing: Spacing, shape: Shape, roles: Roles, components: Components, settings: Settings };
 const BUILT = [ ...Object.keys( SCREEN_COMPONENTS ), 'bricks' ];
 
 function App() {

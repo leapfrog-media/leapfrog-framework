@@ -32,6 +32,10 @@ Bricks' AI / Abilities API switch does not need to be on. When it is, Leapfrog u
 | `src/Scale/Shape.php` | Layout and shape variables |
 | `src/Bricks/VariableSet.php` | Keeps one Bricks variable category equal to a list of variables |
 | `src/Build.php` | Rebuilds palette, roles palette and theme CSS together |
+| `src/Scale/Components.php` | Component tokens (buttons, fields, cards, header) |
+| `src/Bricks/Buttons.php` | Bricks Button controls → `lf-btn` classes (+ `assets/frontend/buttons.css`, `assets/builder/buttons.js`) |
+| `src/Bricks/LogicalSizing.php` | Inline/Block size controls (+ `assets/builder/logical-sizing.*`) |
+| `src/Bricks/VariablePicker.php` | Contextual variable picker data (+ `assets/builder/variable-rules.js`, `variable-picker.*`) |
 | `src/Rest/RestController.php` | REST routes under `leapfrog/v1` (admins only) |
 | `src/Admin/FrameworkPage.php` | Leapfrog > Framework admin page |
 | `assets/editor/` | Editor app source (React, WordPress components) |
@@ -60,3 +64,4 @@ npm run build
 - `POST /wp-json/leapfrog/v1/style-manager/save` with `{ minScreenWidth, maxScreenWidth, defaultMode }`
 - `GET /wp-json/leapfrog/v1/roles`, `POST …/roles/preview` with `{ map }`, `POST …/roles/save` with `{ map, pageStyles, revision }`
 - `GET /wp-json/leapfrog/v1/shape`, `POST …/shape/save` with `{ corners, values, revision }`
+- `GET /wp-json/leapfrog/v1/components`, `POST …/components/save` with `{ values, revision }`

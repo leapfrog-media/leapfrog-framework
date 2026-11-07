@@ -1,0 +1,149 @@
+/* Leapfrog Framework: contextual variable picker (Bricks builder). */
+.lf-picker {
+	--lfp-line: color-mix(in srgb, currentColor 18%, transparent);
+	--lfp-muted: color-mix(in srgb, currentColor 64%, transparent);
+	position: fixed;
+	z-index: 2147483000;
+	display: grid;
+	grid-template-rows: auto auto auto minmax(0, 1fr);
+	width: min(36rem, calc(100vw - 2rem));
+	max-height: min(56rem, calc(100vh - 2rem));
+	overflow: hidden;
+	color: var(--builder-color, #e7e7e7);
+	background: var(--builder-bg, #232323);
+	border: 1px solid var(--lfp-line);
+	border-radius: 6px;
+	box-shadow: 0 16px 48px rgb(0 0 0 / 35%);
+	font: 13px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.lf-picker__header,
+.lf-picker__toolbar,
+.lf-picker__opacity {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 10px 12px;
+	border-bottom: 1px solid var(--lfp-line);
+}
+
+.lf-picker__header {
+	justify-content: space-between;
+}
+
+.lf-picker button,
+.lf-picker input {
+	font: inherit;
+}
+
+.lf-picker__header button {
+	border: 0;
+	color: inherit;
+	background: transparent;
+	font-size: 20px;
+	cursor: pointer;
+}
+
+.lf-picker__toolbar input {
+	flex: 1;
+	min-width: 0;
+	padding: 7px 9px;
+	color: inherit;
+	background: rgb(255 255 255 / 7%);
+	border: 1px solid var(--lfp-line);
+	border-radius: 4px;
+}
+
+.lf-picker__toolbar button {
+	padding: 7px 9px;
+	color: inherit;
+	background: transparent;
+	border: 1px solid var(--lfp-line);
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+.lf-picker__toolbar button[aria-pressed="true"] {
+	background: rgb(255 255 255 / 12%);
+}
+
+.lf-picker__opacity span {
+	color: var(--lfp-muted);
+}
+
+.lf-picker__opacity input {
+	flex: 1;
+	accent-color: var(--builder-color-accent, #ffd64f);
+}
+
+.lf-picker__opacity output {
+	min-width: 3.5em;
+	text-align: right;
+}
+
+.lf-picker__list {
+	overflow: auto;
+	padding: 5px;
+}
+
+.lf-picker__section {
+	padding: 10px 8px 5px;
+	color: var(--lfp-muted);
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+}
+
+.lf-picker__item {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	width: 100%;
+	padding: 7px 8px;
+	color: inherit;
+	background: transparent;
+	border: 0;
+	border-radius: 4px;
+	text-align: left;
+	cursor: pointer;
+}
+
+.lf-picker__item:hover,
+.lf-picker__item:focus,
+.lf-picker__item[aria-selected="true"] {
+	background: rgb(255 255 255 / 10%);
+	outline: none;
+}
+
+.lf-picker__swatch {
+	flex: 0 0 16px;
+	width: 16px;
+	height: 16px;
+	border-radius: 4px;
+	box-shadow: inset 0 0 0 1px rgb(255 255 255 / 25%);
+}
+
+.lf-picker__name,
+.lf-picker__value {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.lf-picker__name {
+	flex: 1 1 50%;
+}
+
+.lf-picker__value {
+	flex: 1 1 50%;
+	color: var(--lfp-muted);
+	text-align: right;
+}
+
+.lf-picker__empty {
+	margin: 0;
+	padding: 24px 10px;
+	color: var(--lfp-muted);
+	text-align: center;
+}

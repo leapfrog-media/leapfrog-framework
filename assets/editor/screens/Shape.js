@@ -7,7 +7,7 @@ import { Button, Notice, SelectControl, Spinner, TextControl } from '@wordpress/
  * Small visual next to a value, where one helps.
  */
 function Sample( { name, value } ) {
-	if ( name.startsWith( 'radius-' ) ) {
+	if ( name.startsWith( 'radius-' ) && ! value.includes( 'var(' ) ) {
 		return <span className="lf-shape-sample" style={ { borderRadius: value } } aria-hidden="true" />;
 	}
 	if ( name.startsWith( 'shadow-' ) ) {
@@ -19,7 +19,16 @@ function Sample( { name, value } ) {
 	return null;
 }
 
-export default function Shape( { restPath, onDirtyChange } ) {
+/**
+ * A screen of grouped variables (Layout and shape; Components).
+ */
+export default function Shape( {
+	restPath,
+	onDirtyChange,
+	endpoint = 'shape',
+	title = __( 'Layout and shape', 'leapfrog-framework' ),
+	intro = __( 'Content widths, corners, borders, shadows, motion and layers. Each is a Bricks variable in the category "Layout and shape".', 'leapfrog-framework' ),
+} ) {
 	const [ data, setData ] = useState( null );
 	const [ values, setValues ] = useState( null );
 	const [ corners, setCorners ] = useState( 'soft' );
@@ -30,12 +39,12 @@ export default function Shape( { restPath, onDirtyChange } ) {
 	const apply = ( res ) => {
 		setData( res );
 		setValues( res.values );
-		setCorners( res.corners );
+		setCorners( res.corners || '' );
 	};
 
 	useEffect( () => {
-		apiFetch( { path: `${ restPath }/shape` } ).then( apply ).catch( ( e ) => setNotice( { status: 'error', text: e.message } ) );
-	}, [ restPath ] );
+		apiFetch( { path: `${ restPath }/${ endpoint }` } ).then( apply ).catch( ( e ) => setNotice( { status: 'error', text: e.message } ) );
+	}, [ restPath, endpoint ] );
 
 	useEffect( () => {
 		onDirtyChange?.( dirty );
@@ -55,7 +64,7 @@ export default function Shape( { restPath, onDirtyChange } ) {
 	const save = () => {
 		setSaving( true );
 		setNotice( null );
-		apiFetch( { path: `${ restPath }/shape/save`, method: 'POST', data: { corners, values, revision: data.revision } } )
+		apiFetch( { path: `${ restPath }/${ endpoint }/save`, method: 'POST', data: { corners, values, revision: data.revision } } )
 			.then( ( res ) => {
 				apply( res );
 				setDirty( false );
@@ -82,13 +91,13 @@ export default function Shape( { restPath, onDirtyChange } ) {
 
 	return (
 		<section className="lf-screen lf-screen--scales">
-			<h1 className="lf-screen__title">{ __( 'Layout and shape', 'leapfrog-framework' ) }</h1>
-			<p className="lf-muted">{ __( 'Content widths, corners, borders, shadows, motion and layers. Each is a Bricks variable in the category "Layout and shape".', 'leapfrog-framework' ) }</p>
+			<h1 className="lf-screen__title">{ title }</h1>
+			<p className="lf-muted">{ intro }</p>
 
 			{ data.groups.map( ( group ) => (
 				<div className="lf-panel" key={ group.id }>
 					<h2 className="lf-panel__title">{ group.label }</h2>
-					{ group.id === 'corners' && (
+					{ group.id === 'corners' && data.presets && (
 						<SelectControl
 							__nextHasNoMarginBottom
 							__next40pxDefaultSize

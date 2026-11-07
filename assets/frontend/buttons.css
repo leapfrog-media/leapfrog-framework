@@ -1,0 +1,110 @@
+/*
+ * Leapfrog Framework: Bricks buttons.
+ * Every value comes from a --btn-* token or a colour role, with a plain fallback.
+ * Two classes (0,2,0) beat Bricks' .bricks-button defaults; per-element styles set in Bricks (#brxe-…) still win.
+ */
+.bricks-button.lf-btn {
+	--_bg: var(--primary, #2563eb);
+	--_fg: var(--color-on-primary, #fff);
+	--_hover: color-mix(in oklch, var(--_bg) 86%, var(--color-text, #000));
+	--_active: color-mix(in oklch, var(--_bg) 76%, var(--color-text, #000));
+
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: var(--btn-gap, 0.5em);
+	min-block-size: var(--btn-min-height, 44px);
+	padding-block: var(--btn-padding-block, 0.6em);
+	padding-inline: var(--btn-padding-inline, 1.25em);
+	border: var(--btn-border-width, 1px) solid var(--_bg);
+	border-radius: var(--btn-radius, 8px);
+	background-color: var(--_bg);
+	color: var(--_fg);
+	font-family: var(--btn-font, inherit);
+	font-size: var(--btn-font-size, inherit);
+	font-weight: var(--btn-font-weight, 600);
+	line-height: var(--btn-line-height, 1.2);
+	text-decoration: none;
+	cursor: pointer;
+	transition:
+		background-color var(--duration-fast, 120ms) var(--ease-out, ease-out),
+		border-color var(--duration-fast, 120ms) var(--ease-out, ease-out),
+		color var(--duration-fast, 120ms) var(--ease-out, ease-out),
+		transform var(--duration-fast, 120ms) var(--ease-out, ease-out);
+}
+
+.bricks-button.lf-btn:hover {
+	background-color: var(--_hover);
+	border-color: var(--_hover);
+	color: var(--_fg);
+}
+
+.bricks-button.lf-btn:active {
+	background-color: var(--_active);
+	border-color: var(--_active);
+	transform: translateY(1px);
+}
+
+.bricks-button.lf-btn:focus-visible {
+	outline: 2px solid var(--color-focus, currentColor);
+	outline-offset: 2px;
+}
+
+.bricks-button.lf-btn--secondary {
+	--_bg: var(--secondary, #7c3aed);
+	--_fg: var(--color-on-secondary, #fff);
+}
+
+.bricks-button.lf-btn--accent {
+	--_bg: var(--accent, #f59e0b);
+	--_fg: var(--color-on-accent, #000);
+}
+
+.bricks-button.lf-btn--neutral {
+	--_bg: var(--color-text, #111);
+	--_fg: var(--color-canvas, #fff);
+}
+
+.bricks-button.lf-btn--outline {
+	background-color: transparent;
+	color: var(--_bg);
+}
+
+.bricks-button.lf-btn--outline:hover {
+	background-color: var(--_bg);
+	border-color: var(--_bg);
+	color: var(--_fg);
+}
+
+.bricks-button.lf-btn--sm {
+	min-block-size: auto;
+	padding-block: calc(var(--btn-padding-block, 0.6em) * 0.6);
+	padding-inline: calc(var(--btn-padding-inline, 1.25em) * 0.7);
+	font-size: var(--btn-font-size-sm, 0.875em);
+}
+
+.bricks-button.lf-btn--lg {
+	padding-block: calc(var(--btn-padding-block, 0.6em) * 1.35);
+	padding-inline: calc(var(--btn-padding-inline, 1.25em) * 1.3);
+	font-size: var(--btn-font-size-lg, 1.125em);
+}
+
+.bricks-button.lf-btn--circle {
+	border-radius: 9999px;
+}
+
+.bricks-button.lf-btn[disabled],
+.bricks-button.lf-btn[aria-disabled="true"] {
+	opacity: 0.5;
+	pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.bricks-button.lf-btn {
+		transition: none;
+	}
+
+	.bricks-button.lf-btn:active {
+		transform: none;
+	}
+}

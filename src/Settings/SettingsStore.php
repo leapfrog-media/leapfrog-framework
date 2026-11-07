@@ -6,6 +6,7 @@ namespace Leapfrog\Framework\Settings;
 
 use Leapfrog\Framework\Color\Palette;
 use Leapfrog\Framework\Color\Roles;
+use Leapfrog\Framework\Scale\Components;
 use Leapfrog\Framework\Scale\Scales;
 use Leapfrog\Framework\Scale\Shape;
 use RuntimeException;
@@ -44,6 +45,9 @@ final class SettingsStore {
 				'corners' => 'soft',
 				'values'  => Shape::defaults(),
 			),
+			'components'    => array(
+				'values' => Components::defaults(),
+			),
 		);
 	}
 
@@ -59,6 +63,7 @@ final class SettingsStore {
 		$out['spacing']    = Scales::clean_scale( $out['spacing'], Scales::default_spacing() );
 		$out['roles']['map'] = Roles::sanitize_map( $value['roles']['map'] ?? array() );
 		$out['shape']['values'] = Shape::sanitize( $value['shape']['values'] ?? array() );
+		$out['components']['values'] = Components::sanitize( $value['components']['values'] ?? array() );
 		if ( ! isset( Shape::CORNERS[ $out['shape']['corners'] ] ) ) {
 			$out['shape']['corners'] = 'custom';
 		}

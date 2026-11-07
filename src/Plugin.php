@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace Leapfrog\Framework;
 
 use Leapfrog\Framework\Admin\FrameworkPage;
+use Leapfrog\Framework\Bricks\Buttons;
+use Leapfrog\Framework\Bricks\LogicalSizing;
 use Leapfrog\Framework\Bricks\ThemeControl;
+use Leapfrog\Framework\Bricks\VariablePicker;
 use Leapfrog\Framework\Color\ThemeCss;
 use Leapfrog\Framework\Rest\RestController;
 
@@ -18,6 +21,9 @@ final class Plugin {
 		( new RestController() )->register();
 		( new ThemeControl() )->register();
 		ThemeCss::register();
+		( new LogicalSizing() )->register();
+		( new Buttons() )->register();
+		( new VariablePicker() )->register();
 
 		add_action( 'admin_notices', array( $this, 'requirements_notice' ) );
 	}
