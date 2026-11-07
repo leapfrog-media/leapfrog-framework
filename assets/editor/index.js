@@ -7,6 +7,7 @@ import { __ } from '@wordpress/i18n';
 import { Button, Notice, Spinner } from '@wordpress/components';
 
 import BricksData from './screens/BricksData';
+import Colours from './screens/Colours';
 import Placeholder from './screens/Placeholder';
 import './editor.css';
 
@@ -27,10 +28,26 @@ const SCREENS = [
 	{ id: 'bricks', label: __( 'Bricks data', 'leapfrog-framework' ), milestone: 1 },
 ];
 
+// Screens that exist so far; the rest show a placeholder.
+const BUILT = [ 'colours', 'bricks' ];
+
 function App() {
-	const [ screen, setScreen ] = useState( 'bricks' );
+	const [ screen, setScreen ] = useState( 'colours' );
 	const [ status, setStatus ] = useState( null );
 	const [ error, setError ] = useState( '' );
+	const [ dirty, setDirty ] = useState( false );
+
+	const go = ( id ) => {
+		if ( id === screen ) {
+			return;
+		}
+		// eslint-disable-next-line no-alert
+		if ( dirty && ! window.confirm( __( 'You have unsaved changes on this screen. Leave without saving?', 'leapfrog-framework' ) ) ) {
+			return;
+		}
+		setDirty( false );
+		setScreen( id );
+	};
 
 	useEffect( () => {
 		apiFetch( { path: `${ config.restPath }/status` } )
@@ -61,9 +78,9 @@ function App() {
 							<li key={ s.id }>
 								<button
 									type="button"
-									className={ 'lf-nav__item' + ( s.id === screen ? ' is-active' : '' ) + ( s.milestone > 1 ? ' is-later' : '' ) }
+									className={ 'lf-nav__item' + ( s.id === screen ? ' is-active' : '' ) + ( BUILT.includes( s.id ) ? '' : ' is-later' ) }
 									aria-current={ s.id === screen ? 'page' : undefined }
-									onClick={ () => setScreen( s.id ) }
+									onClick={ () => go( s.id ) }
 								>
 									{ s.label }
 								</button>
@@ -80,11 +97,9 @@ function App() {
 							{ status.problems.join( ' ' ) }
 						</Notice>
 					) }
-					{ status && status.ready && (
-						screen === 'bricks'
-							? <BricksData status={ status } restPath={ config.restPath } />
-							: <Placeholder screen={ current } />
-					) }
+					{ status && status.ready && screen === 'bricks' && <BricksData status={ status } restPath={ config.restPath } /> }
+					{ status && status.ready && screen === 'colours' && <Colours restPath={ config.restPath } onDirtyChange={ setDirty } /> }
+					{ status && status.ready && ! BUILT.includes( screen ) && <Placeholder screen={ current } /> }
 				</main>
 			</div>
 		</div>

@@ -229,3 +229,228 @@ body.lf-fullscreen #wpcontent {
 .lf-app-loading {
 	padding: 24px;
 }
+
+/* Colours screen */
+
+.lf-screen--colours {
+	padding-bottom: 80px;
+}
+
+.lf-group {
+	margin-top: 32px;
+}
+
+.lf-group__title {
+	margin: 0 0 12px;
+	font-size: 15px;
+	font-weight: 600;
+}
+
+.lf-colour {
+	margin-bottom: 12px;
+	padding: 16px;
+	background: var(--lf-panel);
+	border: 1px solid var(--lf-line);
+	border-radius: 8px;
+}
+
+.lf-colour__head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 12px;
+}
+
+.lf-colour__chip {
+	width: 32px;
+	height: 32px;
+	border-radius: 8px;
+	box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.12);
+}
+
+.lf-colour__name h3 {
+	margin: 0;
+	font-size: 14px;
+	font-weight: 600;
+}
+
+.lf-colour__name code {
+	background: none;
+	padding: 0;
+	color: var(--lf-muted);
+}
+
+.lf-colour__contrast {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin-left: auto;
+}
+
+.lf-contrast {
+	display: inline-flex;
+	gap: 4px;
+	align-items: baseline;
+	padding: 2px 8px;
+	border-radius: 999px;
+	font-size: 12px;
+	background: var(--lf-canvas);
+}
+
+.lf-contrast.is-good {
+	background: #e7f5ec;
+	color: #14532d;
+}
+
+.lf-contrast.is-warn {
+	background: #fdf3e2;
+	color: #7a4a00;
+}
+
+.lf-contrast.is-bad {
+	background: #fcebea;
+	color: #8a1f17;
+}
+
+.lf-colour__controls {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+	gap: 16px 24px;
+	margin-top: 16px;
+}
+
+.lf-field {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.lf-field__label {
+	font-weight: 600;
+}
+
+.lf-field--toggles {
+	gap: 12px;
+}
+
+.lf-hint {
+	color: var(--lf-muted);
+	font-size: 12px;
+}
+
+.lf-hex {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.lf-hex input[type="color"] {
+	flex: 0 0 40px;
+	width: 40px;
+	height: 40px;
+	padding: 2px;
+	border: 1px solid var(--lf-line);
+	border-radius: 6px;
+	background: var(--lf-panel);
+	cursor: pointer;
+}
+
+.lf-hex .components-base-control {
+	flex: 0 1 140px;
+}
+
+.lf-swatches {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	margin-top: 16px;
+}
+
+.lf-swatch-row {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+}
+
+.lf-swatch {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 4px;
+	width: 56px;
+}
+
+.lf-swatch__fill {
+	display: block;
+	width: 56px;
+	height: 36px;
+	border-radius: 6px;
+	box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.1);
+}
+
+.lf-swatch.is-checker .lf-swatch__fill {
+	background-image:
+		linear-gradient(var(--lf-swatch-color, transparent), var(--lf-swatch-color, transparent)),
+		repeating-conic-gradient(#d9d9d9 0 25%, #fff 0 50%);
+	background-size: auto, 12px 12px;
+}
+
+.lf-swatch.is-on-dark {
+	padding: 4px;
+	margin: -4px 0;
+	border-radius: 8px;
+	background: #111;
+}
+
+.lf-swatch.is-on-dark .lf-swatch__label {
+	color: #ddd;
+}
+
+.lf-swatch__label {
+	font-size: 11px;
+	color: var(--lf-muted);
+}
+
+.lf-add {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: flex-start;
+	gap: 12px;
+	padding: 16px;
+	border: 1px dashed var(--lf-line);
+	border-radius: 8px;
+}
+
+.lf-add .components-base-control {
+	min-width: 220px;
+}
+
+.lf-add > .components-button {
+	margin-top: 24px;
+}
+
+.lf-savebar {
+	position: sticky;
+	bottom: 0;
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 16px;
+	margin: 24px -40px -32px;
+	padding: 12px 40px;
+	background: var(--lf-panel);
+	border-top: 1px solid var(--lf-line);
+}
+
+.lf-savebar__message {
+	margin-right: auto;
+}
+
+.lf-savebar__message.is-success {
+	color: #14532d;
+}
+
+.lf-savebar__message.is-error {
+	color: #8a1f17;
+	font-weight: 600;
+}

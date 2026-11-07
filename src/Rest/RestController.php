@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Leapfrog\Framework\Rest;
 
 use Leapfrog\Framework\Bricks\BricksGateway;
+use Leapfrog\Framework\Bricks\PaletteSync;
+use Leapfrog\Framework\Color\Palette;
 use Leapfrog\Framework\Requirements;
 use Leapfrog\Framework\Settings\SettingsStore;
 use Throwable;
@@ -45,6 +47,33 @@ final class RestController {
 				'methods'             => WP_REST_Server::READABLE,
 				'callback'            => array( $this, 'variables' ),
 				'permission_callback' => $admin,
+			)
+		);
+
+		register_rest_route(
+			self::NAMESPACE,
+			'/colours/preview',
+			array(
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => array( $this, 'preview_colours' ),
+				'permission_callback' => $admin,
+				'args'                => array(
+					'items' => array( 'type' => 'array', 'required' => true ),
+				),
+			)
+		);
+
+		register_rest_route(
+			self::NAMESPACE,
+			'/colours/save',
+			array(
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => array( $this, 'save_colours' ),
+				'permission_callback' => $admin,
+				'args'                => array(
+					'items'    => array( 'type' => 'array', 'required' => true ),
+					'revision' => array( 'type' => 'integer', 'required' => true ),
+				),
 			)
 		);
 
@@ -126,6 +155,62 @@ final class RestController {
 				'items'      => $items,
 				'categories' => $categories,
 				'total'      => count( $items ),
+			)
+		);
+	}
+
+	/**
+	 * Generated colours for the editor's live preview. Saves nothing.
+	 */
+	public function preview_colours( WP_REST_Request $request ): WP_REST_Response {
+		$settings = SettingsStore::get();
+		$items    = Palette::sanitize_items( $request->get_param( 'items' ) );
+
+		return new WP_REST_Response(
+			array(
+				'items'     => $items,
+				'generated' => Palette::generate( $items, $settings['colors']['shadeSteps'], $settings['colors']['alphaSteps'] ),
+			)
+		);
+	}
+
+	/**
+	 * Saves the colour settings, then makes the Bricks palette match.
+	 *
+	 * @return WP_REST_Response|WP_Error
+	 */
+	public function save_colours( WP_REST_Request $request ) {
+		if ( ! Requirements::ready() ) {
+			return new WP_Error( 'leapfrog_not_ready', implode( ' ', Requirements::problems() ), array( 'status' => 409 ) );
+		}
+
+		$settings                    = SettingsStore::get();
+		$settings['colors']['items'] = $request->get_param( 'items' );
+
+		try {
+			$saved = SettingsStore::save( $settings, (int) $request->get_param( 'revision' ) );
+		} catch ( Throwable $error ) {
+			return new WP_Error( 'leapfrog_conflict', $error->getMessage(), array( 'status' => 409 ) );
+		}
+
+		$generated = Palette::generate( $saved['colors']['items'], $saved['colors']['shadeSteps'], $saved['colors']['alphaSteps'] );
+
+		try {
+			$summary = ( new PaletteSync() )->sync( Palette::bricks_rows( $generated ) );
+		} catch ( Throwable $error ) {
+			// Settings are saved; Bricks can be brought up to date by saving again.
+			return new WP_Error(
+				'leapfrog_bricks_sync',
+				sprintf( /* translators: %s: error from Bricks */ __( 'Your colours were saved, but Bricks could not be fully updated: %s Save again to retry.', 'leapfrog-framework' ), $error->getMessage() ),
+				array( 'status' => 500, 'settings' => $saved )
+			);
+		}
+
+		return new WP_REST_Response(
+			array(
+				'settings'  => $saved,
+				'generated' => $generated,
+				'summary'   => $summary,
 			)
 		);
 	}

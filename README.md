@@ -20,6 +20,9 @@ Bricks' AI / Abilities API switch does not need to be on. When it is, Leapfrog u
 | `src/Requirements.php` | Checks Bricks is active and new enough |
 | `src/Bricks/BricksGateway.php` | The only code that talks to Bricks' design data |
 | `src/Settings/SettingsStore.php` | Leapfrog's own settings (option `lf_framework`), with a revision lock |
+| `src/Color/Color.php` | OKLCH colour maths, gamut mapping, WCAG contrast |
+| `src/Color/Palette.php` | Colour settings, shade/transparency/dark generation, rows for Bricks |
+| `src/Bricks/PaletteSync.php` | Keeps the Bricks palette "Leapfrog" equal to the generated rows |
 | `src/Rest/RestController.php` | REST routes under `leapfrog/v1` (admins only) |
 | `src/Admin/FrameworkPage.php` | Leapfrog > Framework admin page |
 | `assets/editor/` | Editor app source (React, WordPress components) |
@@ -40,3 +43,5 @@ npm run build
 - `GET /wp-json/leapfrog/v1/bricks/variables`
 - `GET /wp-json/leapfrog/v1/settings`
 - `POST /wp-json/leapfrog/v1/settings` with `{ settings, revision }`
+- `POST /wp-json/leapfrog/v1/colours/preview` with `{ items }` (saves nothing)
+- `POST /wp-json/leapfrog/v1/colours/save` with `{ items, revision }` (saves settings, then syncs the Bricks palette)

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Leapfrog\Framework\Settings;
 
+use Leapfrog\Framework\Color\Palette;
 use RuntimeException;
 
 /**
@@ -26,12 +27,6 @@ final class SettingsStore {
 			'revision'      => 0,
 			'updated'       => 0,
 			'brand'         => array(
-				'colors' => array(
-					'primary'   => '',
-					'secondary' => '',
-					'accent'    => '',
-					'neutral'   => '',
-				),
 				'fonts'  => array(
 					'body'    => '',
 					'heading' => '',
@@ -40,6 +35,7 @@ final class SettingsStore {
 				'corners' => 'soft',
 			),
 			'colors'        => array(
+				'items'      => Palette::default_items(),
 				'shadeSteps' => array( 10, 20, 30, 40, 50, 60, 70, 80, 90 ),
 				'alphaSteps' => array( 10, 20, 30, 40, 50, 60, 70, 80, 90 ),
 			),
@@ -114,7 +110,10 @@ final class SettingsStore {
 		foreach ( $defaults as $key => $default ) {
 			$given = $value[ $key ] ?? $default;
 
-			if ( is_array( $default ) && array_is_list( $default ) ) {
+			if ( 'items' === $key && is_array( $default ) && is_array( $default[0] ?? null ) ) {
+				// Colour items have their own rules.
+				$out[ $key ] = Palette::sanitize_items( $given );
+			} elseif ( is_array( $default ) && array_is_list( $default ) ) {
 				$out[ $key ] = self::clean_list( $given, $default );
 			} elseif ( is_array( $default ) ) {
 				$out[ $key ] = self::clean( $given, $default );
