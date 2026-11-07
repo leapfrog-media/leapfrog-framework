@@ -343,6 +343,37 @@ body.lf-fullscreen #wpcontent {
 	font-size: 12px;
 }
 
+/* Brand starter: font status and install */
+.lf-font-install {
+	display: grid;
+	gap: 10px;
+	justify-items: start;
+	margin-top: 16px;
+}
+
+.lf-font-install__list {
+	display: grid;
+	gap: 4px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.lf-font-install__list li::before {
+	content: "○ ";
+	color: var(--lf-muted);
+}
+
+.lf-font-install__list li.is-installed::before {
+	content: "● ";
+	color: var(--lf-accent);
+}
+
+.lf-font-install .components-notice {
+	margin: 0;
+	justify-self: stretch;
+}
+
 .lf-hex {
 	display: flex;
 	align-items: center;

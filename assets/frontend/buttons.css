@@ -150,8 +150,36 @@
 	pointer-events: none;
 }
 
+/*
+ * Bricks' Toggle – Mode element (the visitor light/dark switch): icon colour, a round
+ * hover tint and Leapfrog's focus ring. :where() keeps it at zero specificity, so any
+ * style set on the element in Bricks wins.
+ */
+:where(.brxe-toggle-mode) {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-inline-size: var(--target-size-min, 44px);
+	min-block-size: var(--target-size-min, 44px);
+	border-radius: var(--radius-full, 9999px);
+	color: var(--color-icon, currentColor);
+	cursor: pointer;
+	transition: background-color var(--duration-fast, 120ms) var(--ease-out, ease-out), color var(--duration-fast, 120ms) var(--ease-out, ease-out);
+}
+
+:where(.brxe-toggle-mode):hover {
+	background-color: var(--color-surface-hover, rgba(0, 0, 0, 0.06));
+	color: var(--color-text, currentColor);
+}
+
+:where(.brxe-toggle-mode):focus-visible {
+	outline: var(--focus-ring, 2px solid currentColor);
+	outline-offset: var(--focus-ring-offset, 2px);
+}
+
 @media (prefers-reduced-motion: reduce) {
-	.bricks-button.lf-btn {
+	.bricks-button.lf-btn,
+	:where(.brxe-toggle-mode) {
 		transition: none;
 	}
 

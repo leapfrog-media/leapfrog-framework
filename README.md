@@ -29,6 +29,7 @@ Bricks' AI / Abilities API switch does not need to be on. When it is, Leapfrog u
 | `src/Color/Roles.php` | Colour roles: definitions, light/dark choices, contrast, rows for the "Leapfrog roles" palette |
 | `src/Color/ThemeCss.php` | Section theme CSS (`data-lf-theme`), stored on save and printed in the head |
 | `src/Bricks/ThemeControl.php` | Theme control on Section/Container/Block (+ `assets/builder/theme-control.js` for the builder) |
+| `src/Fonts/FontInstaller.php` | Installs Google fonts as self-hosted Bricks custom fonts (variable where possible) and sets them in the site-wide theme style |
 | `src/Bricks/BuilderHelpers.php` | Grid guides (`assets/builder/grid-guides.js`) and the BEM class generator (`assets/builder/bem.js`) |
 | `src/Bricks/GridExtras.php` | Leapfrog row in Bricks' Visual grid builder: layouts, gaps, bento, stack on mobile (+ `assets/builder/grid-extras.js`) |
 | `src/Scale/Shape.php` | Layout and shape variables: widths, sizes, grids, corners, borders, focus, shadows, motion, layers |
@@ -75,6 +76,7 @@ npm run build
 - `GET /wp-json/leapfrog/v1/history`, `POST …/history/restore` with `{ id, revision }`, `POST …/rebuild`
 - `GET /wp-json/leapfrog/v1/export`, `POST …/import/preview` with `{ file }`, `POST …/import` with `{ file, revision }`
 - `GET /wp-json/leapfrog/v1/presets`, `POST …/presets/save` with `{ name }`, `POST …/presets/apply` with `{ id, revision }`, `POST …/presets/delete` with `{ id }`
+- `POST /wp-json/leapfrog/v1/fonts/status` with `{ families }`, `POST …/fonts/install` with `{ heading, body }`
 
 ## Fonts
 

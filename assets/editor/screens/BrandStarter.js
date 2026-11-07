@@ -105,6 +105,98 @@ function usePreviewFonts( fonts ) {
 	}, [ fonts.heading, fonts.body ] );
 }
 
+/**
+ * Shows whether the heading and body fonts are on the site, and installs missing
+ * Google fonts (self-hosted, variable where possible) and sets them in the theme style.
+ */
+function FontInstall( { restPath, heading, body } ) {
+	const [ status, setStatus ] = useState( null );
+	const [ busy, setBusy ] = useState( false );
+	const [ result, setResult ] = useState( null );
+	const families = [ heading, body ].map( ( f ) => String( f || '' ).trim() ).filter( Boolean );
+	const key = families.join( '|' );
+
+	useEffect( () => {
+		if ( ! families.length ) {
+			setStatus( {} );
+			return undefined;
+		}
+		const timer = setTimeout( () => {
+			apiFetch( { path: `${ restPath }/fonts/status`, method: 'POST', data: { families } } )
+				.then( ( res ) => setStatus( res.fonts || {} ) )
+				.catch( () => setStatus( null ) );
+		}, 400 );
+		return () => clearTimeout( timer );
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [ key, restPath ] );
+
+	if ( ! families.length ) {
+		return <p className="lf-hint">{ __( 'Choose a heading and body font. Google fonts can then be installed on the site in one click.', 'leapfrog-framework' ) }</p>;
+	}
+
+	const install = () => {
+		setBusy( true );
+		setResult( null );
+		apiFetch( { path: `${ restPath }/fonts/install`, method: 'POST', data: { heading, body } } )
+			.then( ( res ) => {
+				setStatus( res.status || status );
+				const lines = ( res.fonts || [] ).map( ( f ) => {
+					if ( f.status === 'installed' ) {
+						return f.variable
+							? sprintf( /* translators: 1: font, 2: weights */ __( '%1$s installed as a variable font (weights %2$s%3$s).', 'leapfrog-framework' ), f.family, f.weights, f.italic ? __( ', with italics', 'leapfrog-framework' ) : '' )
+							: sprintf( /* translators: 1: font, 2: weights */ __( '%1$s installed (weights %2$s).', 'leapfrog-framework' ), f.family, f.weights );
+					}
+					if ( f.status === 'exists' ) {
+						return sprintf( /* translators: %s font */ __( '%s was already on the site.', 'leapfrog-framework' ), f.family );
+					}
+					if ( f.status === 'not-google' ) {
+						return sprintf( /* translators: %s font */ __( '%s is not a Google font: add its files in Bricks > Custom Fonts.', 'leapfrog-framework' ), f.family );
+					}
+					return sprintf( /* translators: 1: font, 2: error */ __( '%1$s could not be installed: %2$s', 'leapfrog-framework' ), f.family, f.message || '' );
+				} );
+				const ts = res.themeStyle || {};
+				if ( ts.status === 'created' || ts.status === 'updated' ) {
+					lines.push( sprintf( /* translators: %s theme style name */ __( 'Headings and body text now use them, set in the theme style “%s”.', 'leapfrog-framework' ), ts.label ) );
+				}
+				setResult( { status: ( res.fonts || [] ).some( ( f ) => f.status === 'error' ) ? 'warning' : 'success', lines } );
+			} )
+			.catch( ( e ) => setResult( { status: 'error', lines: [ e.message ] } ) )
+			.finally( () => setBusy( false ) );
+	};
+
+	const label = ( family ) => {
+		const s = status?.[ family ];
+		if ( ! s ) {
+			return '…';
+		}
+		if ( s.installed ) {
+			return __( 'on this site', 'leapfrog-framework' );
+		}
+		return s.google ? __( 'not installed yet (Google font)', 'leapfrog-framework' ) : __( 'not found: add its files in Bricks > Custom Fonts', 'leapfrog-framework' );
+	};
+
+	return (
+		<div className="lf-font-install">
+			<ul className="lf-font-install__list">
+				{ [ ...new Set( families ) ].map( ( f ) => (
+					<li key={ f } className={ status?.[ f ]?.installed ? 'is-installed' : '' }>
+						<strong>{ f }</strong> · { label( f ) }
+					</li>
+				) ) }
+			</ul>
+			<Button variant="secondary" onClick={ install } isBusy={ busy } disabled={ busy || ! status }>
+				{ __( 'Install fonts and use them on the site', 'leapfrog-framework' ) }
+			</Button>
+			<p className="lf-hint">{ __( 'Google fonts are downloaded to this site (no requests to Google from visitors), as variable fonts where available, Latin and Latin Extended only. Headings and body text are then set in a site-wide Bricks theme style.', 'leapfrog-framework' ) }</p>
+			{ result && (
+				<Notice status={ result.status } isDismissible={ false }>
+					{ result.lines.map( ( l, i ) => <div key={ i }>{ l }</div> ) }
+				</Notice>
+			) }
+		</div>
+	);
+}
+
 export default function BrandStarter( { restPath, onDirtyChange } ) {
 	const [ data, setData ] = useState( null );
 	const [ inputs, setInputs ] = useState( null );
@@ -212,7 +304,7 @@ export default function BrandStarter( { restPath, onDirtyChange } ) {
 
 					<div className="lf-panel">
 						<h2 className="lf-panel__title">{ __( 'Fonts and type', 'leapfrog-framework' ) }</h2>
-						<datalist id={ fontList }>{ data.fonts.map( ( f ) => <option key={ f } value={ f } /> ) }</datalist>
+						<datalist id={ fontList }>{ [ ...new Set( [ ...data.fonts, ...( data.googleFonts || [] ) ] ) ].map( ( f ) => <option key={ f } value={ f } /> ) }</datalist>
 						<div className="lf-grid">
 							<TextControl __nextHasNoMarginBottom __next40pxDefaultSize label={ __( 'Heading font', 'leapfrog-framework' ) } list={ fontList } value={ inputs.fonts.heading } placeholder="System font" onChange={ ( v ) => set( [ 'fonts', 'heading' ], v ) } />
 							<TextControl __nextHasNoMarginBottom __next40pxDefaultSize label={ __( 'Body font', 'leapfrog-framework' ) } list={ fontList } value={ inputs.fonts.body } placeholder="System font" onChange={ ( v ) => set( [ 'fonts', 'body' ], v ) } />
@@ -231,7 +323,7 @@ export default function BrandStarter( { restPath, onDirtyChange } ) {
 								onChange={ ( v ) => set( [ 'text', 'contrast' ], v ) }
 							/>
 						</div>
-						<p className="lf-hint">{ __( 'Add the font files in Bricks > Custom Fonts so the site loads them; names added there are suggested above.', 'leapfrog-framework' ) }</p>
+						<FontInstall restPath={ restPath } heading={ inputs.fonts.heading } body={ inputs.fonts.body } />
 					</div>
 
 					<div className="lf-panel">

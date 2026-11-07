@@ -8,6 +8,7 @@ use Leapfrog\Framework\Bricks\ScaleSync;
 use Leapfrog\Framework\Build;
 use Leapfrog\Framework\Color\Palette;
 use Leapfrog\Framework\Color\Roles;
+use Leapfrog\Framework\Fonts\FontInstaller;
 use Leapfrog\Framework\Requirements;
 use Leapfrog\Framework\Scale\Scales;
 use Leapfrog\Framework\Settings\History;
@@ -50,6 +51,41 @@ final class SiteController {
 		$route( '/presets/save', WP_REST_Server::CREATABLE, array( $this, 'save_preset' ) );
 		$route( '/presets/apply', WP_REST_Server::CREATABLE, array( $this, 'apply_preset' ) );
 		$route( '/presets/delete', WP_REST_Server::CREATABLE, array( $this, 'delete_preset' ) );
+		$route( '/fonts/status', WP_REST_Server::CREATABLE, array( $this, 'font_status' ) );
+		$route( '/fonts/install', WP_REST_Server::CREATABLE, array( $this, 'install_fonts' ) );
+	}
+
+	// ----- Fonts -----
+
+	public function font_status( WP_REST_Request $request ): WP_REST_Response {
+		$families = array_map( 'strval', (array) $request->get_param( 'families' ) );
+
+		return new WP_REST_Response( array( 'fonts' => FontInstaller::status( array_slice( $families, 0, 4 ) ), 'themeStyle' => (string) get_option( FontInstaller::THEME_STYLE_OPTION, '' ) ) );
+	}
+
+	/**
+	 * Installs the heading and body fonts from Google (when missing) and sets them in the site-wide theme style.
+	 *
+	 * @return WP_REST_Response|WP_Error
+	 */
+	public function install_fonts( WP_REST_Request $request ) {
+		if ( ! Requirements::ready() ) {
+			return new WP_Error( 'leapfrog_not_ready', implode( ' ', Requirements::problems() ), array( 'status' => 409 ) );
+		}
+		$heading = trim( (string) $request->get_param( 'heading' ) );
+		$body    = trim( (string) $request->get_param( 'body' ) );
+
+		$results = array();
+		foreach ( array_unique( array_filter( array( $heading, $body ) ) ) as $family ) {
+			$results[] = FontInstaller::install( $family );
+		}
+		try {
+			$style = FontInstaller::apply_theme_style( $heading, $body );
+		} catch ( Throwable $error ) {
+			return new WP_Error( 'leapfrog_theme_style', $error->getMessage(), array( 'status' => 500, 'fonts' => $results ) );
+		}
+
+		return new WP_REST_Response( array( 'fonts' => $results, 'themeStyle' => $style, 'status' => FontInstaller::status( array( $heading, $body ) ) ) );
 	}
 
 	// ----- Brand starter -----
@@ -60,8 +96,9 @@ final class SiteController {
 		return new WP_REST_Response(
 			array(
 				'revision' => $settings['revision'],
-				'inputs'   => Starter::from_settings( $settings ),
-				'fonts'    => $this->bricks_fonts(),
+				'inputs'      => Starter::from_settings( $settings ),
+				'fonts'       => $this->bricks_fonts(),
+				'googleFonts' => array_keys( FontInstaller::google() ),
 			)
 		);
 	}

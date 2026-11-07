@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.1.0 — 2026-11-07
+
+Leapfrog Framework 1.1: everything Core Framework, CoreBridge and Advanced Themer's grid tools were used for, now in Leapfrog or in Bricks itself. Milestones 1.1a to 1.1c are listed below as 1.1.0-alpha releases; this release adds 1.1d.
+
+- Font install from the brand starter: the heading and body font fields suggest every Google font, show whether each font is on the site, and "Install fonts and use them on the site" downloads missing Google fonts into Bricks Custom Fonts and sets them in a site-wide Bricks theme style. Fonts are self-hosted (visitors' browsers never contact Google), installed as variable fonts covering their whole weight range where Google offers one (one file per weight otherwise), Latin and Latin Extended only. Leapfrog uses the theme style it set fonts in before, else the site's only site-wide theme style, else creates one called "Leapfrog"; only the font settings are changed.
+- Bricks' Toggle – Mode element (the visitor light/dark switch) checked with Leapfrog: the page, roles and Light, Dark and Inverted sections all follow it. Leapfrog now styles the toggle (icon colour, round hover tint, 44px tap target, focus ring) at zero specificity, so styles set in Bricks win.
+
 ## 1.1.0-alpha.7 — 2026-11-07
 
 Milestone 1.1c: builder helpers.

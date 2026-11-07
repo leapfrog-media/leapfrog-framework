@@ -38,6 +38,9 @@ final class BricksGateway {
 		'bricks/get-style-manager'             => array( 'Style_Manager', 'get_style_manager', 'Style_Manager', 'read_permission' ),
 		'bricks/set-style-manager'             => array( 'Style_Manager', 'set_style_manager', 'Style_Manager', 'write_permission' ),
 		'bricks/regenerate-css-files'          => array( 'Maintenance', 'regenerate_css_files', 'Maintenance', 'admin_permission' ),
+		'bricks/get-theme-styles'              => array( 'Design', 'get_theme_styles', 'Design', 'theme_styles_permission' ),
+		'bricks/create-theme-style'            => array( 'Design', 'create_theme_style', 'Design', 'theme_styles_permission' ),
+		'bricks/update-theme-style'            => array( 'Design', 'update_theme_style', 'Design', 'theme_styles_permission' ),
 	);
 
 	/**
