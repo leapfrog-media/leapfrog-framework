@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Leapfrog\Framework\Fonts;
 
-use Leapfrog\Framework\Bricks\BricksGateway;
-use Leapfrog\Framework\Bricks\CssFiles;
+use Leapfrog\Framework\Bricks\ThemeStyle;
 use RuntimeException;
 use Throwable;
 
@@ -21,8 +20,8 @@ use Throwable;
 final class FontInstaller {
 	public const SUBSETS = array( 'latin', 'latin-ext' );
 
-	/** The theme style Leapfrog sets fonts in. */
-	public const THEME_STYLE_OPTION = 'lf_theme_style_id';
+	/** The theme style Leapfrog sets fonts in (see ThemeStyle). */
+	public const THEME_STYLE_OPTION = ThemeStyle::OPTION;
 
 	private const FALLBACK = 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif';
 
@@ -184,51 +183,8 @@ final class FontInstaller {
 			return array( 'status' => 'skipped' );
 		}
 
-		$gateway = new BricksGateway();
-		$all     = $gateway->execute( 'bricks/get-theme-styles' );
-		$styles  = (array) ( $all['styles'] ?? array() );
-		$id      = (string) get_option( self::THEME_STYLE_OPTION, '' );
-
-		if ( '' === $id || ! isset( $styles[ $id ] ) ) {
-			$site_wide = array_keys(
-				array_filter(
-					$styles,
-					static fn( $style ): bool => in_array( 'any', array_column( (array) ( $style['conditions'] ?? array() ), 'main' ), true )
-				)
-			);
-			$id = 1 === count( $site_wide ) ? (string) $site_wide[0] : '';
-		}
-
-		if ( '' === $id ) {
-			$created = $gateway->execute(
-				'bricks/create-theme-style',
-				array(
-					'label'      => 'Leapfrog',
-					'conditions' => array( array( 'main' => 'any' ) ),
-					'settings'   => array( 'typography' => $typography ),
-				)
-			);
-			$id     = (string) $created['id'];
-			$action = 'created';
-		} else {
-			// Typography keys are merged into the style; everything else in it is left alone.
-			$one = $gateway->execute( 'bricks/get-theme-styles', array( 'style' => $id ) );
-			$gateway->execute(
-				'bricks/update-theme-style',
-				array(
-					'id'                => $id,
-					'settings'          => array( 'typography' => $typography ),
-					'expectedOwnership' => (array) $one['ownership'] + array( 'itemDigest' => (string) ( $one['itemDigests'][ $id ] ?? '' ) ),
-				)
-			);
-			$action = 'updated';
-		}
-		update_option( self::THEME_STYLE_OPTION, $id, false );
-		CssFiles::rebuild();
-
-		$label = (string) ( $styles[ $id ]['label'] ?? 'Leapfrog' );
-
-		return array( 'status' => $action, 'id' => $id, 'label' => $label );
+		// Typography keys are merged into the style; everything else in it is left alone.
+		return ThemeStyle::patch( array( 'typography' => $typography ) );
 	}
 
 	/**

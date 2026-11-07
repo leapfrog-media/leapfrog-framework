@@ -220,7 +220,7 @@
 		_width: 'width', _widthMin: 'min-width', _widthMax: 'max-width', _height: 'height', _heightMin: 'min-height', _heightMax: 'max-height',
 		_inlineSize: 'width', _inlineSizeMin: 'min-width', _inlineSizeMax: 'max-width', _blockSize: 'height', _blockSizeMin: 'min-height', _blockSizeMax: 'max-height',
 		_aspectRatio: 'aspect-ratio', _top: 'top', _right: 'right', _bottom: 'bottom', _left: 'left', _zIndex: 'z-index',
-		_flexBasis: 'width', _cssTransition: 'transition', _gridTemplateColumns: 'grid-template-columns', _opacity: 'opacity',
+		_flexBasis: 'width', _cssTransition: 'transition', _gridTemplateColumns: 'grid-template-columns', _opacity: 'opacity', _lfColumnGap: 'column-gap', _lfColumnWidth: 'width',
 	};
 
 	function componentHint( value ) {

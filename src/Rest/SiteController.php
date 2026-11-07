@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Leapfrog\Framework\Rest;
 
+use Leapfrog\Framework\Bricks\ElementSettings;
 use Leapfrog\Framework\Bricks\ScaleSync;
 use Leapfrog\Framework\Build;
 use Leapfrog\Framework\Color\Palette;
@@ -53,6 +54,31 @@ final class SiteController {
 		$route( '/presets/delete', WP_REST_Server::CREATABLE, array( $this, 'delete_preset' ) );
 		$route( '/fonts/status', WP_REST_Server::CREATABLE, array( $this, 'font_status' ) );
 		$route( '/fonts/install', WP_REST_Server::CREATABLE, array( $this, 'install_fonts' ) );
+		$route( '/element-settings', WP_REST_Server::READABLE, array( $this, 'get_element_settings' ) );
+		$route( '/element-settings/save', WP_REST_Server::CREATABLE, array( $this, 'save_element_settings' ) );
+	}
+
+	// ----- Element settings -----
+
+	public function get_element_settings(): WP_REST_Response {
+		$groups = array();
+		foreach ( ElementSettings::GROUPS as $key => [ $label, $description ] ) {
+			// phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText -- fixed strings from the class.
+			$groups[] = array( 'key' => $key, 'label' => __( $label, 'leapfrog-framework' ), 'description' => __( $description, 'leapfrog-framework' ) );
+		}
+
+		return new WP_REST_Response( array( 'groups' => $groups, 'settings' => ElementSettings::get() ) );
+	}
+
+	/**
+	 * @return WP_REST_Response|WP_Error
+	 */
+	public function save_element_settings( WP_REST_Request $request ) {
+		if ( ! Requirements::ready() ) {
+			return new WP_Error( 'leapfrog_not_ready', implode( ' ', Requirements::problems() ), array( 'status' => 409 ) );
+		}
+
+		return new WP_REST_Response( ElementSettings::save( $request->get_param( 'settings' ) ) );
 	}
 
 	// ----- Fonts -----

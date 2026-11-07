@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.2.0 — 2026-11-07
+
+Element settings, chosen from Advanced Themer's list. Each group can be switched off under Settings > Element settings (all on by default).
+
+- Better defaults: Basic Text renders as `p` and images have no caption, site-wide, set in the Leapfrog theme style (the same site-wide style the font installer uses; only those keys). New images start as `figure`, new buttons without a link render as `<button type="button">` (buttons with a link stay `<a>`), and Heading text is a multi-line field.
+- New style controls, saved as ordinary Bricks settings and written by Bricks' own CSS output (responsive, with hover states): Backdrop filter (Style > CSS; a text field, because Bricks' filter control always writes `filter`), Background clip (Style > Background), White space, Content visibility with contain-intrinsic-size, and a Columns group with count, width, gap, fill, rule and break before, inside and after (Style > Layout). These output CSS only while Leapfrog is active.
+- Overflow is a list (visible, hidden, clip, auto, scroll) that still accepts typed values such as `hidden auto`.
+- Bricks dropdowns with 9 or more options get Bricks' own search box.
+- Element notes from the plan were left out (not needed).
+- The theme style code shared by fonts and defaults moved to `Bricks\ThemeStyle`.
+
 ## 1.1.0 — 2026-11-07
 
 Leapfrog Framework 1.1: everything Core Framework, CoreBridge and Advanced Themer's grid tools were used for, now in Leapfrog or in Bricks itself. Milestones 1.1a to 1.1c are listed below as 1.1.0-alpha releases; this release adds 1.1d.
