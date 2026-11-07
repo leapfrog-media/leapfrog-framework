@@ -236,6 +236,43 @@ final class ScaleSync {
 				$this->delete_variable( (string) $item['id'] );
 			}
 		}
+
+		$this->ensure_order( $category, array_map( static fn( array $row ): string => (string) $row['name'], $rows ) );
+	}
+
+	/**
+	 * Bricks' Style Manager works out each step's size from its position in the variable
+	 * list, not from its name, so a scale's variables must be stored smallest to largest.
+	 * Bricks appends new variables at the end (e.g. a step added back), so if the order is
+	 * wrong the scale's variables are removed and written again in order, keeping their IDs.
+	 * Pages refer to variables by name, so nothing on a page changes.
+	 *
+	 * @param array<string, string> $category
+	 * @param list<string>          $wanted   Variable names, smallest step first.
+	 */
+	private function ensure_order( array $category, array $wanted ): void {
+		$snapshot = $this->gateway->list_all_variables();
+		$stored   = array();
+		foreach ( $snapshot['items'] as $item ) {
+			if ( (string) ( $item['category'] ?? '' ) === $category['id'] ) {
+				$stored[ (string) $item['name'] ] = $item;
+			}
+		}
+
+		$wanted = array_values( array_filter( $wanted, static fn( string $name ): bool => isset( $stored[ $name ] ) ) );
+		if ( array_keys( $stored ) === $wanted ) {
+			return;
+		}
+
+		$rows = array();
+		foreach ( $wanted as $name ) {
+			$rows[] = self::clean_row( $stored[ $name ], $category['id'] );
+		}
+		foreach ( $rows as $row ) {
+			$this->delete_variable( (string) $row['id'], false );
+		}
+		$this->set_variables( $rows );
+		$this->summary['reordered'] = ( $this->summary['reordered'] ?? 0 ) + count( $rows );
 	}
 
 	/**
@@ -320,7 +357,7 @@ final class ScaleSync {
 		}
 	}
 
-	private function delete_variable( string $id ): void {
+	private function delete_variable( string $id, bool $count = true ): void {
 		$snapshot = $this->gateway->list_all_variables();
 		foreach ( $snapshot['items'] as $item ) {
 			if ( (string) $item['id'] === $id ) {
@@ -332,7 +369,9 @@ final class ScaleSync {
 						'allowOrphans'      => true,
 					)
 				);
-				++$this->summary['deleted'];
+				if ( $count ) {
+					++$this->summary['deleted'];
+				}
 				return;
 			}
 		}

@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.1 — 2026-11-07
+
+- Fix: Bricks' Style Manager showed type sizes shifted by one step after a step was removed and added back. Bricks works out each step's size from its position in the variable list, and added the step at the end. Leapfrog now keeps every scale's variables in step order (smallest first), reordering them through Bricks' safe methods when needed; values and IDs are unchanged.
+
 ## 1.0.0 — 2026-11-07
 
 Milestone 6: brand starter and saving. First complete version.
