@@ -4,7 +4,7 @@
 import { createRoot, useEffect, useState } from '@wordpress/element';
 import apiFetch from '@wordpress/api-fetch';
 import { __ } from '@wordpress/i18n';
-import { Button, Notice, Spinner } from '@wordpress/components';
+import { Notice, Spinner } from '@wordpress/components';
 
 import BrandStarter from './screens/BrandStarter';
 import BricksData from './screens/BricksData';
@@ -70,6 +70,19 @@ function App() {
 		setScreen( id );
 	};
 
+	// The WordPress menu stays visible, so warn before leaving with unsaved changes.
+	useEffect( () => {
+		if ( ! dirty ) {
+			return undefined;
+		}
+		const warn = ( event ) => {
+			event.preventDefault();
+			event.returnValue = '';
+		};
+		window.addEventListener( 'beforeunload', warn );
+		return () => window.removeEventListener( 'beforeunload', warn );
+	}, [ dirty ] );
+
 	useEffect( () => {
 		apiFetch( { path: `${ config.restPath }/status` } )
 			.then( setStatus )
@@ -89,9 +102,6 @@ function App() {
 					<span className="lf-header__version">v{ config.version }</span>
 				</div>
 				<div className="lf-header__site">{ config.siteName }</div>
-				<Button variant="tertiary" href={ config.dashboardUrl }>
-					{ __( 'Back to WordPress', 'leapfrog-framework' ) }
-				</Button>
 			</header>
 
 			<div className="lf-body">

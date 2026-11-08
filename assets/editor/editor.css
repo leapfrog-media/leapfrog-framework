@@ -1,21 +1,22 @@
-/* Leapfrog Framework editor. Full screen: WordPress chrome is hidden on this page only. */
+/*
+ * Leapfrog Framework editor. It sits inside the normal admin, beside the WordPress
+ * menu and under the toolbar, and fills the rest of the window. Admin notices and
+ * the footer are hidden on this page only.
+ */
 
-body.lf-fullscreen #adminmenumain,
-body.lf-fullscreen #wpadminbar,
-body.lf-fullscreen #wpfooter,
-body.lf-fullscreen #wpbody-content > .notice,
-body.lf-fullscreen #wpbody-content > .update-nag,
-body.lf-fullscreen #screen-meta-links {
+body.lf-app-page #wpfooter,
+body.lf-app-page #wpbody-content > .notice,
+body.lf-app-page #wpbody-content > .update-nag,
+body.lf-app-page #screen-meta-links {
 	display: none;
 }
 
-html:has(body.lf-fullscreen) {
-	padding-top: 0 !important;
+body.lf-app-page #wpcontent {
+	padding-left: 0;
 }
 
-body.lf-fullscreen #wpcontent {
-	margin-left: 0;
-	padding-left: 0;
+body.lf-app-page #wpbody-content {
+	padding-bottom: 0;
 }
 
 .lf-app {
@@ -27,9 +28,7 @@ body.lf-fullscreen #wpcontent {
 	--lf-accent: #2f6f4f;
 	--lf-accent-soft: #e8f1ec;
 
-	position: fixed;
-	inset: 0;
-	z-index: 100;
+	height: calc(100vh - var(--wp-admin--admin-bar--height, 32px));
 	display: flex;
 	flex-direction: column;
 	background: var(--lf-canvas);

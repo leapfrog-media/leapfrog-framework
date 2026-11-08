@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.2.2 — 2026-11-08
+
+- Joins the menu shared by all Leapfrog plugins: one top-level **Leapfrog** link with Leapfrog Admin, Leapfrog Framework and (later) Leapfrog Performance as sub-items, in that order. Clicking Leapfrog opens the first one with the sub-items expanded beneath; Framework is not first because its full-screen editor has no sidebar. Whichever Leapfrog plugin loads first adds the link, so it works with any one of them installed. The Framework address (`admin.php?page=leapfrog-framework`) is unchanged.
+- The menu icon is the outline of the Leapfrog mark again, instead of the solid arch.
+- The editor is no longer full screen: it sits inside the normal admin, beside the WordPress menu and under the toolbar, and fills the rest of the window. "Back to WordPress" is gone (the menu is there instead), and leaving with unsaved changes now asks first.
+
 ## 1.2.1 — 2026-11-07
 
 - Elements panel toolbar (above Bricks' element categories): show the elements in 1, 2, 3 or 4 columns (remembered in this browser), and open or close every category with one button. One column is a compact list with the icon beside the name. Bricks' own category titles are clicked to open and close, so nothing else changes.

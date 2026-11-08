@@ -47,6 +47,7 @@ Bricks' AI / Abilities API switch does not need to be on. When it is, Leapfrog u
 | `src/Bricks/VariablePicker.php` | Contextual variable picker data (+ `assets/builder/variable-rules.js`, `variable-picker.*`) |
 | `src/Rest/RestController.php` | REST routes under `leapfrog/v1` (admins only) |
 | `src/Admin/FrameworkPage.php` | Leapfrog > Framework admin page |
+| `src/Admin/LeapfrogMenu.php` | The shared Leapfrog menu (same logic as Leapfrog Admin's `includes/menu.php`) |
 | `assets/editor/` | Editor app source (React, WordPress components) |
 | `build/` | Built editor app (committed, so the plugin works without a build) |
 
