@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.3.0 — 2026-11-08
+
+- **Updates from GitHub**, shared with Leapfrog Admin and Leapfrog Performance: the plugin updates through WordPress's own updater (Dashboard > Updates, the Plugins screen, automatic updates) from github.com/leapfrog-media/leapfrog-framework. The newest version tag (`v1.2.3`) is the newest version. A private repository needs a GitHub token (`LEAPFROG_GITHUB_TOKEN` in wp-config.php, or the Updates tab of Leapfrog Admin or Leapfrog Performance, which also show the versions). A Git working folder is never updated. Code: `src/Admin/GitHubUpdater.php`, identical to the other plugins' copies apart from the namespace.
+- GitHub's zips leave out the editor sources and build tooling (`.gitattributes` export-ignore), so `build/` must be rebuilt and committed before tagging.
+
 ## 1.2.2 — 2026-11-08
 
 - Joins the menu shared by all Leapfrog plugins: one top-level **Leapfrog** link with Leapfrog Admin, Leapfrog Framework and (later) Leapfrog Performance as sub-items, in that order. Clicking Leapfrog opens the first one with the sub-items expanded beneath; Framework is not first because its full-screen editor has no sidebar. Whichever Leapfrog plugin loads first adds the link, so it works with any one of them installed. The Framework address (`admin.php?page=leapfrog-framework`) is unchanged.

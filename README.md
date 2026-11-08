@@ -51,6 +51,18 @@ Bricks' AI / Abilities API switch does not need to be on. When it is, Leapfrog u
 | `assets/editor/` | Editor app source (React, WordPress components) |
 | `build/` | Built editor app (committed, so the plugin works without a build) |
 
+## Updates
+
+Updates come from GitHub through WordPress's own updater (Dashboard > Updates,
+the Plugins screen, automatic updates). The newest version tag (v1.2.3) on
+github.com/leapfrog-media/leapfrog-framework is the newest version, so a release is just a
+tagged commit, pushed. Public repositories need nothing more. Private ones need
+a GitHub token that can read them: LEAPFROG_GITHUB_TOKEN in wp-config.php, or
+the Updates tab of Leapfrog Admin or Leapfrog Performance (one token covers all
+Leapfrog plugins). A copy that is a Git working folder is never updated.
+
+Before tagging a release, run `npm run build` and commit `build/`: the editor sources aren't in GitHub's zip.
+
 ## Building the editor
 
 ```

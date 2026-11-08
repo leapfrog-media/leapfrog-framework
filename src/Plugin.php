@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Leapfrog\Framework;
 
 use Leapfrog\Framework\Admin\FrameworkPage;
+use Leapfrog\Framework\Admin\GitHubUpdater;
 use Leapfrog\Framework\Bricks\BuilderHelpers;
 use Leapfrog\Framework\Bricks\Buttons;
 use Leapfrog\Framework\Bricks\ElementSettings;
@@ -22,6 +23,8 @@ use Leapfrog\Framework\Rest\SiteController;
 final class Plugin {
 	public function register(): void {
 		( new FrameworkPage() )->register();
+		// Updates from GitHub; the token and status live on Leapfrog Admin's (or Performance's) Updates tab.
+		( new GitHubUpdater( FILE, 'leapfrog-framework' ) )->register();
 		( new RestController() )->register();
 		( new SiteController() )->register();
 		( new ThemeControl() )->register();
