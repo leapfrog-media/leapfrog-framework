@@ -2,8 +2,8 @@
 
 ## 1.3.0 — 2026-11-08
 
-- **Updates from GitHub**, shared with Leapfrog Admin and Leapfrog Performance: the plugin updates through WordPress's own updater (Dashboard > Updates, the Plugins screen, automatic updates) from github.com/leapfrog-media/leapfrog-framework. The newest version tag (`v1.2.3`) is the newest version. A private repository needs a GitHub token (`LEAPFROG_GITHUB_TOKEN` in wp-config.php, or the Updates tab of Leapfrog Admin or Leapfrog Performance, which also show the versions). A Git working folder is never updated. Code: `src/Admin/GitHubUpdater.php`, identical to the other plugins' copies apart from the namespace.
-- GitHub's zips leave out the editor sources and build tooling (`.gitattributes` export-ignore), so `build/` must be rebuilt and committed before tagging.
+- **Updates from GitHub**, shared with Leapfrog Admin and Leapfrog Performance: the plugin updates through WordPress's own updater (Dashboard > Updates, the Plugins screen, automatic updates) from github.com/leapfrog-media/leapfrog-framework. The Version in the plugin file on the main branch is the newest version, so a release is a pushed commit that raises it (no tags). A private repository needs a GitHub token (`LEAPFROG_GITHUB_TOKEN` in wp-config.php, or the Updates tab of Leapfrog Admin or Leapfrog Performance, which also show the versions). A Git working folder is never updated. Code: `src/Admin/GitHubUpdater.php`, identical to the other plugins' copies apart from the namespace.
+- GitHub's zips leave out the editor sources and build tooling (`.gitattributes` export-ignore), so `build/` must be rebuilt and committed before the version is raised.
 
 ## 1.2.2 — 2026-11-08
 
