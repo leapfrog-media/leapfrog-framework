@@ -6,6 +6,7 @@ namespace Leapfrog\Framework;
 
 use Leapfrog\Framework\Admin\FrameworkPage;
 use Leapfrog\Framework\Admin\GitHubUpdater;
+use Leapfrog\Framework\Admin\HeaderPage;
 use Leapfrog\Framework\Bricks\BuilderHelpers;
 use Leapfrog\Framework\Bricks\Buttons;
 use Leapfrog\Framework\Bricks\ElementSettings;
@@ -35,6 +36,9 @@ final class Plugin {
 		( new GridExtras() )->register();
 		( new BuilderHelpers() )->register();
 		( new ElementSettings() )->register();
+		( new HeaderPage() )->register();
+		( new Header\Controller() )->register();
+		( new Header\Frontend() )->register();
 
 		add_action( 'admin_notices', array( $this, 'requirements_notice' ) );
 	}

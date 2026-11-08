@@ -1,0 +1,384 @@
+/*
+ * Leapfrog Header Builder screen. Fills the admin beside the WordPress menu,
+ * like the Framework editor (body.lf-app-page hides notices and the footer).
+ */
+
+body.lf-app-page #wpfooter,
+body.lf-app-page #wpbody-content > .notice,
+body.lf-app-page #wpbody-content > .update-nag,
+body.lf-app-page #screen-meta-links {
+	display: none;
+}
+
+body.lf-app-page #wpcontent {
+	padding-left: 0;
+}
+
+body.lf-app-page #wpbody-content {
+	padding-bottom: 0;
+}
+
+.lfh-app {
+	--lfh-ink: #1e1e1e;
+	--lfh-muted: #5c5f62;
+	--lfh-line: #e0e0e0;
+	--lfh-canvas: #eceef0;
+	--lfh-panel: #ffffff;
+	--lfh-accent: #2f6f4f;
+
+	height: calc(100vh - var(--wp-admin--admin-bar--height, 32px));
+	display: flex;
+	flex-direction: column;
+	background: var(--lfh-canvas);
+	color: var(--lfh-ink);
+	font-size: 13px;
+}
+
+.lfh-app--message {
+	align-items: center;
+	justify-content: center;
+}
+
+/* Top bar */
+.lfh-bar {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	min-height: 56px;
+	padding: 6px 16px;
+	background: var(--lfh-panel);
+	border-bottom: 1px solid var(--lfh-line);
+	flex-wrap: wrap;
+}
+
+.lfh-bar__brand {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin-right: 8px;
+}
+
+.lfh-bar__brand img {
+	height: 26px;
+	width: auto;
+}
+
+.lfh-bar__title {
+	font-size: 15px;
+	font-weight: 600;
+	white-space: nowrap;
+}
+
+.lfh-bar__spacer {
+	flex: 1;
+}
+
+.lfh-bar .components-base-control {
+	min-width: 160px;
+}
+
+.lfh-bar__status {
+	color: var(--lfh-muted);
+	white-space: nowrap;
+}
+
+.lfh-toggles {
+	display: inline-flex;
+	border: 1px solid var(--lfh-line);
+	border-radius: 4px;
+	overflow: hidden;
+}
+
+.lfh-toggles .components-button {
+	border-radius: 0;
+	height: 38px;
+}
+
+.lfh-toggles .components-button.is-landscape svg {
+	transform: rotate(90deg);
+}
+
+.lfh-toggles .components-button.is-pressed {
+	background: var(--lfh-ink);
+	color: #fff;
+}
+
+.lfh-notices {
+	padding: 8px 16px 0;
+}
+
+.lfh-notices .components-notice {
+	margin: 0 0 8px;
+}
+
+/* Body: panel + stage */
+.lfh-body {
+	flex: 1;
+	display: flex;
+	min-height: 0;
+}
+
+.lfh-panel {
+	width: 340px;
+	flex: none;
+	overflow-y: auto;
+	background: var(--lfh-panel);
+	border-right: 1px solid var(--lfh-line);
+}
+
+.lfh-tabs .components-tab-panel__tabs {
+	position: sticky;
+	top: 0;
+	z-index: 2;
+	background: var(--lfh-panel);
+	border-bottom: 1px solid var(--lfh-line);
+}
+
+.lfh-tabs .components-tab-panel__tabs-item {
+	flex: 1;
+	justify-content: center;
+}
+
+.lfh-panel .components-panel__body .components-base-control,
+.lfh-panel .components-panel__body .components-toggle-control {
+	margin-bottom: 14px;
+}
+
+.lfh-muted {
+	color: var(--lfh-muted);
+}
+
+.lfh-intro {
+	padding: 12px 16px;
+	border-bottom: 1px solid var(--lfh-line);
+	color: var(--lfh-muted);
+}
+
+.lfh-intro p {
+	margin: 0 0 8px;
+}
+
+.lfh-intro .components-button {
+	height: auto;
+	min-height: 32px;
+	padding-block: 6px;
+	white-space: normal;
+	text-align: left;
+}
+
+.lfh-panel {
+	overflow-x: hidden;
+}
+
+/* A setting with a value shows a small dot, so what's styled here stands out. */
+.lfh-field.is-set .lfh-field__label > span::after {
+	content: "";
+	display: inline-block;
+	width: 6px;
+	height: 6px;
+	margin-left: 6px;
+	border-radius: 50%;
+	background: var(--wp-admin-theme-color, #2271b1);
+	vertical-align: middle;
+}
+
+/* Stage: the preview frame, scaled to fit */
+.lfh-stage {
+	position: relative;
+	flex: 1;
+	min-width: 0;
+	display: flex;
+	align-items: flex-start;
+	justify-content: center;
+	padding: 16px;
+	overflow: hidden;
+}
+
+.lfh-frame {
+	position: relative;
+	overflow: hidden;
+	background: #fff;
+	border-radius: 6px;
+	box-shadow: 0 1px 2px rgb(0 0 0 / 0.06), 0 8px 24px rgb(0 0 0 / 0.08);
+	transition: width 0.2s ease;
+}
+
+.lfh-frame iframe {
+	display: block;
+	border: 0;
+	transform-origin: 0 0;
+	background: #fff;
+}
+
+.lfh-stage__size {
+	position: absolute;
+	right: 20px;
+	bottom: 10px;
+	padding: 2px 8px;
+	border-radius: 10px;
+	background: rgb(0 0 0 / 0.55);
+	color: #fff;
+	font-size: 11px;
+}
+
+/* Empty state */
+.lfh-empty {
+	max-width: 520px;
+	margin: 80px auto;
+	padding: 32px;
+	background: var(--lfh-panel);
+	border-radius: 8px;
+	text-align: center;
+}
+
+.lfh-empty p {
+	color: var(--lfh-muted);
+	font-size: 14px;
+}
+
+/* Style fields */
+.lfh-field {
+	margin-bottom: 14px;
+}
+
+.lfh-field__label {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 6px;
+	font-size: 11px;
+	font-weight: 500;
+	text-transform: uppercase;
+	letter-spacing: 0.02em;
+}
+
+.lfh-field__reset {
+	padding: 0;
+	border: 0;
+	background: none;
+	color: var(--wp-admin-theme-color, #2271b1);
+	font-size: 11px;
+	text-transform: none;
+	letter-spacing: 0;
+	cursor: pointer;
+}
+
+.lfh-field__row {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.lfh-field__input {
+	flex: 1;
+	min-width: 0;
+	height: 36px;
+	padding: 0 8px;
+	border: 1px solid #949494;
+	border-radius: 2px;
+	font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+	font-size: 12px;
+}
+
+.lfh-field__input:focus {
+	border-color: var(--wp-admin-theme-color, #2271b1);
+	box-shadow: 0 0 0 1px var(--wp-admin-theme-color, #2271b1);
+	outline: none;
+}
+
+.lfh-swatch {
+	position: relative;
+	flex: none;
+	width: 36px;
+	height: 36px;
+	border: 1px solid #949494;
+	border-radius: 4px;
+	overflow: hidden;
+	background-image: linear-gradient(45deg, #ddd 25%, transparent 25%, transparent 75%, #ddd 75%), linear-gradient(45deg, #ddd 25%, transparent 25%, transparent 75%, #ddd 75%);
+	background-size: 10px 10px;
+	background-position: 0 0, 5px 5px;
+}
+
+.lfh-swatch[style*="background"] {
+	background-image: none;
+}
+
+.lfh-swatch input[type="color"] {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	opacity: 0;
+	cursor: pointer;
+}
+
+.lfh-swatch--small {
+	width: 18px;
+	height: 18px;
+	border-radius: 3px;
+}
+
+.lfh-picker .components-popover__content {
+	width: 260px;
+}
+
+.lfh-picker__inner {
+	display: flex;
+	flex-direction: column;
+	max-height: 320px;
+}
+
+.lfh-picker__search {
+	margin: 8px;
+	height: 32px;
+}
+
+.lfh-picker__list {
+	margin: 0;
+	padding: 0 0 8px;
+	overflow-y: auto;
+	list-style: none;
+}
+
+.lfh-picker__group {
+	display: block;
+	padding: 8px 12px 4px;
+	color: var(--lfh-muted, #5c5f62);
+	font-size: 11px;
+	font-weight: 600;
+	text-transform: uppercase;
+}
+
+.lfh-picker__option {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	width: 100%;
+	padding: 5px 12px;
+	border: 0;
+	background: none;
+	font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+	font-size: 12px;
+	text-align: left;
+	cursor: pointer;
+}
+
+.lfh-picker__option:hover,
+.lfh-picker__option:focus-visible {
+	background: #f0f0f1;
+}
+
+.lfh-picker__option.is-current {
+	font-weight: 600;
+	color: var(--wp-admin-theme-color, #2271b1);
+}
+
+.lfh-picker__empty {
+	padding: 8px 12px;
+	color: #5c5f62;
+}
+
+@media (max-width: 960px) {
+	.lfh-panel {
+		width: 280px;
+	}
+}

@@ -48,8 +48,29 @@ Bricks' AI / Abilities API switch does not need to be on. When it is, Leapfrog u
 | `src/Rest/RestController.php` | REST routes under `leapfrog/v1` (admins only) |
 | `src/Admin/FrameworkPage.php` | Leapfrog > Framework admin page |
 | `src/Admin/LeapfrogMenu.php` | The shared Leapfrog menu (same logic as Leapfrog Admin's `includes/menu.php`) |
+| `src/Admin/HeaderPage.php` | Leapfrog > Header Builder admin page |
+| `src/Header/Design.php` | Header Builder: the style settings (with the parts of a Bricks header each one reaches), cleaning, CSS, sticky settings |
+| `src/Header/Store.php` | Header designs by Bricks header template (`lf_headers`), drafts (`lf_header_drafts`), history (`lf_header_history`), the template's rows and parts |
+| `src/Header/Frontend.php` | Prints a saved design's CSS for its header; preview mode for the builder (+ `assets/frontend/header.css`, `header-preview.js`) |
+| `src/Header/Controller.php` | Header Builder REST routes |
 | `assets/editor/` | Editor app source (React, WordPress components) |
-| `build/` | Built editor app (committed, so the plugin works without a build) |
+| `assets/header/` | Header Builder app source |
+| `build/` | Built editor and Header Builder apps (committed, so the plugin works without a build) |
+
+## Header Builder
+
+Leapfrog > Header Builder styles headers built in Bricks and sets how they scroll. The header's
+content (rows, logo, links, dropdowns, mega menus, buttons) is built and edited in Bricks; the
+builder never changes it. Pick a Bricks header template; the builder reads its rows and parts and
+offers style settings for them (each row, logo, menu links, buttons, mobile menu, over the hero).
+An empty setting leaves Bricks' own styling; a value set in the builder wins. Values can be typed
+or picked from the Leapfrog colours and variables.
+
+The preview shows a real page (the long page at `/header-display/` when there is one, so the
+header's scrolling can be tried) at each of the site's Bricks breakpoints with the unsaved design. Style
+changes reach it at once; scrolling changes reload it. Saving stores the design and writes only the
+template's Bricks sticky settings (sticky, fixed over the page for "over the hero", slide up on
+scrolling down).
 
 ## Updates
 
@@ -94,6 +115,7 @@ npm run build
 - `GET /wp-json/leapfrog/v1/presets`, `POST …/presets/save` with `{ name }`, `POST …/presets/apply` with `{ id, revision }`, `POST …/presets/delete` with `{ id }`
 - `POST /wp-json/leapfrog/v1/fonts/status` with `{ families }`, `POST …/fonts/install` with `{ heading, body }`
 - `GET /wp-json/leapfrog/v1/element-settings`, `POST …/element-settings/save` with `{ settings }`
+- `GET /wp-json/leapfrog/v1/header`, `GET …/header/design?id=`, `POST …/header/draft` with `{ design }`, `POST …/header/save` with `{ design }`, `POST …/header/discard` with `{ id }`
 
 ## Fonts
 

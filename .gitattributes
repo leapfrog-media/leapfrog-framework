@@ -9,3 +9,4 @@
 /package.json export-ignore
 /package-lock.json export-ignore
 /assets/editor export-ignore
+/assets/header export-ignore

@@ -1,0 +1,43 @@
+/*
+ * Leapfrog headers (Header Builder). Loaded only on pages whose Bricks header
+ * has a saved Header Builder design. The design's own CSS is printed after this
+ * file; here are only the parts that don't depend on its values, and they don't
+ * change how a header looks until something is set in the builder.
+ */
+
+/* Smooth changes between states (scrolling, hover). Speed: "Change speed" in the builder. */
+#brx-header.lfh > *,
+#brx-header.lfh .brxe-logo img,
+#brx-header.lfh .brxe-button,
+#brx-header.lfh .brx-nav-nested-items > li > a,
+#brx-header.lfh .brx-nav-nested-items > li > .brx-submenu-toggle,
+#brx-header.lfh .bricks-nav-menu > li > a {
+	transition-property: height, min-height, padding, background-color, border-color, box-shadow, color, width, opacity;
+	transition-duration: var(--lfh-speed, 0.25s);
+	transition-timing-function: ease;
+}
+
+/* Over the hero without sticking: the header sits over the top of the page.
+   (Sticky over the hero uses Bricks' fixed sticky header.) */
+#brx-header.lfh.lfh-overlay:not(.brx-sticky) {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	z-index: 998;
+}
+
+body.admin-bar #brx-header.lfh.lfh-overlay:not(.brx-sticky) {
+	top: var(--wp-admin--admin-bar--height, 32px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	#brx-header.lfh > *,
+	#brx-header.lfh .brxe-logo img,
+	#brx-header.lfh .brxe-button,
+	#brx-header.lfh .brx-nav-nested-items > li > a,
+	#brx-header.lfh .brx-nav-nested-items > li > .brx-submenu-toggle,
+	#brx-header.lfh .bricks-nav-menu > li > a {
+		transition: none;
+	}
+}

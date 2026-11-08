@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.4.0 — 2026-11-08
+
+Header Builder, first milestone (H1).
+
+- **Leapfrog > Header Builder** styles headers built in Bricks and sets how they scroll. Content (rows, logo, links, dropdowns, mega menus, buttons) stays in Bricks and is never changed by the builder.
+- Pick a Bricks header template; the builder reads its rows and parts and shows settings for what it has: the whole header, each row (height, background, text, border, and when scrolled: height, background, shadow, hide), over the hero, logo, menu links (normal, hover, current page, when scrolled), buttons and the mobile menu. Empty = Bricks' own styling; a value set here wins. Values can be typed or picked from the Leapfrog colours (with swatches) and variables. "Fill the empty ones with Leapfrog's header tokens" sets sensible starting values.
+- **Live preview**: a real page of the site with the header and its unsaved design, at each of the site's Bricks breakpoints (the same list, names and icons as Bricks > Settings > Breakpoints, custom ones included). Each shows one pixel inside its Bricks width, so Bricks applies that breakpoint's styles; the base shows at 1440 × 900; heights are typical screens of that shape. It opens on the long `/header-display/` page when there is one, and short pages get extra room so scrolling can always be tried. Views: scroll to try (Bricks' own scrolling runs), at the top, scrolled, mobile menu open. Settings for a state switch the preview to it (hover, scrolled, over the hero). Style changes show at once; scrolling changes reload the preview. Unsaved changes are kept as a draft.
+- **Scrolling**: sticky, hide while scrolling down (show on scrolling up) after a distance, and over the hero (the header sits over the first section and turns solid on scrolling) with the space left under the header for pages without a hero. Saving writes only these Bricks sticky settings into the template; conditions and everything else stay. A header new to the builder starts from its current Bricks settings.
+- Saved designs: option `lf_headers` (by template id), drafts `lf_header_drafts`, last 20 saves `lf_header_history`. The CSS is printed only on pages whose header has a saved design.
+- The shared Leapfrog menu orders Header Builder after Leapfrog Framework.
+
 ## 1.3.0 — 2026-11-08
 
 - **Updates from GitHub**, shared with Leapfrog Admin and Leapfrog Performance: the plugin updates through WordPress's own updater (Dashboard > Updates, the Plugins screen, automatic updates) from github.com/leapfrog-media/leapfrog-framework. The Version in the plugin file on the main branch is the newest version, so a release is a pushed commit that raises it (no tags). A private repository needs a GitHub token (`LEAPFROG_GITHUB_TOKEN` in wp-config.php, or the Updates tab of Leapfrog Admin or Leapfrog Performance, which also show the versions). A Git working folder is never updated. Code: `src/Admin/GitHubUpdater.php`, identical to the other plugins' copies apart from the namespace.
