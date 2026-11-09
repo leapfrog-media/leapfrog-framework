@@ -12,6 +12,7 @@ use Leapfrog\Framework\Bricks\Buttons;
 use Leapfrog\Framework\Bricks\ElementSettings;
 use Leapfrog\Framework\Bricks\GridExtras;
 use Leapfrog\Framework\Bricks\LogicalSizing;
+use Leapfrog\Framework\Bricks\LogoInverse;
 use Leapfrog\Framework\Bricks\ThemeControl;
 use Leapfrog\Framework\Bricks\VariablePicker;
 use Leapfrog\Framework\Color\ThemeCss;
@@ -36,6 +37,7 @@ final class Plugin {
 		( new GridExtras() )->register();
 		( new BuilderHelpers() )->register();
 		( new ElementSettings() )->register();
+		( new LogoInverse() )->register();
 		( new NavigationPage() )->register();
 		( new Navigation\Controller() )->register();
 		( new Navigation\Frontend() )->register();

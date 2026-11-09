@@ -32,6 +32,7 @@ Bricks' AI / Abilities API switch does not need to be on. When it is, Leapfrog u
 | `src/Bricks/ElementSettings.php` | Element settings: better defaults, extra CSS controls, overflow list, dropdown search (switches in option `lf_element_settings`) |
 | `src/Bricks/ThemeStyle.php` | The site-wide Bricks theme style Leapfrog writes fonts and defaults to |
 | `src/Fonts/FontInstaller.php` | Installs Google fonts as self-hosted Bricks custom fonts (variable where possible) and sets them in the site-wide theme style |
+| `src/Bricks/LogoInverse.php` | Fills the Logo element's `data-x-logo-inverse` attribute from its "Logo inverse" image, so a sticky BricksExtras Header Row swaps to it |
 | `src/Bricks/BuilderHelpers.php` | Grid guides (`assets/builder/grid-guides.js`), header and footer buttons that hide either on the canvas while editing (`assets/builder/header-footer.js`), a show/hide switch on each elements panel group (`assets/builder/element-groups.js`) and the BEM class generator (`assets/builder/bem.js`) |
 | `src/Bricks/GridExtras.php` | Leapfrog row in Bricks' Visual grid builder: layouts, gaps, bento, stack on mobile (+ `assets/builder/grid-extras.js`) |
 | `src/Scale/Shape.php` | Layout and shape variables: widths, sizes, grids, corners, borders, focus, shadows, motion, layers |

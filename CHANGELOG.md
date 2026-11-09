@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.7.1 — 2026-11-09
+
+- **Logo inverse with BricksExtras Header Row**: the Logo element's "Logo inverse" image now shows while a sticky Header Row is active. Bricks only uses that field for its own sticky header; Header Row swaps to the image in the logo's `data-x-logo-inverse` attribute, which Leapfrog now fills from the field. An attribute added by hand still wins, and nothing is added when the header template uses Bricks' own sticky header. Code: `src/Bricks/LogoInverse.php`.
+
 ## 1.7.0 — 2026-11-09
 
 - **Show/hide switch on each elements panel group** in the Bricks builder, on the group's title row beside its arrow. A group switched off shrinks to its dimmed title row and moves to the bottom of the panel (its switch turns it back on); the others keep Bricks' order. Useful for groups Bricks puts first, such as Single when editing a template. Your choice is remembered in your browser and applies to everything you edit: pages, posts and templates. Search results and pinned elements are never hidden. Code: `assets/builder/element-groups.js`.

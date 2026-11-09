@@ -3,7 +3,7 @@
  * Plugin Name:       Leapfrog Framework
  * Plugin URI:        https://github.com/leapfrog-media/leapfrog-framework
  * Description:       Design system editor for Bricks. Generates native Bricks colour palettes, fluid scales and variables, and styles the top navigation and mobile menu with a live preview (Navigation Builder).
- * Version:           1.7.0
+ * Version:           1.7.1
  * Requires at least: 6.9
  * Requires PHP:      8.1
  * Author:            Leapfrog Media
@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-const VERSION    = '1.7.0';
+const VERSION    = '1.7.1';
 const FILE       = __FILE__;
 const PATH       = __DIR__ . '/';
 const MIN_BRICKS = '2.4';
