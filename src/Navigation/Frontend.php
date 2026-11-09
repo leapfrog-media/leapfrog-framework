@@ -65,6 +65,9 @@ final class Frontend {
 		}
 		$header       = (int) ( $templates['header'] ?? 0 );
 		$this->active = $header && Store::has_navigation( $header );
+		if ( $this->active ) {
+			$this->header = $header;
+		}
 
 		return $templates;
 	}
@@ -81,7 +84,7 @@ final class Frontend {
 		// In preview the builder sends the style settings' CSS itself (so clearing one clears it), but it
 		// starts from the same CSS so nothing jumps while the page loads.
 		$max = Design::mobile_max( $design );
-		wp_add_inline_style( 'leapfrog-navigation', Design::base_css( $design, $max ) );
+		wp_add_inline_style( 'leapfrog-navigation', Design::base_css( $design, $max ) . self::bricks_scrolled_css( $design, $max, $this->header ) );
 		wp_register_style( 'leapfrog-navigation-styles', false, array( 'leapfrog-navigation' ), null ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
 		wp_enqueue_style( 'leapfrog-navigation-styles' );
 		wp_add_inline_style( 'leapfrog-navigation-styles', Design::styles_css( $design, $max ) );
@@ -92,5 +95,19 @@ final class Frontend {
 		if ( $this->preview ) {
 			wp_enqueue_script( 'leapfrog-navigation-preview', $url . 'assets/frontend/navigation-preview.js', array( 'leapfrog-navigation' ), (string) filemtime( PATH . 'assets/frontend/navigation-preview.js' ), true );
 		}
+	}
+
+	/**
+	 * The header template's Bricks sticky colours on the menu links (see Design::bricks_scrolled_css).
+	 *
+	 * @param array<string, mixed> $design
+	 */
+	private static function bricks_scrolled_css( array $design, int $max, int $header ): string {
+		if ( ! $header || ! is_callable( array( '\Bricks\Helpers', 'get_template_settings' ) ) ) {
+			return '';
+		}
+		$settings = \Bricks\Helpers::get_template_settings( $header );
+
+		return is_array( $settings ) ? Design::bricks_scrolled_css( $design, $max, $settings ) : '';
 	}
 }

@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.7.2 — 2026-11-09
+
+- **Navigation follows Bricks' scroll colours**: when the header template uses Bricks' sticky header, its "Scrolling text color" and hover colour now reach the Leapfrog navigation's menu-bar links and dropdown labels (desktop only). Before, the navigation's own link colour was stronger than Bricks' rules, so the links didn't change. With no scrolled hover colour set, hover keeps the menu's own hover colour. A "Link colour while the header is scrolled" set in the Navigation Builder still wins. The button link keeps its own colours. Code: `Design::bricks_scrolled_css()`.
+
 ## 1.7.1 — 2026-11-09
 
 - **Logo inverse with BricksExtras Header Row**: the Logo element's "Logo inverse" image now shows while a sticky Header Row is active. Bricks only uses that field for its own sticky header; Header Row swaps to the image in the logo's `data-x-logo-inverse` attribute, which Leapfrog now fills from the field. An attribute added by hand still wins, and nothing is added when the header template uses Bricks' own sticky header. Code: `src/Bricks/LogoInverse.php`.

@@ -395,6 +395,54 @@ final class Design {
 	}
 
 	/**
+	 * The header template's Bricks sticky colours ("Scrolling text color" and its hover) on the
+	 * menu bar's links while the header is scrolled. The navigation's own link colours are
+	 * stronger than Bricks' rules, so without this they never change. Printed before the style
+	 * settings with the same selectors, so a scrolled colour set in the Navigation Builder wins.
+	 *
+	 * @param array<string, mixed> $design
+	 * @param array<string, mixed> $template_settings The header template's Bricks settings.
+	 */
+	public static function bricks_scrolled_css( array $design, int $max, array $template_settings ): string {
+		if ( empty( $template_settings['headerSticky'] ) ) {
+			return '';
+		}
+		$color = self::bricks_color( $template_settings['headerStickyScrollingColor'] ?? null );
+		$hover = self::bricks_color( $template_settings['headerStickyScrollingColorHover'] ?? null );
+		if ( '' === $hover && '' !== $color ) {
+			// No scrolled hover colour: keep the menu's own hover colour rather than losing hover.
+			$hover = (string) ( $design['styles']['link-hover-color'] ?? '' );
+		}
+		$fields = self::fields();
+		$css    = '';
+		if ( '' !== $color ) {
+			$css .= implode( ',', self::selectors( $fields['link-scrolled-color']['selectors'] ) ) . '{color:' . $color . '}';
+		}
+		if ( '' !== $hover ) {
+			$selectors = array_map( static fn( string $s ): string => '^scrolled ' . $s, $fields['link-hover-color']['selectors'] );
+			$css      .= implode( ',', self::selectors( $selectors ) ) . '{color:' . $hover . '}';
+		}
+
+		return '' !== $css ? '@media (min-width:' . ( $max + 1 ) . 'px){' . $css . '}' : '';
+	}
+
+	/**
+	 * A Bricks colour setting as a safe CSS value, or '' when it isn't set.
+	 *
+	 * @param mixed $color
+	 */
+	private static function bricks_color( $color ): string {
+		if ( ! is_array( $color ) ) {
+			return '';
+		}
+		$value = is_callable( array( '\Bricks\Assets', 'generate_css_color' ) )
+			? \Bricks\Assets::generate_css_color( $color )
+			: ( $color['raw'] ?? $color['rgb'] ?? $color['hex'] ?? '' );
+
+		return (string) self::clean_css_value( $value );
+	}
+
+	/**
 	 * Everything for the site: base CSS, then the style settings.
 	 *
 	 * @param array<string, mixed> $design
