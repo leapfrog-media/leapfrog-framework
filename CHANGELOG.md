@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.6.0 — 2026-11-09
+
+- **Header and footer buttons** in the Bricks builder's top toolbar, beside the grid guides: each hides the header or the footer on the canvas while you edit, independently of the other, and is crossed out while its part is hidden. Only the builder canvas changes; the page and the site don't. Your choice is remembered in your browser. While editing a header (or footer) template, that template's own button isn't shown.
+
 ## 1.5.1 — 2026-11-09
 
 - Variable picker: `--gutter` is now recommended for left and right padding on Blocks, Divs and BricksExtras Header Rows as well as Sections and Containers (before, it only showed on Sections and Containers). Text, buttons and menu links still don't suggest it. Header Rows also count as headers, so the header variables are recommended there.

@@ -3,6 +3,19 @@
 	color: #c58fc5;
 }
 
+/* Header and footer buttons: crossed out (and coloured) while that part is hidden on the canvas. */
+.lf-chrome-toggle .lf-chrome-slash {
+	display: none;
+}
+
+.lf-chrome-toggle.is-hidden-part {
+	color: #c58fc5;
+}
+
+.lf-chrome-toggle.is-hidden-part .lf-chrome-slash {
+	display: inline;
+}
+
 /* Elements panel toolbar: 1–4 columns and open/close all categories. */
 .lf-elements-toolbar {
 	display: flex;
