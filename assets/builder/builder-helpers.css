@@ -51,11 +51,13 @@
 	transition: transform 0.15s;
 }
 
+/* On: Bricks' own yellow, with its dark colour for the knob. */
 #bricks-panel-elements-categories .lf-group-switch[aria-checked="true"] {
-	background: #c58fc5;
+	background: var(--builder-color-accent, #ffd54d);
 }
 
 #bricks-panel-elements-categories .lf-group-switch[aria-checked="true"]::after {
+	background: var(--builder-color-accent-inverse, #1e2124);
 	transform: translateX(12px);
 }
 
