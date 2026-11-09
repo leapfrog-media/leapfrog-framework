@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.5.1 — 2026-11-09
+
+- Variable picker: `--gutter` is now recommended for left and right padding on Blocks, Divs and BricksExtras Header Rows as well as Sections and Containers (before, it only showed on Sections and Containers). Text, buttons and menu links still don't suggest it. Header Rows also count as headers, so the header variables are recommended there.
+
 ## 1.5.0 — 2026-11-09
 
 The Header Builder becomes the **Navigation Builder** (Leapfrog > Navigation Builder; the old address redirects).

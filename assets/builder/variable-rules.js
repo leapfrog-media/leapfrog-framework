@@ -26,11 +26,12 @@
 		field: [ 'field', 'form', 'control' ],
 		form: [ 'form', 'field' ],
 		card: [ 'card' ],
-		header: [ 'header', 'navigation' ],
+		// 'layout' = boxes that hold a page row (blocks, divs, header rows), not text or nav links.
+		header: [ 'header', 'navigation', 'layout' ],
 		navigation: [ 'navigation', 'header' ],
 		section: [ 'section' ],
 		container: [ 'container' ],
-		content: [ 'content', 'prose' ],
+		content: [ 'content', 'prose', 'layout' ],
 		prose: [ 'prose', 'content' ],
 		footer: [ 'footer' ],
 		tabs: [ 'tabs' ],
@@ -61,7 +62,7 @@
 	// [pattern, meta]. First match wins. purposes: what the variable is for; components: where it is made for.
 	const rules = [
 		// Layout roles.
-		[ /^gutter$/, { tier: 'semantic', purposes: [ 'padding' ], axes: [ 'inline' ], components: [ 'section', 'container' ] } ],
+		[ /^gutter$/, { tier: 'semantic', purposes: [ 'padding' ], axes: [ 'inline' ], components: [ 'section', 'container', 'layout' ] } ],
 		[ /^section-space(-compact|-spacious)?$/, { tier: 'semantic', purposes: [ 'padding', 'margin' ], axes: [ 'block' ], components: [ 'section' ] } ],
 		[ /^gap$/, { tier: 'semantic', purposes: [ 'gap' ] } ],
 		[ /^flow$/, { tier: 'semantic', purposes: [ 'gap', 'margin' ], axes: [ 'block' ], components: [ 'prose', 'content' ] } ],
@@ -247,7 +248,7 @@
 		if ( [ ...classes ].some( ( c ) => /(^|-)card(-|$|__)/.test( c ) ) ) {
 			return 'card';
 		}
-		if ( tag === 'header' || classes.has( 'header' ) ) {
+		if ( tag === 'header' || classes.has( 'header' ) || type === 'xheaderrow' ) {
 			return 'header';
 		}
 		if ( tag === 'footer' || classes.has( 'footer' ) ) {
