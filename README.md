@@ -48,29 +48,41 @@ Bricks' AI / Abilities API switch does not need to be on. When it is, Leapfrog u
 | `src/Rest/RestController.php` | REST routes under `leapfrog/v1` (admins only) |
 | `src/Admin/FrameworkPage.php` | Leapfrog > Framework admin page |
 | `src/Admin/LeapfrogMenu.php` | The shared Leapfrog menu (same logic as Leapfrog Admin's `includes/menu.php`) |
-| `src/Admin/HeaderPage.php` | Leapfrog > Header Builder admin page |
-| `src/Header/Design.php` | Header Builder: the style settings (with the parts of a Bricks header each one reaches), cleaning, CSS, sticky settings |
-| `src/Header/Store.php` | Header designs by Bricks header template (`lf_headers`), drafts (`lf_header_drafts`), history (`lf_header_history`), the template's rows and parts |
-| `src/Header/Frontend.php` | Prints a saved design's CSS for its header; preview mode for the builder (+ `assets/frontend/header.css`, `header-preview.js`) |
-| `src/Header/Controller.php` | Header Builder REST routes |
+| `src/Admin/NavigationPage.php` | Leapfrog > Navigation Builder admin page |
+| `src/Navigation/Starter.php` | The starter header: a Bricks header template with a BricksExtras Header Row, the logo and a Leapfrog navigation |
+| `src/Navigation/Design.php` | Navigation Builder: the style settings (with the parts each one reaches), the mobile settings, cleaning and CSS (base + styles) |
+| `src/Navigation/Store.php` | The site's navigation style (`lf_navigation`), draft (`lf_navigation_draft`), history (`lf_navigation_history`); headers that hold a Leapfrog navigation |
+| `src/Navigation/Frontend.php` | Prints the navigation CSS and loads the mobile menu script where the header has a Leapfrog navigation; preview mode for the builder |
+| `src/Navigation/Controller.php` | Navigation Builder REST routes |
+| `assets/frontend/navigation.js` | The mobile menu on the site: drill-down sub-menus, Back, scroll lock, Escape, focus |
+| `assets/frontend/navigation-preview.js` | Takes styles and states from the builder in its preview |
 | `assets/editor/` | Editor app source (React, WordPress components) |
-| `assets/header/` | Header Builder app source |
-| `build/` | Built editor and Header Builder apps (committed, so the plugin works without a build) |
+| `assets/navigation/` | Navigation Builder app source |
+| `build/` | Built editor and Navigation Builder apps (committed, so the plugin works without a build) |
 
-## Header Builder
+## Navigation Builder
 
-Leapfrog > Header Builder styles headers built in Bricks and sets how they scroll. The header's
-content (rows, logo, links, dropdowns, mega menus, buttons) is built and edited in Bricks; the
-builder never changes it. Pick a Bricks header template; the builder reads its rows and parts and
-offers style settings for them (each row, logo, menu links, buttons, mobile menu, over the hero).
-An empty setting leaves Bricks' own styling; a value set in the builder wins. Values can be typed
-or picked from the Leapfrog colours and variables.
+Leapfrog > Navigation Builder styles the site's top navigation and its mobile menu, with a live
+preview. Needs BricksExtras with its Header Row element on: the header's rows, sticky and scrolling
+are Header Row and Bricks template settings, set in Bricks.
 
-The preview shows a real page (the long page at `/header-display/` when there is one, so the
-header's scrolling can be tried) at each of the site's Bricks breakpoints with the unsaved design. Style
-changes reach it at once; scrolling changes reload it. Saving stores the design and writes only the
-template's Bricks sticky settings (sticky, fixed over the page for "over the hero", slide up on
-scrolling down).
+- **New header…** creates a Bricks header template (named when created): a BricksExtras Header Row
+  with the logo and a Leapfrog navigation, a Bricks Nav (Nestable) with the class `lfn` holding two
+  links, a dropdown, a mega menu (rows with a title, text and arrow, and a call to action) and a link
+  styled as a button (`lfn-btn`), plus the mobile menu's top bar (Back, logo, close) and menu button.
+  Its content is edited in Bricks from then on. It shows on the whole site unless another header
+  already has display conditions.
+- **One style for the site**, for every Leapfrog navigation: menu bar links in every state, the
+  button link, dropdowns, mega menus (panel, rows, call to action) and the mobile menu. Empty =
+  Bricks' own styling; a value set here wins. Values can be typed or picked from the Leapfrog
+  colours and variables.
+- **Mobile menu**: from a chosen Bricks breakpoint down, the panel slides in from the right, left or
+  top, or fills the screen; sub-menus drill down with a Back button (or open underneath); the button
+  link can sit at the bottom. Bricks' own mobile menu is off (`mobileMenu: never`); Leapfrog's CSS and
+  `assets/frontend/navigation.js` do it.
+- **Preview**: a real page (the long `/header-display/` page when there is one) at each Bricks
+  breakpoint, with the unsaved style; views for scrolling, dropdown and mega menu open, mobile menu
+  and sub-menu open. Style changes show at once; mobile settings reload the preview.
 
 ## Updates
 
@@ -115,7 +127,7 @@ npm run build
 - `GET /wp-json/leapfrog/v1/presets`, `POST …/presets/save` with `{ name }`, `POST …/presets/apply` with `{ id, revision }`, `POST …/presets/delete` with `{ id }`
 - `POST /wp-json/leapfrog/v1/fonts/status` with `{ families }`, `POST …/fonts/install` with `{ heading, body }`
 - `GET /wp-json/leapfrog/v1/element-settings`, `POST …/element-settings/save` with `{ settings }`
-- `GET /wp-json/leapfrog/v1/header`, `GET …/header/design?id=`, `POST …/header/draft` with `{ design }`, `POST …/header/save` with `{ design }`, `POST …/header/discard` with `{ id }`
+- `GET /wp-json/leapfrog/v1/navigation`, `POST …/navigation/starter` with `{ name }`, `POST …/navigation/draft` with `{ design }`, `POST …/navigation/save` with `{ design }`, `POST …/navigation/discard`
 
 ## Fonts
 

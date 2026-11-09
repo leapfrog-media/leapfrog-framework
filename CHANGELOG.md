@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.5.0 — 2026-11-09
+
+The Header Builder becomes the **Navigation Builder** (Leapfrog > Navigation Builder; the old address redirects).
+
+- **Needs BricksExtras** with its Header Row element switched on. Header rows, sticky and scrolling stay with Header Row and the Bricks template settings in Bricks, so the builder no longer has row or scrolling settings.
+- **New header…**: creates a named Bricks header template with a BricksExtras Header Row, the logo and a Leapfrog navigation (Bricks Nav (Nestable), class `lfn`): two links, a dropdown, a mega menu (four rows with a title, text and an arrow that slides in, plus a call to action) and a link styled as a button (`lfn-btn`), with the mobile menu's top bar (Back, logo, close) and menu button. Content is edited in Bricks afterwards. It shows on the whole site unless another header already has display conditions.
+- **One navigation style for the site** (option `lf_navigation`, draft `lf_navigation_draft`, last 20 saves `lf_navigation_history`): menu bar (links, hover, current page, colour while scrolled, dropdown arrows), button link, dropdowns (panel, links, opening animation), mega menus (panel, columns, opening), mega menu rows and call to action, and the mobile menu. Empty = Bricks' own styling; set values win.
+- **Mobile menu** from a chosen Bricks breakpoint down: the panel comes in from the right, left or top, or over the whole screen; sub-menus drill down with a Back button (or open underneath); the button link can sit at the bottom. `assets/frontend/navigation.js` handles the drill-down, Back, scroll lock, Escape and focus; it and the CSS load only on pages whose header holds a Leapfrog navigation.
+- **Preview** views: scroll to try, at the top, scrolled; dropdown open, mega menu open; mobile menu open, sub-menu open. A setting switches the preview to the state it styles.
+- The Header Builder's settings (`lf_headers`, `lf_header_drafts`, `lf_header_history`) are no longer used.
+
 ## 1.4.0 — 2026-11-08
 
 Header Builder, first milestone (H1).

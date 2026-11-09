@@ -21,7 +21,7 @@ final class LeapfrogMenu {
 	private const ORDER = array(
 		'leapfrog-admin'       => 1,
 		'leapfrog-framework'   => 2,
-		'leapfrog-header'      => 3,
+		'leapfrog-navigation'  => 3,
 		'leapfrog-performance' => 4,
 	);
 

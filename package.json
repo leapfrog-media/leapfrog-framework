@@ -5,8 +5,8 @@
 	"description": "Design system editor for Bricks by Leapfrog Media.",
 	"license": "GPL-2.0-or-later",
 	"scripts": {
-		"build": "wp-scripts build assets/editor/index.js assets/header/header.js --output-path=build",
-		"start": "wp-scripts start assets/editor/index.js assets/header/header.js --output-path=build"
+		"build": "wp-scripts build assets/editor/index.js assets/navigation/navigation.js --output-path=build",
+		"start": "wp-scripts start assets/editor/index.js assets/navigation/navigation.js --output-path=build"
 	},
 	"devDependencies": {
 		"@wordpress/scripts": "^37.1.0"
