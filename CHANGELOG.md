@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.7.0 — 2026-11-09
+
+- **Show/hide switch on each elements panel group** in the Bricks builder, on the group's title row beside its arrow. A group switched off shrinks to its dimmed title row and moves to the bottom of the panel (its switch turns it back on); the others keep Bricks' order. Useful for groups Bricks puts first, such as Single when editing a template. Your choice is remembered in your browser and applies to everything you edit: pages, posts and templates. Search results and pinned elements are never hidden. Code: `assets/builder/element-groups.js`.
+
 ## 1.6.0 — 2026-11-09
 
 - **Header and footer buttons** in the Bricks builder's top toolbar, beside the grid guides: each hides the header or the footer on the canvas while you edit, independently of the other, and is crossed out while its part is hidden. Only the builder canvas changes; the page and the site don't. Your choice is remembered in your browser. While editing a header (or footer) template, that template's own button isn't shown.

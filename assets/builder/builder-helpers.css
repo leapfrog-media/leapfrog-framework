@@ -16,6 +16,54 @@
 	display: inline;
 }
 
+/* Elements panel groups: a show/hide switch on each title row. Hidden groups move to the bottom (element-groups.js).
+   Scoped to the panel's id so Bricks' own .bricks-panel button styles don't win. */
+#bricks-panel-elements-categories:not([data-tab="components"]) {
+	display: flex;
+	flex-direction: column;
+}
+
+#bricks-panel-elements-categories .lf-group-switch {
+	position: relative;
+	flex: none;
+	inline-size: 26px;
+	block-size: 14px;
+	min-block-size: 14px;
+	margin-inline: auto 8px;
+	line-height: 0;
+	padding: 0;
+	border: 0;
+	border-radius: 7px;
+	background: rgb(255 255 255 / 0.18);
+	cursor: pointer;
+	vertical-align: middle;
+}
+
+#bricks-panel-elements-categories .lf-group-switch::after {
+	content: "";
+	position: absolute;
+	inset-block-start: 2px;
+	inset-inline-start: 2px;
+	inline-size: 10px;
+	block-size: 10px;
+	border-radius: 50%;
+	background: rgb(226 230 233);
+	transition: transform 0.15s;
+}
+
+#bricks-panel-elements-categories .lf-group-switch[aria-checked="true"] {
+	background: #c58fc5;
+}
+
+#bricks-panel-elements-categories .lf-group-switch[aria-checked="true"]::after {
+	transform: translateX(12px);
+}
+
+#bricks-panel-elements-categories .lf-group-switch:focus-visible {
+	outline: 2px solid #ffd64f;
+	outline-offset: 2px;
+}
+
 /* Elements panel toolbar: 1–4 columns and open/close all categories. */
 .lf-elements-toolbar {
 	display: flex;

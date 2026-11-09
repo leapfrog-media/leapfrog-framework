@@ -11,8 +11,8 @@ use const Leapfrog\Framework\VERSION;
  * Builder helpers that Bricks doesn't have: grid guides on the canvas (toolbar
  * button, Ctrl+Shift+G), header and footer buttons that hide either on the
  * canvas while editing, a BEM class generator (right-click an element >
- * "Add BEM classes…") and an elements panel toolbar (1–4 columns, open or close
- * all categories). Bricks already suggests variables as you type var(--,
+ * "Add BEM classes…"), an elements panel toolbar (1–4 columns, open or close
+ * all categories) and a show/hide switch on each elements panel group. Bricks already suggests variables as you type var(--,
  * so Leapfrog adds no autocomplete of its own.
  */
 final class BuilderHelpers {
@@ -30,6 +30,7 @@ final class BuilderHelpers {
 		wp_enqueue_script( 'leapfrog-bem', $url . 'bem.js', array(), VERSION, true );
 		wp_enqueue_script( 'leapfrog-elements-panel', $url . 'elements-panel.js', array( 'leapfrog-grid-guides' ), VERSION, true );
 		wp_enqueue_script( 'leapfrog-header-footer', $url . 'header-footer.js', array( 'leapfrog-grid-guides' ), VERSION, true );
+		wp_enqueue_script( 'leapfrog-element-groups', $url . 'element-groups.js', array( 'leapfrog-grid-guides' ), VERSION, true );
 		wp_add_inline_script( 'leapfrog-grid-guides', 'window.leapfrogBuilderHelpers = ' . wp_json_encode( self::data() ) . ';', 'before' );
 	}
 
@@ -53,6 +54,8 @@ final class BuilderHelpers {
 				'columns'             => __( '%d columns', 'leapfrog-framework' ),
 				'expandAll'           => __( 'Open all categories', 'leapfrog-framework' ),
 				'collapseAll'         => __( 'Close all categories', 'leapfrog-framework' ),
+				'hideGroup'           => __( 'Hide this group (moves it to the bottom)', 'leapfrog-framework' ),
+				'showGroup'           => __( 'Show this group', 'leapfrog-framework' ),
 				'menu'                => __( 'Add BEM classes…', 'leapfrog-framework' ),
 				'title'               => __( 'Add BEM classes', 'leapfrog-framework' ),
 				'block'               => __( 'Block name', 'leapfrog-framework' ),
