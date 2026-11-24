@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.7.3 — 2026-11-24
+
+- **Navigation Builder: Current page background**: a new Menu bar setting, just above "Current page marker", sets the background colour of the menu-bar link for the page you're on (desktop). It uses the links' padding and corner rounding, so it shows as a highlighted pill.
+
 ## 1.7.2 — 2026-11-09
 
 - **Navigation follows Bricks' scroll colours**: when the header template uses Bricks' sticky header, its "Scrolling text color" and hover colour now reach the Leapfrog navigation's menu-bar links and dropdown labels (desktop only). Before, the navigation's own link colour was stronger than Bricks' rules, so the links didn't change. With no scrolled hover colour set, hover keeps the menu's own hover colour. A "Link colour while the header is scrolled" set in the Navigation Builder still wins. The button link keeps its own colours. Code: `Design::bricks_scrolled_css()`.

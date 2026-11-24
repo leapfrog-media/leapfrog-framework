@@ -84,6 +84,7 @@ final class Design {
 			'link-hover-color'   => $f( 'Menu bar', 'Hover colour', 'color', $link_hover_text, 'color', 'var(--color-link-hover)', 'desktop' ),
 			'link-hover-bg'      => $f( 'Menu bar', 'Hover background', 'color', $link_hover, 'background-color', '', 'desktop' ),
 			'link-current-color' => $f( 'Menu bar', 'Current page colour', 'color', $current, 'color', '', 'desktop' ),
+			'link-current-bg'    => $f( 'Menu bar', 'Current page background', 'color', $current, 'background-color', '', 'desktop' ),
 			'link-current-mark'  => $f( 'Menu bar', 'Current page marker', 'choice', $current, '', '', 'desktop', array( 'choices' => array( '' => array( 'Not set', '' ), 'underline' => array( 'Underline', 'text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:0.45em' ), 'none' => array( 'None', 'text-decoration:none' ) ) ) ),
 			'link-scrolled-color' => $f( 'Menu bar', 'Link colour while the header is scrolled', 'color', array_map( static fn( string $s ): string => '^scrolled ' . $s, $link_text ), 'color', '', 'desktop' ),
 			'chevron-size'       => $f( 'Menu bar', 'Dropdown arrow size', 'size', array( self::TOP_TOGGLE . ' > button' ), 'font-size', '0.7em', 'desktop' ),
